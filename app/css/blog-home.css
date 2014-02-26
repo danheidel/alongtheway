@@ -1,0 +1,332 @@
+body {
+	margin-top: 0px; /* 100px is double the height of the navbar - I made it a big larger for some more space - keep it at 50px at least if you want to use the fixed top nav */
+	background-image: url('../backgrounds/bright_squares.png');
+	/*width: 969px;*/
+}
+
+
+.container > .navbar-header, .container > .navbar-collapse {
+	margin-right: 0;
+	margin-left: 16.7%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.navbar {
+	margin-bottom: 10px;
+}
+
+.row{
+/*  margin-left: auto;
+  margin-right: auto;
+*/}
+
+.pager {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 50px;
+}
+
+#sidebar-wrapper {
+  margin-left: -250px;
+  left: 250px;
+  width: 175px;
+  /*padding-bottom: 10px;*/
+  border-radius: 20px;
+  background: rgba(51,8,5,.02);
+  background: rgba(250,235,249,.1);
+  position: absolute;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+}
+
+.sidebar-wrapper_right {
+  /*text-align: center;*/
+  padding-left: 20px;
+  padding-right: 50px;
+  width: 250px;
+  word-wrap: break-word;
+  float: right;
+  margin-left: 920px;
+  /*padding-left: 0px;*/
+  /*padding-bottom: 10px;*/
+  border-radius: 20px;
+  background: rgba(51,8,5,.02);
+  background: rgba(250,235,249,.1);
+  background: rgba(250,235,249,.3);
+  background: rgba(168,191,190,.1);
+  /*background-image: url('../backgrounds/grey_@2x.png');*/
+
+  position: absolute;
+  height: 100%;
+  color: black;
+  /*overflow-y: auto;*/
+  /*z-index: 1000;*/
+  transition: all 0.4s ease 0s;
+}
+
+.sidebar-wrapper_right ul{
+  color:black;
+  margin-left: -24px;
+}
+
+
+.sidebar-wrapper_right h4 {
+  color:black;
+}
+
+.image_Center {
+
+}
+
+.contentwrapper{
+	/*background-color: rgba(5,33,132,.6);*/
+	/*max-width: 500px;*/
+  /*max-width: 500px;*/
+	width: 800px;
+  /*width: 500px;*/
+  /*text-align: center;*/
+  /*max-width: 400px;*/
+	/*float: right;*/
+	background-image: url('../backgrounds/grey.png');
+	border-radius: 5px;
+	margin-right: 300px;
+	margin-left: 120px;
+  padding-left: auto;
+  padding-right: 50px;
+
+	/*border:solid;*/
+	/*border-width:1px;*/
+
+-webkit-box-shadow: 0px 0px 194px 11px rgba(146,150,158,1);
+-moz-box-shadow: 0px 0px 194px 11px rgba(146,150,158,1);
+box-shadow: 0px 0px 194px 11px rgba(146,150,158,1);
+}
+
+.moreContent{
+	background-color: rgba(5,33,132,.6);
+	background-image: url('../backgrounds/grey_@2X.png');
+	border-radius: 5px;
+	/*margin-right: 300px;*/
+	/*border:solid;*/
+	/*border-width:1px;*/
+
+-webkit-box-shadow: 0px 0px 79px -4px rgba(16,127,201,.1);
+-moz-box-shadow: 0px 0px 79px -4px rgba(16,127,201,1);
+box-shadow: 0px 0px 79px -4px rgba(16,127,201,.2);
+}
+
+
+
+.sidebar-nav li{
+  list-style-type: circle;
+}
+
+
+
+.navbar-brand {
+	font-family: 'Lobster', serif;	
+	font-size: 24px;	
+}
+
+.navbar-inverse {
+	/*background-color: rgba(133,156,158,.4);*/
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	right bottom,
+	color-stop(0.1, rgb(48, 48, 39)),
+	color-stop(0.74, rgb(104, 110, 117))
+);
+background-image: -o-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: -moz-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: -webkit-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: -ms-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: linear-gradient(to right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+
+
+
+
+border:none;
+}
+
+.business-header {
+		margin-top: 0px;
+        height: 400px;
+        /*background: url(http://placehold.it/1920x400) center center no-repeat;*/
+        /*background-size: cover;*/
+}
+
+/* adjust the color and text shadow to optimize legibility once you have an image set - you can also change the vertical positioning if desired  */
+.tagline {
+        color: #fff;
+        text-shadow: 0 0 10px #000;
+}
+
+.container {
+	bottom-margin:0px;
+	/*float: left;*/
+	/*max-width: 500px;*/
+}
+
+h1 a{
+	color: rgba(24,44,46,.9);
+	font-family: 'Josefin Slab';
+	font-style: bold;
+	font-size: 48px;
+}
+
+
+footer {
+	margin: 50px 0;
+}
+
+.image_Center{
+	/*text-align: center;*/
+}
+
+//////////////////////////////////////////////////////////
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  line-height: 30px;
+  /*text-indent: 20px;*/
+}
+
+.sidebar-nav li a {
+  color: #999999;
+  display: block;
+  text-decoration: none;
+}
+
+.sidebar-nav li a:hover {
+  color: #fff;
+  background: rgba(21,73,89,0.4);
+  text-decoration: none;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+  text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+  height: 65px;
+  line-height: 60px;
+  font-size: 18px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+  color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+  color: #fff;
+  background: none;
+}
+
+
+#sidebar-wrapper {
+  /*left:0px;*/
+}
+
+#sidebar-wrapper_right {
+  /*right:1100px;*/
+}
+
+
+@media (max-width:1200px) {
+  .contentwrapper h1 {
+    margin-left: 100px;
+  }
+  .glyphicon-time span {
+    margin-left: 100px;
+  }
+  .contentwrapper img  {
+    margin-left: 100px;
+  }
+  .contentwrapper p  {
+    margin-left: 100px;
+  }
+  .contentwrapper .btn-default.btn-sm{
+    margin-left: 100px;
+    width: 90px;
+  }
+
+  .sidebar-wrapper_right{
+    margin-left: 15px;
+    margin-top: 2900px;
+    width: 600px;
+  }
+  .input-group-btn:last-child > .btn {
+  margin-left: -1px;
+  }
+}
+
+
+@media (max-width:1024px) {
+
+	#sidebar-wrapper_right {
+	  right:1260px;
+	}
+}
+
+@media (min-width:1250px) {
+
+  .sidebar-wrapper_right {
+    margin-left: 840px;
+  }
+
+  .sidebar-wrapper_right{
+    /*margin-left: 15px;*/
+    /*margin-top: 2900px;*/
+    width: 250px;
+  }
+
+}
+
+@media (min-width:1400px) {
+
+  .sidebar-wrapper_right {
+    margin-left: 900px;
+  }
+}
+
+@media (min-width:1500px) {
+
+  .sidebar-wrapper_right {
+    margin-left: 950px;
+  }
+}
+
+@media (min-width:1600px) {
+
+  .sidebar-wrapper_right {
+    margin-left: 1000px;
+  }
+}
+
+@media (min-width:1700px) {
+
+  .sidebar-wrapper_right {
+    margin-left: 1050px;
+  }
+}
+
+@media (min-width:1800px) {
+
+  .sidebar-wrapper_right {
+    margin-left: 1100px;
+  }
+}

@@ -14,9 +14,8 @@ if(typeof port === 'undefined'){
 
 // all environments
 app.use(express.logger());
-app.use(express.static(__dirname + '/public_html'));
+// app.use(express.static(__dirname + '/public_html'));
+app.use(express.static(__dirname ));
 
 app.listen(port);
 console.log('serving on port: ' + port);
-
-

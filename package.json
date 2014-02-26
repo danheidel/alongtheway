@@ -6,6 +6,20 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.4.0"
-  }
+    "express": "~3.4.0",
+    "mongoose": "~3.8.8",
+    "yelp": "~0.1.1"
+  },
+  "description": "Along-The-Way codefellows project app",
+  "main": "User.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeong-codefellows/alongtheway"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeong-codefellows/alongtheway/issues"
+  },
+  "homepage": "https://github.com/jeong-codefellows/alongtheway"
 }
