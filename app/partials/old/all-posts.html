@@ -1,0 +1,105 @@
+<div>
+  
+  <nav class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">jeong's blog</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#/about">About</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
+  </nav>
+
+
+  <div id="sidebar-wrapper">
+    <!-- <h>Recent Posts</h4> -->
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand" style="list-style-type:none;color:rgb(245,61,20)">Recent posts</li>
+      <li><a href="{{'#/post/' + post1.title}}">{{post1.title | limitTo: 50}}</a></li>
+      <li><a href="{{'#/post/' + post2.title}}">{{post2.title | limitTo: 50}}</a></li>
+      <li><a href="{{'#/post/' + post3.title}}">{{post3.title | limitTo: 50}}</a></li>
+      <li><a href="{{'#/post/' + post4.title}}">{{post4.title | limitTo: 50}}</a></li>
+      <li><a href="{{'#/post/' + post5.title}}">{{post5.title | limitTo: 50}}</a></li>
+    </ul>
+  </div>
+
+
+ 
+    <div class="container">
+      <div class="contentwrapper">
+      <div class="row" ng-repeat="post in posts">
+        <div class="col-lg-9 col-lg-offset-2">        
+          <!-- blog entry -->
+          <br ng-hide="$last">
+          <h1><a href="{{'#/post/' + post.title}}">{{post.title}} </a></h1>
+          <p><span class="glyphicon glyphicon-time"></span> Posted on {{ post.time_Date | date:'MM/dd/yyyy @ h:mma'}} </p>
+          <div class="image_Center">
+            <img ng-src="{{post.imageUrl}}" width="550" height="450">
+          </div>
+          <br>
+          <br>
+          <p>{{post.post}} </p>
+          <a class="btn btn-default btn-sm" href="{{'#/post/' + post.title}}">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>      
+          <hr ng-hide="$last">
+        </div>
+
+         <div class="sidebar-wrapper_right" ng-show="$first">
+            <!-- <div class="col-lg-9 col-lg-offset-0" ng-hide="$last"> -->
+              <!-- <div class="well"> -->
+                <h4 ng-show="$first">Blog Search</h4>
+                <br>
+                <div class="input-group" ng-show="$first">
+                  <input type="text" class="form-control input-sm"  id="focusedInput" ng-model="focusedInput" ng-show="$first">
+                  <span class="input-group-btn" ng-show="$first">
+                    <button class="btn btn-default btn-sm" style="margin-bottom:5px;" type="button" ng-show="$first" ng-click="searchDatabase(Search1, focusedInput)"><span class="glyphicon glyphicon-search" ng-show="$first"></span></button>
+                  </span>
+                </div><!-- /input-group -->
+                <div class="btn-group" style="padding-left:30px;">
+                  <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown">
+                    Search By: {{Search1}}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#/" ng-click="selectSearch('Title')" ng-model="searchTitle">Title</a></li>
+                    <li><a href="#/" ng-click="selectSearch('Post Content')" ng-model="searchContent">Post Content</a></li>
+                  </ul>
+                </div>
+                <br>
+                <br>
+                <ul ng-repeat="posts_ in search_Hits">
+                  <li ng-if="searchTitle"><a href="{{'#/post/' + posts_.title}}">{{posts_.title}}</a></li>
+                  <li ng-if="searchContent" ><a href="{{'#/post/' + posts_.title}}"><p style="color:rgb(12,125,20);display:block">Post title - {{posts_.title}}</p>{{posts_.post}}</a></li>
+                </ul>
+              <!-- </div>/well -->
+            <!-- </div> -->
+          </div>
+
+          <div ng-if="$last">
+            <div class="row text-center" ng-show="$last" ng-controller="range_View_Ctrl">
+                <div class="col-lg-12" ng-show="$last">
+                    <ul class="pagination" ng-show="$last">
+                        <li ng-show="$last" ng-click="decrementPAGE($event)" class="decrement"><a href="#/">&laquo;</a>
+                        </li>
+                        <li ng-repeat="num in numbers | limitTo:5" ng-if="$index<numbers.length-1"><a href="{{'#/get_posts/high/'+num.id+'/low/'+numbers[[$index+1]].id }}">{{num.number}}</a></li>
+                        <li><a href="#/" ng-show="$last" ng-click="incrementPAGE($event)" class="increment">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+</div>
