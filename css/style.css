@@ -1,0 +1,23 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#map-canvas {
+  height: 100%;
+}
+
+#control-panel {
+  position: absolute;
+  left: 50%;
+  top: 0em;
+  width: 30em;
+  height: 4em;
+  margin-left: -15em;
+  background: #999;
+}
