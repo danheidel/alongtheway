@@ -1,0 +1,80 @@
+body {
+	margin-top: 0px; /* 100px is double the height of the navbar - I made it a big larger for some more space - keep it at 50px at least if you want to use the fixed top nav */
+	background-image: url('../backgrounds/grey_@2X.png');
+	/*color: rgba(24,44,46,1.1);*/
+	/*font-size: 25px;*/
+}
+
+.container > .navbar-header, .container > .navbar-collapse {
+	margin-right: 0;
+	margin-left: 16.7%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.navbar-brand {
+	font-family: 'Lobster', serif;	
+	font-size: 24px;	
+}
+
+.navbar-inverse {
+	/*background-color: rgba(133,156,158,.4);*/
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	right bottom,
+	color-stop(0.1, rgb(48, 48, 39)),
+	color-stop(0.74, rgb(104, 110, 117))
+);
+background-image: -o-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: -moz-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: -webkit-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: -ms-linear-gradient(right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+background-image: linear-gradient(to right, rgb(48, 48, 39) 10%, rgb(104, 110, 117) 74%);
+
+
+.container .float {
+	float: clear;
+}
+
+border:none;
+}
+
+.business-header {
+		margin-top: 0px;
+        height: 400px;
+        /*background: url(http://placehold.it/1920x400) center center no-repeat;*/
+        /*background-size: cover;*/
+}
+
+/* adjust the color and text shadow to optimize legibility once you have an image set - you can also change the vertical positioning if desired  */
+.tagline {
+        color: #fff;
+        text-shadow: 0 0 10px #000;
+}
+
+.container {
+	bottom-margin:0px;
+	-webkit-box-shadow: 0px 0px 25px 0px rgba(77, 128, 235, 0.38);
+	-moz-box-shadow:    0px 0px 25px 0px rgba(77, 128, 235, 0.38);
+	box-shadow:         0px 0px 25px 0px rgba(77, 128, 235, 0.38);
+}
+
+h1 a{
+	color: rgba(24,44,46,.9);
+	font-family: 'Josefin Slab';
+	font-style: bold;
+	font-size: 48px;
+}
+
+
+footer {
+	margin: 50px 0;
+}
+
+
+.blog_Text {
+	font-size: 20px;
+	color: black;
+}

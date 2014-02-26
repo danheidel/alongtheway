@@ -1,0 +1,56 @@
+<head>
+      <link href="css/blog-single.css" rel="stylesheet">
+</head>
+
+<div>
+  <nav class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">jeong's blog</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
+  </nav>
+
+
+  <div class="container">
+    <!-- <div class="row" ng-repeat="post in posts"> -->
+      <div class="col-lg-9 col-lg-offset-2">        
+        <!-- blog entry -->
+        <h1><a href="{{'#/post/' + post.title}}">{{post.title}} </a></h1>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on {{post.time_Date | date:'MM/dd/yyyy @ h:mma'}} </p>
+        <img ng-src="{{post.imageUrl}}" class="img-responsive" width="700" height="300">
+        <br>
+        <br>
+        <br>
+        <p class="blog_Text">{{post.post}} </p>
+        <a class="btn btn-default btn-sm" href="#/">Home<span class="glyphicon glyphicon-chevron-right"></span></a>      
+        <!-- <hr ng-hide="$last"> -->
+      </div>
+    </div>
+      <ul class="pager">
+        <li class="previous" ng-click="previous_Post($event)"><a href="#/">&larr; Older</a></li>
+        <li class="next" ng-click="next_Post($event)"><a href="#/">Newer &rarr;</a></li>
+      </ul>
+    <hr>
+    <footer>
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Lim</p>
+        </div>
+      </div>
+    </footer>
+  </div><!-- /.container -->
+</div>
