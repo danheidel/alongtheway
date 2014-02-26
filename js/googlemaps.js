@@ -1,6 +1,6 @@
 (function(NS){
 
-  NS.initialize = function(lat, long, zoom, type){
+  NS.initialize = function(lat, lng, zoom, type){
     var mapOptions = {
       center: new google.maps.LatLng(lat || 47.624, lng || 237.664),
       mapTypeId: type || google.maps.MapTypeId.ROADMAP,
