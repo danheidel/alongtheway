@@ -2,7 +2,7 @@
   var map = window.googlemaps.map;
   var directionRenderer = window.googlemaps.directionRenderer;
   var infoWindow = window.googlemaps.infoWindow;
-  pointDist = 10000;
+  var pointDist = 10000;
   var markerSet = [];
   var savePoints = [];
 
