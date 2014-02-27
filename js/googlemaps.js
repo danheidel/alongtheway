@@ -7,9 +7,9 @@
       zoom: zoom || 12
     };
     NS.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    NS.directionRenderer = new google.maps.DirectionsRenderer();
-    NS.directionRenderer.setPanel(document.getElementById('directions-panel'));
-    NS.directionRenderer.setMap(map);
+    NS.directionsRenderer = new google.maps.DirectionsRenderer();
+    NS.directionsRenderer.setPanel(document.getElementById('directions-panel'));
+    NS.directionsRenderer.setMap(map);
     NS.directionsService = new google.maps.DirectionsService();
     NS.placesService = new google.maps.places.PlacesService(map);
     NS.routeBoxer = new RouteBoxer();

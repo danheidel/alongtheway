@@ -1,6 +1,6 @@
 (function(NS){
   var map = window.googlemaps.map;
-  var directionRenderer = window.googlemaps.directionRenderer;
+  var directionsRenderer = window.googlemaps.directionsRenderer;
   var infoWindow = window.googlemaps.infoWindow;
   var pointDist = 10000;
 
@@ -12,7 +12,7 @@
     };
     directionsService.route(request, function(result, status) {
       if(status == google.maps.DirectionsStatus.OK){
-        directionRenderer.setDirections(result);
+        directionsRenderer.setDirections(result);
         var routeInfo = result.routes[0].legs[0];
         showSteps(routeInfo, callback);
       }
