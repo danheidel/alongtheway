@@ -12,7 +12,6 @@ googlemaps.js - initializes and exposes the Google Maps API
   - googlemaps.infoWindow
 
 pathgen.js - generates an array of LatLng data pulled from Google Maps Directions
-  - pathGen.initialize()
   - pathGen.calcRoute(callback, start, end, ?pointDist(10000), ?mode(google.maps.TravelMode.DRIVING))
     - -callback - callback function that receives the LatLng array
     - -start - either LatLng coords or a place name that Google can parse
