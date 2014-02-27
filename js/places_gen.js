@@ -18,7 +18,7 @@ window.places_gen = (function() {
   });
 
 
-  output.initialize = function initialize() {
+  output.initialize = function initialize(value) {
     // Default the map view to the continental U.S.
     var mapOptions = {
       center: new google.maps.LatLng(40,-80.5),
@@ -46,9 +46,9 @@ window.places_gen = (function() {
     distance = parseFloat(document.getElementById("distance").value) * 1.609344;
 
     var request = {
-      origin: document.getElementById("from").value,
-      destination: document.getElementById("to").value,
-      travelMode: google.maps.DirectionsTravelMode.WALKING
+      origin: document.getElementById("routeStart").value,
+      destination: document.getElementById("routeEnd").value,
+      travelMode: google.maps.TravelMode.DRIVING
     }
 
     // Make the directions request
@@ -69,9 +69,10 @@ window.places_gen = (function() {
         alert("Directions query failed: " + status);
       }
     });
-
-
   }
+
+
+
 
   // Draw the array of boxes as polylines on the map
   output.drawBoxes = function drawBoxes(boxes) {
