@@ -16,7 +16,7 @@
     NS.routeBoxer = new RouteBoxer();
     NS.infoWindow = new google.maps.InfoWindow();
 
-    google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.addDomListener(window, 'load', initialize);
   };
 
 })(window.googleMaps = window.googleMaps || {});
