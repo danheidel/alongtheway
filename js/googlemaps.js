@@ -15,6 +15,8 @@
     NS.placesService = new google.maps.places.PlacesService(map);
     NS.routeBoxer = new RouteBoxer();
     NS.infoWindow = new google.maps.InfoWindow();
+
+    google.maps.event.addDomListener(window, 'load', initialize);
   };
 
 })(window.googleMaps = window.googleMaps || {});
