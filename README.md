@@ -13,8 +13,8 @@ googlemaps.js - initializes and exposes the Google Maps API
 
 pathgen.js - generates an array of LatLng data pulled from Google Maps Directions
   - pathGen.initialize()
-  - pathGen.calcRoute(latLngArray, start, end, ?pointDist(10000), ?mode(google.maps.TravelMode.DRIVING))
-    - -latLngArray - array data structure that returns the path info (array of google.maps.LatLng objects)
+  - pathGen.calcRoute(callback, start, end, ?pointDist(10000), ?mode(google.maps.TravelMode.DRIVING))
+    - -callback - callback function that receives the LatLng array
     - -start - either LatLng coords or a place name that Google can parse
     - -end - either LatLng coords or a place name that Google can parse
     - -pointDist - the desired spacing between data points in meters
