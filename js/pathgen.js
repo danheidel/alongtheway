@@ -15,7 +15,7 @@
       if(status == google.maps.DirectionsStatus.OK){
         directionsRenderer.setDirections(result);
         var routeInfo = result.routes[0].legs[0];
-        showSteps(routeInfo, callback);
+        showSteps(callback, routeInfo);
       }
     });
   };
