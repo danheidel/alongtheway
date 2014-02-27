@@ -54,6 +54,13 @@
         <option value="seattle, wa">Seattle</option>
       </select>
     </div>
+      <div class="inputBox">
+          Box within at least <input type="text" id="distance" value=".1" size="2">miles
+          of the route from 
+      </div>
+      <div class="inputBox1">
+          <input type="submit" onclick="places_gen.showPlaces_trigger()"/>
+      </div>
     <script>
     function drawBoxes(boxes) {
       var boxpolys = new Array(boxes.length);
@@ -78,8 +85,10 @@
         fillOpacity: 0.2,
         map: window.googleMaps.map,
         center: point,
-        radius: 5000
+        radius: 5000,
+        clickable: true
       });
+      return newCircle;
     }
 
     function showStuff(){
@@ -91,7 +100,14 @@
     function test(i){
       console.log(i);
       for(var rep=0;rep<i.length;rep++){
-        drawCircles(i[rep]);
+        var handle = drawCircles(i[rep]);
+        console.log(handle);
+        google.maps.event.addListener(handle, 'click', function(){
+          // window.places_gen.initialize(i[rep]);   attempted to add click handler.
+          // window.places_gen.route();
+        });
+          // window.places_gen.initialize(i[rep]);   produces over query limit for each item in array
+          // window.places_gen.route();
       }
       var boxes = window.googleMaps.routeBoxer.box(i, 5);
       drawBoxes(boxes);

@@ -1,59 +1,99 @@
-
 <!DOCTYPE html>
- <html>
-   <head>
-     <title>Google Maps JavaScript API v3 Example: Map Simple</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCMQbQ105pUv1RXOaUMFszXyJBEsyRcvGE&sensor=true">
+    </script>
+    <script type="text/javascript"
+      src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js">
+    </script>
 <script src="js/jquery/jquery-1.11.0.js"></script>
-     <meta charset="utf-8">
-  <style>
-      html { height: 100% }
-      body { height: 100%; margin:0; padding: 0 }
-      #map-canvas { height: 100% }
-      .inputBox{
-      	margin-top: 75%;
-      }
-      #map {
-        border: 1px solid black;
-      }
-  </style>
-
-
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-<script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js" type="text/javascript"></script>
 <script src="js/googlemaps.js"></script>
 <script src="js/pathgen.js"></script>
 <script src="js/places_gen.js"></script>
 <script src="js/query.js"></script>
 <script src="js/controller.js"></script>
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"> </script>
-<script type="text/javascript"> _uacct = "UA-162157-1";urchinTracker();</script>
+  </head>
+  <body>
 
-</head>
-
-<body onload="places_gen.initialize()">
-<div id = "directions-panel"></div>
+  <div id = "directions-panel"></div>
       <div class="mapview">
       <table border="1">
-      	<tr>
-      		<td valign="top">
-          	<div id="map" style="position:absolute; width: 100%; height: 90%;"></div>
-      	  </td>
+        <tr>
+          <td valign="top">
+            <div id="map" style="position:absolute; width: 100%; height: 80%;"></div>
+          </td>
 
-      		<td>
-          	<div id="side_bar" style="display:none"></div>
-      		</td>
-      	</tr>
+          <td>
+            <div id="side_bar" style="display:none"></div>
+          </td>
+        </tr>
       </table>
+      </div>
+
+    <div id="map"> </div>
+    <div id="control-panel">
+      <strong>Start: </strong>
+      <select id="routeStart" onchange="showStuff()">
+        <option value="511 boren ave seattle wa">codefellows</option>
+        <option value="portland, or">Portland, OR</option>
+        <option value="chicago, il">Chicago, IL</option>
+        <option value="st louis, mo">St Louis, MO</option>
+        <option value="joplin, mo">Joplin, MO</option>
+        <option value="oklahoma city, ok">Oklahoma City, OK</option>
+        <option value="amarillo, tx">Amarillo, TX</option>
+        <option value="gallup, nm">Gallup, NM</option>
+        <option value="flagstaff, az">Flagstaff, AZ</option>
+        <option value="winona, az">Winona, AZ</option>
+        <option value="kingman, az">Kingman, AZ</option>
+        <option value="barstow, ca">Barstow, CA</option>
+        <option value="san bernardino, ca">San Bernardino, CA</option>
+        <option value="los angeles, ca">Los Angeles, CA</option>
+      </select>
+      <strong>End: </strong>
+      <select id="routeEnd" onchange="showStuff()">
+        <option value="northgate seattle">northgate</option>
+        <option value="howell and yale seattle wa">howell and yale</option>
+        <option value="st louis, mo">St Louis</option>
+        <option value="joplin, mo">Joplin, MO</option>
+        <option value="oklahoma city, ok">Oklahoma City</option>
+        <option value="amarillo, tx">Amarillo</option>
+        <option value="gallup, nm">Gallup, NM</option>
+        <option value="flagstaff, az">Flagstaff, AZ</option>
+        <option value="winona, az">Winona</option>
+        <option value="kingman, az">Kingman</option>
+        <option value="barstow, ca">Barstow</option>
+        <option value="san bernardino, ca">San Bernardino</option>
+        <option value="los angeles, ca">Los Angeles</option>
+        <option value="seattle, wa">Seattle</option>
+      </select>
+    </div>
       <div class="inputBox">
           Box within at least <input type="text" id="distance" value=".1" size="2">miles
-          of the route from <input type="text" id="from" value="7901 196th Street edmonds wa"/>
-          to <input type="text" id="to" value="chipotle lynnwood wa"/>
-          <input type="submit" onclick="places_gen.route()"/>
+          of the route from 
       </div>
       <div class="inputBox1">
           <input type="submit" onclick="places_gen.showPlaces_trigger()"/>
       </div>
-      </div>
- </body>
+
+
+
+    <script>
+
+    function showStuff(){
+      var start = document.getElementById('routeStart').value;
+      var end = document.getElementById('routeEnd').value;
+      window.pathGen.calcRoute(test,start, end);
+    }
+
+    function test(value){
+      window.places_gen.initialize(value);
+      window.places_gen.route();
+    }
+    window.googleMaps.initialize();
+
+    </script>
+  </body>
 </html>
