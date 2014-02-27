@@ -48,7 +48,7 @@ window.places_gen = (function() {
     var request = {
       origin: document.getElementById("routeStart").value,
       destination: document.getElementById("routeEnd").value,
-      travelMode: google.maps.TravelMode.DRIVING
+      travelMode: google.maps.TravelMode.TRANSIT
     }
 
     // Make the directions request
@@ -123,12 +123,13 @@ window.places_gen = (function() {
               // service.nearbySearch({
               service.radarSearch({
                   bounds: boxes[searchIndex],
-                  types: ["food"]
-                  // keyword: ["coffee"],
+                  // types: ["food"]
+                  keyword: ["coffee"],
                   // rankBy: google.maps.places.RankBy.DISTANCE
               }, function (results, status) {
+                  console.log(status);
                   if (status != google.maps.places.PlacesServiceStatus.OK) {
-                      return dfd.reject("Request["+searchIndex+"] failed: "+status);
+                      // return dfd.resolve("Request["+searchIndex+"] failed: "+status);
                   }
                   console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
                   for (var i = 0, result; result = results[i]; i++) {
