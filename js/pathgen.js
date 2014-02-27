@@ -1,7 +1,8 @@
 (function(NS){
-  var map = window.googlemaps.map;
-  var directionRenderer = window.googlemaps.directionRenderer;
-  var infoWindow = window.googlemaps.infoWindow;
+  var map = window.googleMaps.map;
+  var directionRenderer = window.googleMaps.directionRenderer;
+  var directionsService = window.googleMaps.directionsService;
+  var infoWindow = window.googleMaps.infoWindow;
   var pointDist = 10000;
   var markerSet = [];
   var savePoints = [];
