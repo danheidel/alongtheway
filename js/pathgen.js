@@ -4,7 +4,7 @@
   var infoWindow = window.googlemaps.infoWindow;
   var pointDist = 10000;
 
-  NS.calcRoute = function(start, end, iPointDist, mode, callback) {
+  NS.calcRoute = function(callback, start, end, iPointDist, mode) {
     var request = {
       origin: start,
       destination: end,
@@ -19,7 +19,7 @@
     });
   };
 
-  function showSteps(routeInfo, callback){
+  function showSteps(callback, routeInfo){
     //flush old data
     var rep, rep2, stepPath;
     var compDist = google.maps.geometry.spherical.computeDistanceBetween;
