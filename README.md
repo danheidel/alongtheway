@@ -5,9 +5,8 @@ Along-The-Way codefellows project app
 googlemaps.js - initializes and exposes the Google Maps API
   - googlemaps.initialize(?lat(47.624), ?lng(237.664), ?zoom(12), ?type(google.maps.MapTypeId.ROADMAP))
   - googlemaps.map - assumes map element id = 'map'
-  - googlemaps.directionsDisplay - assumes panel element id = 'directions-panel'
+  - googlemaps.directionRenderer - assumes panel element id = 'directions-panel'
   - googlemaps.directionsService
-  - googlemaps.directionRenderer
   - googlemaps.placesService
   - googlemaps.routeBoxer
   - googlemaps.infoWindow

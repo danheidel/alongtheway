@@ -7,11 +7,10 @@
       zoom: zoom || 12
     };
     NS.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    NS.directionsDisplay = new google.maps.DirectionsRenderer();
-    NS.directionsDisplay.setPanel(document.getElementById('directions-panel'));
-    NS.directionsDisplay.setMap(map);
+    NS.directionRenderer = new google.maps.DirectionsRenderer();
+    NS.directionRenderer.setPanel(document.getElementById('directions-panel'));
+    NS.directionRenderer.setMap(map);
     NS.directionsService = new google.maps.DirectionsService();
-    NS.directionRenderer = new google.maps.DirectionsRenderer({ map: map });
     NS.placesService = new google.maps.places.PlacesService(map);
     NS.routeBoxer = new RouteBoxer();
     NS.infoWindow = new google.maps.InfoWindow();
