@@ -1,11 +1,10 @@
 (function(NS){
-  var map = window.googleMaps.map;
-  var directionsRenderer = window.googleMaps.directionsRenderer;
-  var directionsService = window.googleMaps.directionsService;
-  var infoWindow = window.googleMaps.infoWindow;
-  var pointDist = 10000;
-
   NS.calcRoute = function(callback, start, end, iPointDist, mode) {
+    var map = window.googleMaps.map;
+    var directionsRenderer = window.googleMaps.directionsRenderer;
+    var directionsService = window.googleMaps.directionsService;
+    var infoWindow = window.googleMaps.infoWindow;
+    var pointDist = iPointDist || 10000;
     var request = {
       origin: start,
       destination: end,
@@ -15,12 +14,12 @@
       if(status == google.maps.DirectionsStatus.OK){
         directionsRenderer.setDirections(result);
         var routeInfo = result.routes[0].legs[0];
-        showSteps(callback, routeInfo);
+        showSteps(callback, routeInfo, pointDist);
       }
     });
   };
 
-  function showSteps(callback, routeInfo){
+  function showSteps(callback, routeInfo, pointDist){
     //flush old data
     var rep, rep2, stepPath;
     var compDist = google.maps.geometry.spherical.computeDistanceBetween;
@@ -41,8 +40,8 @@
       }
     }
     callback(savePoints);
-    console.log(savePoints);
-    console.log('length: ' + savePoints.length);
+    // console.log(savePoints);
+    // console.log('length: ' + savePoints.length);
   }
 
 })(window.pathGen = window.pathGen || {});
