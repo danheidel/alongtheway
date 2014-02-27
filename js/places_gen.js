@@ -149,26 +149,6 @@ window.places_gen = (function() {
 
   }
 
-  $.getNames = function(results){
-
-    function findNames(temp, searchIndex) {
-      var dfd = $.Deferred();
-      if (searchIndex < results.length){
-        service.getDetails({reference:results[searchIndex]
-        }, function(place){
-          temp.push(place);
-          dfd.resolve(temp, searchIndex+1);
-        });
-        return dfd.then(findNames);
-      }
-      else {
-        return dfd.resolve(temp).promise();
-      }
-    }
-    return findNames([], 0);
-
-  }
-
 
   // Clear boxes currently on the map
   function clearBoxes() {
