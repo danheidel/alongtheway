@@ -1,7 +1,8 @@
 (function(NS){
-  var map = window.googlemaps.map;
-  var directionsRenderer = window.googlemaps.directionsRenderer;
-  var infoWindow = window.googlemaps.infoWindow;
+  var map = window.googleMaps.map;
+  var directionsRenderer = window.googleMaps.directionsRenderer;
+  var directionsService = window.googleMaps.directionsService;
+  var infoWindow = window.googleMaps.infoWindow;
   var pointDist = 10000;
 
   NS.calcRoute = function(callback, start, end, iPointDist, mode) {
