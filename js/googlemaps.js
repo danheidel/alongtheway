@@ -6,7 +6,7 @@
       mapTypeId: type || google.maps.MapTypeId.ROADMAP,
       zoom: zoom || 12
     };
-    NS.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    NS.map = new google.maps.Map(document.getElementById('map'), mapOptions);
     NS.directionsDisplay = new google.maps.DirectionsRenderer();
     NS.directionsDisplay.setPanel(document.getElementById('directions-panel'));
     NS.directionsDisplay.setMap(map);
