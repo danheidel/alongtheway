@@ -7,6 +7,7 @@ window.places_gen = (function() {
   public.gmarkers = [];
   public.infowindow = new google.maps.InfoWindow();
   failed_Queries =[];
+  failed_pl_Queries =[];
 
   public.initialize = function initialize(value) {
     var mapOptions = {
@@ -51,7 +52,9 @@ window.places_gen = (function() {
         $.search(boxes,0).then(function(results) {
           console.log(results);
           public.showPlaces();
-        });
+        }), function(error) {
+          console.log(error);
+        };
       } 
       else {
         alert("Directions query failed: " + status);
@@ -83,6 +86,12 @@ window.places_gen = (function() {
       if (index>=public.place_results.length) return;
       index++;
       service.getDetails({reference:public.place_results[index]}, function(place, status){
+        if (status != google.maps.places.PlacesServiceStatus.OK) {
+          failed_pl_Queries.push({id:index, reference:public.place_results[index]});
+          console.log(failed_pl_Queries);
+        }
+        else {console.log("getDetails: ", status)};
+
         var details = {place:place.name, 
           address:place.adr_address, 
           phoneNum:place.formatted_phone_number
@@ -116,8 +125,8 @@ window.places_gen = (function() {
                   console.log(status);
                   if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
                       failed_Queries.push(boxes[searchIndex]);
-                      console.log("failed!", failed_Queries);
-                      return dfd.resolve("Request["+searchIndex+"] failed: "+status);
+                      console.log("failed!: boxes:",searchIndex, failed_Queries);
+                      // return dfd.reject("Request["+searchIndex+"] failed: "+status);
                   }
                   console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
                   for (var i = 0, result; result = results[i]; i++) {
