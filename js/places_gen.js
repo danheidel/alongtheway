@@ -9,6 +9,15 @@ window.places_gen = (function() {
   failed_Queries =[];
   failed_pl_Queries =[];
 
+  function timeDelay(value){
+    var dfd = $.Deferred();
+    setTimeout(function(value) {
+      console.log("this");
+      dfd.resolve();
+    }, value);
+    return dfd.promise();
+  }
+
   public.initialize = function initialize(value) {
     var mapOptions = {
       center: new google.maps.LatLng(40,-80.5),
@@ -90,7 +99,7 @@ window.places_gen = (function() {
           failed_pl_Queries.push({id:index, reference:public.place_results[index]});
           console.log(failed_pl_Queries);
         }
-        else {console.log("getDetails: ", status)};
+        else {console.log("getDetails: ", status, "index: ", index)};
 
         var details = {place:place.name, 
           address:place.adr_address, 
@@ -104,7 +113,7 @@ window.places_gen = (function() {
         }
         public.html_out.push(details);
       });
-    }, 500);
+    }, 1500);
   };
 
   //////HelperMethod
@@ -136,10 +145,10 @@ window.places_gen = (function() {
                   }
                   dfd.resolve(public.place_results, searchIndex+1);
               });
-              return dfd.then(findNextPlaces);
-          }
+                return dfd.then(findNextPlaces);
+            }
           else {
-              return dfd.resolve(public.place_results).promise();
+            return dfd.resolve(public.place_results).promise();
           }
       }
     return findNextPlaces(public.place_results, 0);
