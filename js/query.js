@@ -10,4 +10,8 @@
   NS.PointCenteredDelta = function(query, latLngArray){
 
   };
+
+  NS.EndPointDelta = function(query, latLngArray){
+
+  };
 })(window.query = window.query || {});
