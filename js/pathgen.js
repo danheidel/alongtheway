@@ -37,6 +37,7 @@
       stepTime = routeInfo.steps[rep].duration.value; //time in seconds
       tempPointArray = [];
       tempTotalDelta = 0;
+
       //make a temp array of all path points in the step with deltas
       //skip last point as it overlaps w/ first path point of next step
       for(rep2 = 0;rep2 < (stepPath.length - 1);rep2++){
@@ -61,9 +62,6 @@
         tempPointArray[rep2].pointDist = stepDist * tempFracDelta;
         tempPointArray[rep2].pointTime = stepTime * tempFracDelta;
       }
-      // console.log('step length: ' + routeInfo.steps[rep].distance.value);
-      // console.log('total step delta: ' + tempTotalDelta);
-      // console.log((routeInfo.steps[rep].distance.value - tempTotalDelta) / tempTotalDelta * 100);
 
       savePoints.push(tempPointArray[0]);  //push first element
       tempAdditiveDist = tempPointArray[0].pointDist;
@@ -86,6 +84,10 @@
       savePoints[rep].pointDist += savePoints[rep - 1].pointDist;
       savePoints[rep].pointTime += savePoints[rep - 1].pointTime;
     }
+    var foo = savePoints[savePoints.length - 1];
+    console.log('route dist: ' + routeInfo.distance.value + '  route time: ' + routeInfo.duration.value);
+    console.log('points dist: ' + foo.pointDist + '  points time: ' + foo.pointTime);
+    console.log('dist %diff: ' + ((routeInfo.distance.value - foo.pointDist)/routeInfo.distance.value * 100).toFixed(2) + '  time %diff: ' + ((routeInfo.duration.value - foo.pointTime)/routeInfo.duration.value * 100).toFixed(2));
     callback(savePoints);
     // console.log(savePoints);
     // console.log('length: ' + savePoints.length);

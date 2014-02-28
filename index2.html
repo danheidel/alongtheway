@@ -9,12 +9,12 @@
     <script type="text/javascript"
       src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js">
     </script>
-<script src="js/jquery/jquery-1.11.0.js"></script>
-<script src="js/googlemaps.js"></script>
-<script src="js/pathgen.js"></script>
-<script src="js/places_gen.js"></script>
-<script src="js/query.js"></script>
-<script src="js/controller.js"></script>
+    <script src="js/jquery/jquery-1.11.0.js"></script>
+    <script src="js/googlemaps.js"></script>
+    <script src="js/pathgen.js"></script>
+    <script src="js/places_gen.js"></script>
+    <script src="js/query.js"></script>
+    <script src="js/controller.js"></script>
   </head>
   <body>
     <div id="map"> </div>
@@ -83,7 +83,7 @@
         radius: 1000
       });
       google.maps.event.addListener(newCircle, 'click', function(){
-        alert(point.info);
+        alert(point);
       });
     }
 
@@ -99,6 +99,7 @@
         drawCircles(i[rep]);
       }
       var boxes = window.googleMaps.routeBoxer.box(i, 5);
+      console.log(boxes);
       drawBoxes(boxes);
     }
     window.googleMaps.initialize();
