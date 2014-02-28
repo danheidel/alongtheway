@@ -1,6 +1,7 @@
 window.places_gen = (function() {
 
   var output = {};
+  output.html_out =[];
 
   output.place_results = [];
   output.promises =[];
@@ -90,22 +91,42 @@ window.places_gen = (function() {
   }
 
   function showPlaces() {
-    var promises = [];
+    // var promises = [];
     not_Done =[];
+    var html_out =[];
+    var toggle = true;
 
     var index=0;
+    // timer;
 
     console.log(output.place_results.length);
+
     setInterval(function() {
-      if (index >= output.place_results.length){
-        return;
-      }
+      if (index>=output.place_results.length) return;
+      // if (index <= 10){
+      //     var source = $('#places-template').html();
+      //     var template = Handlebars.compile(source)
+      //     var html = template(output.html_out);
+      //     console.log(output.html_out, source, template, html);
+      //     $('.places').append(html);
+      // }
       index++;
       service.getDetails({reference:output.place_results[index]}, function(place, status){
-        console.log(index, place.name, place.adr_address, place.formatted_phone_number, status);
+        // console.log(index, place.name, place.adr_address, place.formatted_phone_number, status);
+
+        if (index <= 10){
+            var source = $('#places-template').html();
+            var template = Handlebars.compile(source)
+            console.log({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
+            var html = template({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
+            console.log(output.html_out, source, template, html);
+            $('class:not(.places)').hide();            
+            $('.places').append(html);
+        }
+
+        output.html_out.push({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
       });
     }, 500);
-
   };
 
   output.showPlaces_trigger = function showPlaces_trigger() {

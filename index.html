@@ -10,6 +10,7 @@
       src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js">
     </script>
 <script src="js/jquery/jquery-1.11.0.js"></script>
+<script src="https:////cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
 <script src="js/googlemaps.js"></script>
 <script src="js/pathgen.js"></script>
 <script src="js/places_gen.js"></script>
@@ -37,8 +38,8 @@
     <div id="control-panel">
       <strong>Start: </strong>
       <select id="routeStart" onchange="showStuff()">
-        <option value="511 boren ave seattle wa">codefellows</option>
-        <option value="northgate seattle wa">northgate</option>
+        <option value="7901 196th street edmonds wa">edmonds</option>
+        <option value="7901 196th street edmonds wa">northgate</option>
         <option value="tukwilla washington">tukwilla</option>
         <option value="southcenter wa">southcenter</option>
         <option value="joplin, mo">Joplin, MO</option>
@@ -55,8 +56,8 @@
       <strong>End: </strong>
       <select id="routeEnd" onchange="showStuff()">
         <option value="northgate seattle">northgate</option>
-        <option value="howell and yale seattle wa">howell and yale</option>
-        <option value="lynnwood wa">lynnwood</option>
+        <option value="chipotle lynnwood wa">chipotle</option>
+        <option value="mountlake terrace wa">mtlake terrace</option>
         <option value="everett washington">everett</option>
         <option value="bellingham wa">bellingham</option>
         <option value="amarillo, tx">Amarillo</option>
@@ -71,13 +72,21 @@
       </select>
     </div>
       <div class="inputBox">
-          Box within at least <input type="text" id="distance" value=".7" size="2">miles
+          Box within at least <input type="text" id="distance" value=".1" size="2">miles
           of the route from 
       </div>
       <div class="inputBox1">
           <input type="submit" onclick="places_gen.showPlaces_trigger()"/>
       </div>
-
+      <div class="places">
+        <script id="places-template" type="text/x-handlebars-template">
+          <ul>            
+            <li>{{place}}</li>
+            <li>{{address}}</li>
+            <li>{{phoneNum}}</li>
+          </ul>
+        </script>
+      </div>
 
 
     <script>
