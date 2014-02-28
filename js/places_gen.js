@@ -4,16 +4,8 @@ window.places_gen = (function() {
   public.html_out =[];
   public.place_results = [];
   public.boxpolys = null;
-  public.directions = null;
-  public.routeBoxer = null;
-  public.distance = null; // km
-  public.service = null;
   public.gmarkers = [];
   public.infowindow = new google.maps.InfoWindow();
-
-  $(document).on('test', function(e,data){
-    // console.log(data);
-  });
 
   public.initialize = function initialize(value) {
     var mapOptions = {
@@ -32,7 +24,7 @@ window.places_gen = (function() {
     directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
   }
 
-    public.route = function route() {
+  public.route = function route() {
     clearBoxes();
 
     // Convert the distance to box around the route from miles to km
@@ -99,11 +91,16 @@ window.places_gen = (function() {
     }, 500);
   };
 
+  //////HelperMethod
   public.showPlaces_trigger = function showPlaces_trigger() {
     $.when(showPlaces()).then(function(results){
       console.log("results", results);
     });
   }
+  //////HelperMethod
+  $(document).on('test', function(e,data){
+    console.log(data);
+  });
 
   $.search = function (boxes) {
       function findNextPlaces(place_results, searchIndex) {
@@ -134,7 +131,7 @@ window.places_gen = (function() {
               return dfd.resolve(public.place_results).promise();
           }
       }
-      return findNextPlaces(public.place_results, 0);
+    return findNextPlaces(public.place_results, 0);
   }
 
   // Clear boxes currently on the map
