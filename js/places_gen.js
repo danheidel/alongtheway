@@ -80,28 +80,25 @@ window.places_gen = (function() {
       if (index>=public.place_results.length) return;
       index++;
       service.getDetails({reference:public.place_results[index]}, function(place, status){
+        var details = {place:place.name, 
+          address:place.adr_address, 
+          phoneNum:place.formatted_phone_number
+        };
         if (index <= 10){
             var source = $('#places-template').html();
             var template = Handlebars.compile(source)
-            var html = template({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
+            var html = template(details);
             $('.places').append(html);
         }
-        public.html_out.push({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
+        public.html_out.push(details);
       });
     }, 500);
   };
 
   //////HelperMethod
-  public.showPlaces_trigger = function showPlaces_trigger() {
-    $.when(showPlaces()).then(function(results){
-      console.log("results", results);
-    });
-  }
-  //////HelperMethod
   $(document).on('test', function(e,data){
     console.log(data);
   });
-
   $.search = function (boxes) {
       function findNextPlaces(place_results, searchIndex) {
           var dfd = $.Deferred();
