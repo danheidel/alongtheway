@@ -15,9 +15,7 @@ window.places_gen = (function() {
     // console.log(data);
   });
 
-
   public.initialize = function initialize(value) {
-
     var mapOptions = {
       center: new google.maps.LatLng(40,-80.5),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -26,9 +24,7 @@ window.places_gen = (function() {
 
     map = new google.maps.Map(document.getElementById("map"), mapOptions);
     service = new google.maps.places.PlacesService(map);
-
     routeBoxer = new RouteBoxer();
-
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer();
     directionsDisplay.setMap(map);
@@ -37,8 +33,6 @@ window.places_gen = (function() {
   }
 
     public.route = function route() {
-    // Clear any previous route boxes from the map
-    console.log('at least here');
     clearBoxes();
 
     // Convert the distance to box around the route from miles to km
@@ -47,6 +41,7 @@ window.places_gen = (function() {
     var request = {
       origin: document.getElementById("routeStart").value,
       destination: document.getElementById("routeEnd").value,
+      //TRANSIT YIELDS MUCH DIFFERENT RESULTS OVER LONG PATHS!
       travelMode: google.maps.TravelMode.TRANSIT
     }
     // Make the directions request
@@ -58,19 +53,16 @@ window.places_gen = (function() {
         var path = result.routes[0].overview_path;
         var boxes = routeBoxer.box(path, distance);
         console.log("boxes: ", boxes);
-        // alert(boxes.length);
         public.drawBoxes(boxes);
         $.search(boxes,0).then(function(results) {
           console.log(results);
         });
-      } else {
+      } 
+      else {
         alert("Directions query failed: " + status);
       }
     });
   }
-
-
-
 
   // Draw the array of boxes as polylines on the map
   public.drawBoxes = function drawBoxes(boxes) {
@@ -88,32 +80,20 @@ window.places_gen = (function() {
   }
 
   function showPlaces() {
-    // var promises = [];
-    not_Done =[];
     var html_out =[];
-    var toggle = true;
-
     var index=0;
-    // timer;
-
-    console.log(public.place_results.length);
+    console.log("place results length", public.place_results.length);
 
     setInterval(function() {
       if (index>=public.place_results.length) return;
       index++;
       service.getDetails({reference:public.place_results[index]}, function(place, status){
-        // console.log(index, place.name, place.adr_address, place.formatted_phone_number, status);
-
         if (index <= 10){
             var source = $('#places-template').html();
             var template = Handlebars.compile(source)
-            console.log({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
             var html = template({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
-            console.log(public.html_out, source, template, html);
-            $('class:not(.places)').hide();            
             $('.places').append(html);
         }
-
         public.html_out.push({place:place.name, address:place.adr_address, phoneNum:place.formatted_phone_number});
       });
     }, 500);
@@ -121,13 +101,11 @@ window.places_gen = (function() {
 
   public.showPlaces_trigger = function showPlaces_trigger() {
     $.when(showPlaces()).then(function(results){
-      console.log("not done",not_Done);
       console.log("results", results);
     });
   }
 
   $.search = function (boxes) {
-
       function findNextPlaces(place_results, searchIndex) {
           var dfd = $.Deferred();
           if (searchIndex < boxes.length) {
@@ -156,11 +134,8 @@ window.places_gen = (function() {
               return dfd.resolve(public.place_results).promise();
           }
       }
-
       return findNextPlaces(public.place_results, 0);
-
   }
-
 
   // Clear boxes currently on the map
   function clearBoxes() {
@@ -192,28 +167,26 @@ window.places_gen = (function() {
       };
       google.maps.event.addListener(marker,'click',function(){
           service.getDetails(request, function(place, status) {
-            console.log(place,status);
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-              var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
-              if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
-              if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-              contentStr += '<br>'+place.types+'</p>';
-              public.infowindow.setContent(contentStr);
-              public.infowindow.open(map,marker);
-            } else {
-              var contentStr = "<h5>No Result, status="+status+"</h5>";
-              public.infowindow.setContent(contentStr);
-              public.infowindow.open(map,marker);
-            }
-        
-          //Attach directions a particular marker by first defining a route
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
+            if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
+            if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
+            contentStr += '<br>'+place.types+'</p>';
+            public.infowindow.setContent(contentStr);
+            public.infowindow.open(map,marker);
+          } else {
+            var contentStr = "<h5>No Result, status="+status+"</h5>";
+            public.infowindow.setContent(contentStr);
+            public.infowindow.open(map,marker);
+          }
+
+          //Attach directions to a particular marker by first defining a route
           //from original destination
           var clickedMarkerDEST = {
             origin: document.getElementById("routeStart").value,
             destination: place.formatted_address,
             travelMode: google.maps.DirectionsTravelMode.DRIVING
           }
-
           directionsService.route(clickedMarkerDEST, function(result, status) {
             if (status == google.maps.DirectionsStatus.OK) {
               directionsRenderer.setDirections(result);
@@ -222,13 +195,13 @@ window.places_gen = (function() {
               alert("Directions query failed: " + status);
             }
           });
-
+          
+          //Display these directions on the DOM
           var directionsDISPLAY = {
             origin: document.getElementById("routeStart").value,
             destination: place.formatted_address,
             travelMode:google.maps.TravelMode.DRIVING
           }
-
           directionsService.route(directionsDISPLAY, function(response, status) {
               if (status == google.maps.DirectionsStatus.OK) {
                 $('#directions-panel').empty();
@@ -237,13 +210,10 @@ window.places_gen = (function() {
             });
           });
         });
+
       public.gmarkers.push(marker);
       var side_bar_html = "<a href='javascript:google.maps.event.trigger(public.gmarkers["+parseInt(public.gmarkers.length-1)+"],\"click\");'>"+place.name+"</a><br>";
       document.getElementById('side_bar').innerHTML += side_bar_html;
   }
-
-
   return public;
-
 })();
-
