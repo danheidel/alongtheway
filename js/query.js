@@ -1,17 +1,22 @@
 (function(NS){
-  NS.PointToPoint = function(query, latLngArray){
+  NS.distDelta = function(meters){
 
   };
 
-  NS.PointPlusDelta = function(query, latLngArray){
+  NS.timeDelta = function(seconds){
 
   };
 
-  NS.PointCenteredDelta = function(query, latLngArray){
+  NS.PointToPoint = function(latLng1, latLng2, latLngArray){
 
   };
 
-  NS.EndPointDelta = function(query, latLngArray){
+  NS.PointPlusDelta = function(latLng, deltaData, latLngArray){
 
   };
+
+  NS.PointCenteredDelta = function(latLng, deltaData, latLngArray){
+
+  };
+
 })(window.query = window.query || {});

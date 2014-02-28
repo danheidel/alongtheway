@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group App One</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/jquery/jquery.nouislider.css">
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCMQbQ105pUv1RXOaUMFszXyJBEsyRcvGE&sensor=true">
+  </script>
+  <script type="text/javascript"
+    src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js">
+  </script>
+  <script src="js/underscore/underscore-1.60.js"></script>
+  <script src="js/jquery/jquery-1.11.0.js"></script>
+  <script src="js/googlemaps.js"></script>
+  <script src='js/jquery/jquery.nouislider.js'></script>
+
+  <script src="js/pathgen.js"></script>
+  <script src="js/places_gen.js"></script>
+  <script src="js/query.js"></script>
+  <script src="js/controller.js"></script>
+  <script src='js/gpview.js'></script>
+</head>
+<body>
+  <div id="main-container">
+  <div id="map"> </div>
+  <div id='dmain'>
+    <div id='datain'>
+      <label>from</label>
+      <input id='fromLocation' type='text'></input>
+      <br>
+      <label>to</label>
+      <input id='toLocation' type='text'></input>
+      <br>
+      <input id='useFromLocationOnlyCheckbox' type='checkbox'>Use Range</input>
+      <br>
+      <button id='btnGetPlaces'>GetPlaces</button>
+      <br>
+      <div id='rangeSlider' class='noUiSlider'></div>
+      <input id='rangeUpper'></input><input id='rangeLower'></input>
+      <br>
+      <label>miles from highway</label>
+      <div id='milesSlider' class='noUiSlider'></div>
+      <input id='milesFromHwy'></input>
+    </div>
+
+    <div id='dataout'>
+      <ul id='placelist'>
+      <li>
+      no results
+      </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+  <script type="text/javascript">
+    window.googleMaps.initialize();
+  </script>
+</body>
+</html>

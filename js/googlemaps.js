@@ -5,6 +5,9 @@
       center: new google.maps.LatLng(lat || 47.624, lng || 237.664),
       mapTypeId: type || google.maps.MapTypeId.ROADMAP,
       zoom: zoom || 12,
+      zoomControlOptions: {
+        style: google.maps.ZoomControlStyle.LARGE
+      },
       scaleControl: true
     };
     NS.map = new google.maps.Map(document.getElementById('map'), mapOptions);

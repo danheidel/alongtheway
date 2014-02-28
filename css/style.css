@@ -1,3 +1,8 @@
+* {
+    padding : 0;
+    margin : 0;
+}
+
 html {
   height: 100%;
 }
@@ -6,10 +11,19 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background : white;
+  color : black;
+  font-size:1.25em;
+}
+
+#main-container {
+  height: 100%;
 }
 
 #map {
   height: 100%;
+  width:75%;
+  float:left;
 }
 
 #control-panel {
@@ -20,4 +34,39 @@ body {
   height: 4em;
   margin-left: -15em;
   background: #999;
+}
+
+#dmain{
+  right:0%;
+  top:0%;
+  float:right;
+  padding:1em;
+}
+
+#datain{
+  background-color:grey;
+  display:block;
+  width:10em;
+  height:19em;
+
+}
+#brange{
+  margin-left: .4em;
+  font-size: .75em;
+}
+#erange{
+  margin-left: .4em;
+  font-size: .75em;
+}
+#rchkbox{
+  width:2em;
+  height:2em;
+  margin-top: 1em;
+  margin-left: .8em;
+
+}
+#rgbtn{
+  width:8em;
+  height:3em;
+  margin-left: 1em;
 }
