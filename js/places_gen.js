@@ -12,7 +12,7 @@ window.places_gen = (function() {
   function timeDelay(value){
     var dfd = $.Deferred();
     setTimeout(function(value) {
-      console.log("this");
+      // console.log("delay");
       dfd.resolve();
     }, value);
     return dfd.promise();
@@ -59,7 +59,7 @@ window.places_gen = (function() {
         console.log("boxes: ", boxes);
         public.drawBoxes(boxes);
         $.search(boxes,0).then(function(results) {
-          console.log(results);
+          console.log(results, "place_results length: ", public.place_results.length);
           // public.showPlaces();
         }), function(error) {
           console.log(error);
@@ -92,29 +92,52 @@ window.places_gen = (function() {
     var index=0;
     console.log("place results length", public.place_results.length);
 
-    setInterval(function() {
-      if (index>=public.place_results.length) return;
-      index++;
-      service.getDetails({reference:public.place_results[index]}, function(place, status){
+    function getDetails(place_) {
+      var dfd = $.Deferred();
+      service.getDetails({reference:place_}, function(place, status){
         if (status != google.maps.places.PlacesServiceStatus.OK) {
           failed_pl_Queries.push({id:index, reference:public.place_results[index]});
           console.log(failed_pl_Queries);
+          dfd.reject("failed!!!");
         }
-        else {console.log("getDetails: ", status, "index: ", index)};
+        else {
+          console.log("getDetails: ", status, "index: ", index);
+          dfd.resolve(place);
+          };
+        });
+      return dfd.promise();
+    }
 
-        var details = {place:place.name, 
-          address:place.adr_address, 
-          phoneNum:place.formatted_phone_number
-        };
-        if (index <= 100){
-            var source = $('#places-template').html();
-            var template = Handlebars.compile(source)
-            var html = template(details);
-            $('.places').append(html);
-        }
-        public.html_out.push(details);
-      });
-    }, 1000);
+    function startQuery(timerVal) {
+      var queryLimit = setInterval(function() {
+        var dfd = $.Deferred();
+        if (index>=public.place_results.length) return;
+        index++;
+          getDetails(public.place_results[index]).then(function(result) {
+            var returned = result;
+            var details = {place:returned.name,
+              address:returned.adr_address, 
+              phoneNum:returned.formatted_phone_number
+            };
+            if (index <= 100){
+                var source = $('#places-template').html();
+                var template = Handlebars.compile(source)
+                var html = template(details);
+                $('.places').append(html);
+            }
+            public.html_out.push(details);
+          },function(error){
+            clearInterval(queryLimit);
+            startQuery(1000);
+          });
+      }, timerVal);      
+    }
+
+
+
+    startQuery(100);
+
+
   };
 
   //////HelperMethod
