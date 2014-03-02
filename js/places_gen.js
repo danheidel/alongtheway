@@ -60,7 +60,7 @@ window.places_gen = (function() {
         public.drawBoxes(boxes);
         $.search(boxes,0).then(function(results) {
           console.log(results);
-          public.showPlaces();
+          // public.showPlaces();
         }), function(error) {
           console.log(error);
         };
@@ -69,6 +69,7 @@ window.places_gen = (function() {
         alert("Directions query failed: " + status);
       }
     });
+    public.showPlaces();
   }
 
   // Draw the array of boxes as polylines on the map
@@ -105,7 +106,7 @@ window.places_gen = (function() {
           address:place.adr_address, 
           phoneNum:place.formatted_phone_number
         };
-        if (index <= 10){
+        if (index <= 100){
             var source = $('#places-template').html();
             var template = Handlebars.compile(source)
             var html = template(details);
@@ -113,7 +114,7 @@ window.places_gen = (function() {
         }
         public.html_out.push(details);
       });
-    }, 1500);
+    }, 1000);
   };
 
   //////HelperMethod
