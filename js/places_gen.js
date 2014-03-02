@@ -145,7 +145,9 @@ window.places_gen = (function() {
                   }
                   dfd.resolve(public.place_results, searchIndex+1);
               });
-                return dfd.then(findNextPlaces);
+                return timeDelay(1000).then(function() {
+                        return dfd.then(findNextPlaces);                        
+                      });
             }
           else {
             return dfd.resolve(public.place_results).promise();
