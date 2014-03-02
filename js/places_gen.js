@@ -58,10 +58,11 @@ window.places_gen = (function() {
         var boxes = routeBoxer.box(path, distance);
         console.log("boxes: ", boxes);
         public.drawBoxes(boxes);
-        $.search(boxes,0).then(function(results) {
+        $.search(boxes).then(function(results) {
           console.log(results, "place_results length: ", public.place_results.length);
           // public.showPlaces();
         }), function(error) {
+          console.log("failed search");
           console.log(error);
         };
       } 
@@ -98,7 +99,7 @@ window.places_gen = (function() {
         if (status != google.maps.places.PlacesServiceStatus.OK) {
           failed_pl_Queries.push({id:index, reference:public.place_results[index]});
           console.log(failed_pl_Queries);
-          dfd.reject("failed!!!");
+          dfd.reject("failed!!!", place_);
         }
         else {
           console.log("getDetails: ", status, "index: ", index);
@@ -126,16 +127,15 @@ window.places_gen = (function() {
                 $('.places').append(html);
             }
             public.html_out.push(details);
-          },function(error){
+          },function(error, place){
+            console.log("Way too fast!",place);
             clearInterval(queryLimit);
-            startQuery(1000);
+            startQuery(timerVal+=500);
           });
       }, timerVal);      
     }
 
-
-
-    startQuery(100);
+    startQuery(500);
 
 
   };
@@ -155,21 +155,24 @@ window.places_gen = (function() {
                   keyword: ["coffee"],
                   // rankBy: google.maps.places.RankBy.DISTANCE
               }, function (results, status) {
-                  console.log(status);
                   if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
                       failed_Queries.push(boxes[searchIndex]);
                       console.log("failed!: boxes:",searchIndex, failed_Queries);
-                      // return dfd.reject("Request["+searchIndex+"] failed: "+status);
+                      // dfd.reject("Request["+searchIndex+"] failed: "+status);
+                      return dfd.reject("really failed bad").promise();
                   }
-                  console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
-                  for (var i = 0, result; result = results[i]; i++) {
-                      var marker = createMarker(result);
-                      public.place_results.push(result.reference); // marker?
-                      $(document).trigger('test', result.reference);
+                  if (status != 'OVER_QUERY_LIMIT'){
+                    console.log(status);
+                    console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
+                    for (var i = 0, result; result = results[i]; i++) {
+                        var marker = createMarker(result);
+                        public.place_results.push(result.reference); // marker?
+                        $(document).trigger('test', result.reference);
+                    }                    
                   }
                   dfd.resolve(public.place_results, searchIndex+1);
               });
-                return timeDelay(1000).then(function() {
+                return timeDelay().then(function() {
                         return dfd.then(findNextPlaces);                        
                       });
             }
