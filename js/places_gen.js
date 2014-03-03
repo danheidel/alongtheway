@@ -6,7 +6,7 @@ window.places_gen = (function() {
   public.boxpolys = null;
   public.gmarkers = [];
   public.infowindow = new google.maps.InfoWindow();
-  failed_Queries =[];
+  failed_Indexes =[];
   failed_pl_Queries =[];
 
   function timeDelay(value){
@@ -58,8 +58,9 @@ window.places_gen = (function() {
         var boxes = routeBoxer.box(path, distance);
         console.log("boxes: ", boxes);
         public.drawBoxes(boxes);
-        $.search(boxes,500).then(function(results) {
+        $.search(boxes,1000).then(function(results) {
           console.log(results, "place_results length: ", public.place_results.length);
+          // public.showPlaces(500);
         }), function(error) {
           console.log("failed search");
           console.log(error);
@@ -87,9 +88,10 @@ window.places_gen = (function() {
     }
   }
 
-  public.showPlaces = function showPlaces() {
+  public.showPlaces = function showPlaces(decrement) {
     var html_out =[];
     var index=0;
+    var timer_VAL1;
     console.log("place results length", public.place_results.length);
 
     function getDetails(place_) {
@@ -130,11 +132,16 @@ window.places_gen = (function() {
             console.log("Way too fast!",place);
             clearInterval(queryLimit);
             startQuery(timerVal+=500);
+            timer_VAL1 = timerVal;
           });
       }, timerVal);      
     }
 
     startQuery(500);
+
+    if (decrement){
+      startQuery(timer_VAL1-=decrement);
+    }
 
 
   };
@@ -145,17 +152,18 @@ window.places_gen = (function() {
   });
 
   function createMarkers(results){
-    for (var i = 0, result; result = results[i]; i++) {
-        var marker = createMarker(result);
-        public.place_results.push(result.reference); // marker?
-        $(document).trigger('test', result.reference);
-    }                    
+    if (results[0] !== null){
+      for (var i = 0, result; result = results[i]; i++) {
+          var marker = createMarker(result);
+          public.place_results.push(result.reference); // marker?
+          $(document).trigger('test', result.reference);
+      }                          
+    }
   }
 
   $.search = function (boxes, timerVal) {
       function findNextPlaces(place_results, searchIndex) {
           var dfd = $.Deferred();
-          console.log("boxes[searchIndex]", searchIndex);
           if (searchIndex < boxes.length) {
               // service.nearbySearch({
               service.radarSearch({
@@ -166,17 +174,19 @@ window.places_gen = (function() {
               }, function (results, status) {
                   if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
                       timerVal+=3000;
-                      failed_Queries.push(boxes[searchIndex]);
-                      console.log("failed!: boxes:",searchIndex, failed_Queries);
-                      // console.log("this box has failed: ",boxes[searchIndex]);
-                      timeDelay(timerVal).then(function() {
-                        service.radarSearch({bounds: boxes[searchIndex],keyword: ["coffee"]}, function(results, status){
-                          console.log("retry: ",results, status);
-                          createMarkers(results);
-                        });
-                      });
-                      // dfd.reject("Request["+searchIndex+"] failed: "+status);
-                      // return dfd.reject("failed").promise();
+                      console.log("searchIndex: ", searchIndex);
+                      if (_.contains(failed_Indexes, searchIndex) === false){
+                        failed_Indexes.push(searchIndex);
+                        console.log(failed_Indexes);
+                        console.log("failed!: boxes:",searchIndex, failed_Indexes);
+                        // console.log("this box has failed: ",boxes[searchIndex]);
+                        timeDelay(timerVal).then(function() {
+                          service.radarSearch({bounds: boxes[searchIndex], keyword: ['coffee']}, function(results1, status){
+                            console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
+                            createMarkers(results1);
+                          });
+                        });                        
+                      }
                   }
                   if (status != 'OVER_QUERY_LIMIT'){
                     console.log(status);
