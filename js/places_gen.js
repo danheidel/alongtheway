@@ -18,7 +18,7 @@ window.places_gen = (function() {
     return dfd.promise();
   }
 
-  public.initialize = function initialize(value) {
+  public.initialize = function initialize() {
     var mapOptions = {
       center: new google.maps.LatLng(40,-80.5),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -35,7 +35,7 @@ window.places_gen = (function() {
     directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
   }
 
-  public.route = function route() {
+  public.route = function route(savePoints) {
     $('.places ul').empty();
     clearBoxes();
 
@@ -55,6 +55,8 @@ window.places_gen = (function() {
 
         // Box around the overview path of the first route
         var path = result.routes[0].overview_path;
+        //inject savePoint here
+        console.log(savePoints);
         var boxes = routeBoxer.box(path, distance);
         console.log("boxes: ", boxes);
         public.drawBoxes(boxes);
@@ -113,7 +115,7 @@ window.places_gen = (function() {
     function startQuery(timerVal) {
       var queryLimit = setInterval(function() {
         var dfd = $.Deferred();
-        if (index>=public.place_results.length) return;
+        if (index>=public.place_results.length-1) return;
         index++;
           getDetails(public.place_results[index]).then(function(result) {
             var returned = result;

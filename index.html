@@ -38,7 +38,7 @@
     <div id="control-panel">
       <strong>Start: </strong>
       <select id="routeStart" onchange="showStuff()">
-        <option value="7901 196th street edmonds wa">edmonds</option>
+        <option value="511 boren ave n seattle wa">codefellows</option>
         <option value="portland oregon">portland</option>
         <option value="tukwilla washington">tukwilla</option>
         <option value="southcenter wa">southcenter</option>
@@ -60,7 +60,7 @@
         <option value="mountlake terrace wa">mtlake terrace</option>
         <option value="everett washington">everett</option>
         <option value="bellingham wa">bellingham</option>
-        <option value="amarillo, tx">Amarillo</option>
+        <option value="howell ave and yale seattle wa">bus stop</option>
         <option value="gallup, nm">Gallup, NM</option>
         <option value="flagstaff, az">Flagstaff, AZ</option>
         <option value="winona, az">Winona</option>
@@ -98,8 +98,9 @@
     }
 
     function test(value){
-      window.places_gen.initialize(value);
-      window.places_gen.route();
+      console.log(value);
+      window.places_gen.initialize();
+      window.places_gen.route(value);
     }
     window.googleMaps.initialize();
 
