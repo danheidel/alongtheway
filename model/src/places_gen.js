@@ -198,7 +198,7 @@ window.places_gen = (function() {
                         console.log("failed!: boxes:",searchIndex, failed_Indexes);
                         // console.log("this box has failed: ",boxes[searchIndex]);
                         timeDelay(timerVal).then(function() {
-                          service.radarSearch({bounds: boxes[searchIndex], keyword: ['coffee']}, function(results1, status){
+                          service.radarSearch({bounds: boxes[searchIndex], keyword: ['thai']}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
                             createMarkers(results1);
                           });
