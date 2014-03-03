@@ -75,7 +75,11 @@ window.places_gen = (function() {
   //   public.showPlaces();
   // }
 
-  public.getPlaces = function(latLngArray, width){
+  public.getPlaces = function(latLngArray, queryObject){
+    var width = queryObject.width;
+    var query = queryObject.query;
+    var displayCallback = queryObject.drawPlaces;
+
     var routeBoxer = window.googleMaps.routeBoxer;
     var boxes = routeBoxer.box(latLngArray, width);
     console.log('boxes: ', boxes);

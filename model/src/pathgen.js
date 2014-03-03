@@ -1,33 +1,37 @@
 (function(NS){
-  NS.calcRoute = function(callback, start, end, iPointSpacing, mode) {
+  NS.calcRoute = function(requestObject, callback) {
+    var start = requestObject.start;
+    var end = requestObject.end;
+    var pointSpacing = requestObject.width || 10000;
+    var mode = requestObject.mode || google.maps.TravelMode.DRIVING;
     var map = window.googleMaps.map;
     var directionsRenderer = window.googleMaps.directionsRenderer;
     var directionsService = window.googleMaps.directionsService;
     var infoWindow = window.googleMaps.infoWindow;
-    var pointSpacing = iPointSpacing || 10000;
     var request = {
       origin: start,
       destination: end,
-      travelMode: mode || google.maps.TravelMode.DRIVING
+      travelMode: mode
     };
     directionsService.route(request, function(result, status) {
       if(status == google.maps.DirectionsStatus.OK){
-        directionsRenderer.setDirections(result);
-        var routeInfo = result.routes[0].legs[0];
-        showSteps(callback, routeInfo, pointSpacing);
+      if(requestObject.drawRoute){ requestObject.drawRoute(result); }
+        //directionsRenderer.setDirections(result);
+        showSteps(callback, result, pointSpacing);
       }else{
         callback('something went wrong with the google maps search');
       }
     });
   };
 
-  function showSteps(callback, routeInfo, pointSpacing){
+  function showSteps(callback, result, pointSpacing){
     //flush old data
+    var routeInfo = result.routes[0].legs[0];
     var rep, rep2, stepPath, stepDist, stepTime;
     var compDist = google.maps.geometry.spherical.computeDistanceBetween;
     var LatLng = google.maps.LatLng;
     var tempPointArray, tempTotalDelta, tempFracDelta, tempAdditiveTime, tempAdditiveDist;
-    var savePoints = [];
+    result.savePoints = [];
 
     //add new data
     for(rep=0;rep<routeInfo.steps.length;rep++){
@@ -63,7 +67,7 @@
         tempPointArray[rep2].pointTime = stepTime * tempFracDelta;
       }
 
-      savePoints.push(tempPointArray[0]);  //push first element
+      result.savePoints.push(tempPointArray[0]);  //push first element
       tempAdditiveDist = tempPointArray[0].pointDist;
       tempAdditiveTime = tempPointArray[0].pointTime;
       for(rep2 = 1;rep2 < tempPointArray.length;rep2 ++){
@@ -73,24 +77,25 @@
         if(tempAdditiveDist > pointSpacing){
           tempPointArray[rep2].pointDist = tempAdditiveDist;
           tempPointArray[rep2].pointTime = tempAdditiveTime;
-          savePoints.push(tempPointArray[rep2]);
+          result.savePoints.push(tempPointArray[rep2]);
           tempAdditiveDist = 0;
           tempAdditiveTime = 0;
         }
       }
     }
     //run through the entire list of saved points and make their time and distance values additive from the route start
-    for(rep = 1;rep < savePoints.length;rep ++){
-      savePoints[rep].pointDist += savePoints[rep - 1].pointDist;
-      savePoints[rep].pointTime += savePoints[rep - 1].pointTime;
+    for(rep = 1;rep < result.savePoints.length;rep ++){
+      result.savePoints[rep].pointDist += result.savePoints[rep - 1].pointDist;
+      result.savePoints[rep].pointTime += result.savePoints[rep - 1].pointTime;
     }
-    var foo = savePoints[savePoints.length - 1];
+    result.queryPoints = result.savePoints.slice(0);
+
+    console.log(result);
+    var foo = result.savePoints[result.savePoints.length - 1];
     console.log('route dist: ' + routeInfo.distance.value + '  route time: ' + routeInfo.duration.value);
     console.log('points dist: ' + foo.pointDist + '  points time: ' + foo.pointTime);
     console.log('dist %diff: ' + ((routeInfo.distance.value - foo.pointDist)/routeInfo.distance.value * 100).toFixed(2) + '  time %diff: ' + ((routeInfo.duration.value - foo.pointTime)/routeInfo.duration.value * 100).toFixed(2));
-    callback(savePoints);
-    // console.log(savePoints);
-    // console.log('length: ' + savePoints.length);
+    callback(result);
   }
 
 })(window.pathGen = window.pathGen || {});

@@ -1,7 +1,7 @@
 $(function(){
 	'use strict';
 
-	var requestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
+	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	var places=[];
 
   //window.googleMaps.initialize();
@@ -33,12 +33,30 @@ $(function(){
 			}
 		});
 	*/
+
+	function drawRoute(result){
+		window.googleMaps.directionsRenderer.setDirections(result);
+	}
+
+	function drawPlaces(placesObject){
+		//put places rendering code here
+		alert(placesObject);
+	}
+
+	$('#btnGetRoute').click(function(){
+		routeRequestObject.start = $('#fromInput').val();
+		routeRequestObject.end = $('#toInput').val();
+		routeRequestObject.width = $('#milesFromHwy').val() * 1.60934;	//width is sent in km
+		routeRequestObject.drawRoute = drawRoute;
+
+		window.controller.getRoute(routeRequestObject);
+	});
+
 	$('#btnGetPlaces').click(function(){
-		requestObject.fromLocation = $('#fromInput').val();
-		requestObject.toLocation = $('#toInput').val();
-		requestObject.milesFromHwy = $('#milesFromHwy').val();
-		//places=returnplaces(requestObject);
-		window.controller.getPlaces(requestObject.fromLocation, requestObject.toLocation, requestObject.milesFromHwy * 1.60934, 'test');
+		var placesRequestObject = {};
+		placesRequestObject.services = 'thai';
+		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
+		placesRequestObject.drawPlaces = drawPlaces;
 	});
 
 });
