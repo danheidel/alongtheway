@@ -58,9 +58,8 @@ window.places_gen = (function() {
         var boxes = routeBoxer.box(path, distance);
         console.log("boxes: ", boxes);
         public.drawBoxes(boxes);
-        $.search(boxes).then(function(results) {
+        $.search(boxes,500).then(function(results) {
           console.log(results, "place_results length: ", public.place_results.length);
-          // public.showPlaces();
         }), function(error) {
           console.log("failed search");
           console.log(error);
@@ -120,7 +119,7 @@ window.places_gen = (function() {
               address:returned.adr_address, 
               phoneNum:returned.formatted_phone_number
             };
-            if (index <= 100){
+            if (index <= 2000){
                 var source = $('#places-template').html();
                 var template = Handlebars.compile(source)
                 var html = template(details);
@@ -144,9 +143,19 @@ window.places_gen = (function() {
   $(document).on('test', function(e,data){
     // console.log(data);
   });
-  $.search = function (boxes) {
+
+  function createMarkers(results){
+    for (var i = 0, result; result = results[i]; i++) {
+        var marker = createMarker(result);
+        public.place_results.push(result.reference); // marker?
+        $(document).trigger('test', result.reference);
+    }                    
+  }
+
+  $.search = function (boxes, timerVal) {
       function findNextPlaces(place_results, searchIndex) {
           var dfd = $.Deferred();
+          console.log("boxes[searchIndex]", searchIndex);
           if (searchIndex < boxes.length) {
               // service.nearbySearch({
               service.radarSearch({
@@ -156,23 +165,27 @@ window.places_gen = (function() {
                   // rankBy: google.maps.places.RankBy.DISTANCE
               }, function (results, status) {
                   if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
+                      timerVal+=3000;
                       failed_Queries.push(boxes[searchIndex]);
                       console.log("failed!: boxes:",searchIndex, failed_Queries);
+                      // console.log("this box has failed: ",boxes[searchIndex]);
+                      timeDelay(timerVal).then(function() {
+                        service.radarSearch({bounds: boxes[searchIndex],keyword: ["coffee"]}, function(results, status){
+                          console.log("retry: ",results, status);
+                          createMarkers(results);
+                        });
+                      });
                       // dfd.reject("Request["+searchIndex+"] failed: "+status);
-                      return dfd.reject("really failed bad").promise();
+                      // return dfd.reject("failed").promise();
                   }
                   if (status != 'OVER_QUERY_LIMIT'){
                     console.log(status);
                     console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
-                    for (var i = 0, result; result = results[i]; i++) {
-                        var marker = createMarker(result);
-                        public.place_results.push(result.reference); // marker?
-                        $(document).trigger('test', result.reference);
-                    }                    
+                    createMarkers(results);
                   }
                   dfd.resolve(public.place_results, searchIndex+1);
               });
-                return timeDelay(1000).then(function() {
+                return timeDelay(timerVal).then(function() {
                         return dfd.then(findNextPlaces);                        
                       });
             }
