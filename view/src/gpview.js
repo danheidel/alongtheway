@@ -83,7 +83,7 @@ $(function(){
 
 	function getPlacesDetailsHTML(index, HTML) {
 		placesHTML.push(HTML);
-		// console.log(HTML);
+		$('.places').append(HTML);
 	}
 
 	function drawPlacesMarkers(results){
@@ -162,6 +162,7 @@ $(function(){
 		placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;
 
 		window.controller.getPlaces(placesRequestObject);
+		$('.places').hide();
 	});
 
 	$('#shutterToggle').click(function(){
