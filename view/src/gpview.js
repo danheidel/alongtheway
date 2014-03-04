@@ -4,8 +4,8 @@ $(function(){
 	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	var places=[];
 	window.graphicsStore = {
-		boxes:[],
-		markers:[]
+		placeBoxes:[],
+		placeMarkers:[]
 	};
 
   //window.googleMaps.initialize();
@@ -44,19 +44,20 @@ $(function(){
 
 	function drawPlaces(placesObject){
 		//put places rendering code here
+		//should render HTML into div id=results
 		alert(placesObject);
 	}
 
-	function drawBoxes(boxes){
+	function drawPlacesBoxes(boxes){
 		//delete existing boxes
 		var i;
-		for(i = 0;i < window.graphicsStore.boxes.length;i ++){
-			window.graphicsStore.boxes[i].setMap(null);
+		for(i = 0;i < window.graphicsStore.placeBoxes.length;i ++){
+			window.graphicsStore.placeBoxes[i].setMap(null);
 		}
 		//draw new boxes
-		window.graphicsStore.boxes = [];
+		window.graphicsStore.placeBoxes = [];
 		for(i = 0;i < boxes.length; i++){
-			window.graphicsStore.boxes.push(new google.maps.Rectangle({
+			window.graphicsStore.placeBoxes.push(new google.maps.Rectangle({
 				bounds: boxes[i],
 				fillOpacity: 0,
 				strokeOpacity: 0.9,
@@ -65,6 +66,10 @@ $(function(){
 				map: window.googleMaps.map
 			}));
 		}
+	}
+
+	function drawPlacesMarkers(){
+		//this should contain the full functionality createMarkers & createMarker
 	}
 
 	$('#btnGetRoute').click(function(){
@@ -82,10 +87,15 @@ $(function(){
 		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
 		placesRequestObject.drawPlaces = drawPlaces;
 		if($('#placesDrawBoxes').is(':checked')){
-			placesRequestObject.drawBoxes = drawBoxes;
+			placesRequestObject.drawBoxes = drawPlacesBoxes;
 		}
+		placesRequestObject.drawMarkers = drawPlacesMarkers;
 
 		window.controller.getPlaces(placesRequestObject);
+	});
+
+	$('#shutterToggle').click(function(){
+		$('#shutter').toggle();
 	});
 
 });

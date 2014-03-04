@@ -175,42 +175,48 @@ google.maps.event.addDomListener(window, 'load', initializePage);
     </script>
   </head>
   <body>
-    <div id="fromType-selector" class="controls">
-      <label>From: </label>
-      <input type="radio" name="fromType" id="fromChangetype-all" checked="checked">
-      <label for="fromChangetype-all">All</label>
+    <div id='shutter'>
+      <div id="fromType-selector" class="controls">
+        <label>From: </label>
+        <input type="radio" name="fromType" id="fromChangetype-all" checked="checked">
+        <label for="fromChangetype-all">All</label>
 
-      <input type="radio" name="fromType" id="fromChangetype-establishment">
-      <label for="fromChangetype-establishment">Establishments</label>
+        <input type="radio" name="fromType" id="fromChangetype-establishment">
+        <label for="fromChangetype-establishment">Establishments</label>
 
-      <input type="radio" name="fromType" id="fromChangetype-geocode">
-      <label for="fromChangetype-geocode">Geocodes</label>
+        <input type="radio" name="fromType" id="fromChangetype-geocode">
+        <label for="fromChangetype-geocode">Geocodes</label>
+      </div>
+      <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
+      <div id="toType-selector" class="controls">
+        <label>To: </label>
+        <input type="radio" name="toType" id="toChangetype-all" checked="checked">
+        <label for="toChangetype-all">All</label>
+
+        <input type="radio" name="toType" id="toChangetype-establishment">
+        <label for="toChangetype-establishment">Establishments</label>
+
+        <input type="radio" name="toType" id="toChangetype-geocode">
+        <label for="toChangetype-geocode">Geocodes</label>
+      </div>
+      <input id="toInput" class="controls" type="text" placeholder="Enter end point"></br>
+      <label for='milesFromHwy'>Miles From Hwy</label></br>
+      <input type='number' id='milesFromHwy' name'milesFromHwy'>
+
+      <button id='btnGetRoute'>Get Route</button>
+      <br>
+      <div id='placesStuff'>
+        <label>Draw Boxes</label>
+        <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
+        <button id='btnGetPlaces'>Get Places</button>
+        <br>
+      </div>
     </div>
-    <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
-    <div id="toType-selector" class="controls">
-      <label>To: </label>
-      <input type="radio" name="toType" id="toChangetype-all" checked="checked">
-      <label for="toChangetype-all">All</label>
-
-      <input type="radio" name="toType" id="toChangetype-establishment">
-      <label for="toChangetype-establishment">Establishments</label>
-
-      <input type="radio" name="toType" id="toChangetype-geocode">
-      <label for="toChangetype-geocode">Geocodes</label>
-    </div>
-    <input id="toInput" class="controls" type="text" placeholder="Enter end point"></br>
-    <label for='milesFromHwy'>Miles From Hwy</label></br>
-    <input type='number' id='milesFromHwy' name'milesFromHwy'>
-
-    <button id='btnGetRoute'>Get Route</button>
-    <br>
-    <div id='placesStuff'>
-      <label>Draw Boxes</label>
-      <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
-      <button id='btnGetPlaces'>Get Places</button>
+    <div class='controls' id='shutterToggle' style='background-color:red;'>
       <br>
     </div>
     <div id="map"></div>
+    <div id='results'
       <!--  <div>
 
 <div id='rangeSlider' class='noUiSlider'></div>

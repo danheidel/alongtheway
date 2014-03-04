@@ -74,7 +74,7 @@ window.places_gen = (function() {
       queryObject.drawBoxes(boxes);
     }
     //public.drawBoxes(boxes);
-    $.search(boxes,1000).then(function(results) {
+    $.search(queryObject, boxes,1000).then(function(results) {
       console.log(results, "place_results length: ", public.place_results.length);
       // public.showPlaces(500);
     });
@@ -171,7 +171,7 @@ window.places_gen = (function() {
     }
   }
 
-  $.search = function (boxes, timerVal) {
+  $.search = function (queryObject, boxes, timerVal) {
       function findNextPlaces(place_results, searchIndex) {
           var dfd = $.Deferred();
           var service = window.googleMaps.placesService;
@@ -180,7 +180,7 @@ window.places_gen = (function() {
               service.radarSearch({
                   bounds: boxes[searchIndex],
                   // types: ["food"]
-                  keyword: ["thai"],
+                  keyword: [queryObject.query],
                   // rankBy: google.maps.places.RankBy.DISTANCE
               }, function (results, status) {
                   if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
@@ -192,6 +192,7 @@ window.places_gen = (function() {
                         console.log("failed!: boxes:",searchIndex, failed_Indexes);
                         // console.log("this box has failed: ",boxes[searchIndex]);
                         timeDelay(timerVal).then(function() {
+                          //will need to change the keyword to match above but haven't had time to check scoping
                           service.radarSearch({bounds: boxes[searchIndex], keyword: ['coffee']}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
                             createMarkers(results1);
@@ -218,14 +219,14 @@ window.places_gen = (function() {
   }
 
   // Clear boxes currently on the map
-  function clearBoxes() {
-    if (public.boxpolys != null) {
-      for (var i = 0; i < public.boxpolys.length; i++) {
-        public.boxpolys[i].setMap(null);
-      }
-    }
-    public.boxpolys = null;
-  }
+  // function clearBoxes() {
+  //   if (public.boxpolys != null) {
+  //     for (var i = 0; i < public.boxpolys.length; i++) {
+  //       public.boxpolys[i].setMap(null);
+  //     }
+  //   }
+  //   public.boxpolys = null;
+  // }
 
   function createMarker(place){
       var placeLoc=place.geometry.location;
