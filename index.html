@@ -6,23 +6,6 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="view/style/jquery.nouislider.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-      .controls {
-        margin-top: 16px;
-        border: 1px solid transparent;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        height: 32px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
-    </style>
 
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCMQbQ105pUv1RXOaUMFszXyJBEsyRcvGE&sensor=true">
@@ -40,140 +23,7 @@
     <script src="model/src/places_gen.js"></script>
     <script src="controller/src/query.js"></script>
     <script src="controller/src/controller.js"></script>
-    <script>
-function fromInitialize() {
-  var map = window.googleMaps.map;
-  var fromInput = /** @type {HTMLInputElement} */(
-      document.getElementById('fromInput'));
 
-
-  var fromTypes = document.getElementById('fromType-selector');
-
-//Map Stuff ---Move inputs to map
-  //map.controls[google.maps.ControlPosition.TOP_LEFT].push(fromInput);
-  //map.controls[google.maps.ControlPosition.TOP_LEFT].push(fromTypes);
-
-
-
-  var fromComplete = new google.maps.places.Autocomplete(fromInput);
-//Map Stuff
-  fromComplete.bindTo('bounds', map);
-  var fromInfowindow = new google.maps.InfoWindow();
-  var fromMarker = new google.maps.Marker({
-    map: map
-  });
-
-  google.maps.event.addListener(fromComplete, 'fromPlace_changed', function() {
-
-    //Map Stuff
-    fromInfowindow.close();
-    fromMarker.setVisible(false);
-
-
-    var fromPlace = fromComplete.getPlace();
-    if (!fromPlace.geometry) {
-      return;
-    }
-
-    //Map Stuff
-    // If the place has a geometry, then present it on a map.
-    if (fromPlace.geometry.viewport) {
-      map.fitBounds(fromPlace.geometry.viewport);
-    } else {
-      map.setCenter(fromPlace.geometry.location);
-      map.setZoom(17);  // 17 looks good
-    }
-    fromMarker.setIcon(/** @type {google.maps.Icon} */({
-      url: fromPlace.icon,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(35, 35)
-    }));
-    fromMarker.setPosition(place.geometry.location);
-    fromMarker.setVisible(true);
-
-
-
-    var fromAddress = '';
-    if (fromPlace.fromAddress_components) {
-      fromAddress = [
-        (fromPlace.fromAddress_components[0] && fromPlace.fromAddress_components[0].short_name || ''),
-        (fromPlace.fromAddress_components[1] && fromPlace.fromAddress_components[1].short_name || ''),
-        (fromPlace.fromAddress_components[2] && fromPlace.fromAddress_components[2].short_name || '')
-      ].join(' ');
-    }
-      //Map Stuff
-      fromInfowindow.setContent('<div><strong>' + fromPlace.name + '</strong><br>' + fromAddress);
-      fromInfowindow.open(map, fromMarker);
-
-  });
-
-
-  // Sets a listener on a radio button to change the filter type on Places
-  // Autocomplete.
-  function fromSetupClickListener(id, types) {
-    var fromRadioButton = document.getElementById(id);
-    google.maps.event.addDomListener(fromRadioButton, 'click', function() {
-      fromComplete.setTypes(types);
-    });
-  }
-
-  fromSetupClickListener('fromChangetype-all', []);
-  fromSetupClickListener('fromChangetype-establishment', ['establishment']);
-  fromSetupClickListener('fromChangetype-geocode', ['geocode']);
-}
-
-function toInitialize() {
-  var toInput = /** @type {HTMLInputElement} */(
-      document.getElementById('toInput'));
-
-  var toTypes = document.getElementById('type-selector');
-
-  var toComplete = new google.maps.places.Autocomplete(toInput);
-
-  google.maps.event.addListener(toComplete, 'place_changed', function() {
-
-    var toPlace = toComplete.getPlace();
-    if (!toPlace.geometry) {
-      return;
-    }
-
-    var toAddress = '';
-    if (toPlace.toAddress_components) {
-      address = [
-        (toPlace.toAddress_components[0] && toPlace.toAddress_components[0].short_name || ''),
-        (toPlace.toAddress_components[1] && toPlace.toAddress_components[1].short_name || ''),
-        (toPlace.toAddress_components[2] && toPlace.toAddress_components[2].short_name || '')
-      ].join(' ');
-    }
-
-  });
-
-  function toSetupClickListener(id, types) {
-    var toRadioButton = document.getElementById(id);
-    google.maps.event.addDomListener(toRadioButton, 'click', function() {
-      toComplete.setTypes(types);
-    });
-  }
-
-  toSetupClickListener('toChangetype-all', []);
-  toSetupClickListener('toChangetype-establishment', ['establishment']);
-  toSetupClickListener('toChangetype-geocode', ['geocode']);
-
-}
-
-function initializePage(){
-  window.googleMaps.initialize();
-  fromInitialize();
-  toInitialize();
-}
-
-google.maps.event.addDomListener(window, 'load', initializePage);
-
-
-
-    </script>
   </head>
   <body>
 
@@ -226,12 +76,13 @@ google.maps.event.addDomListener(window, 'load', initializePage);
     <div id="map"></div>
     <div id='results'
       <!--  <div>
-
+<!--
 <div id='rangeSlider' class='noUiSlider'></div>
 <input id='rangeUpper'></input><input id='rangeLower'></input>
 <div id='milesSlider' class='noUiSlider'></div>
 <input id='milesFromHwy'></input>
         </div>
+        -->
   <script id="places-template" type="text/x-handlebars-template">
       <ul>
         <li>{{place}}</li>
