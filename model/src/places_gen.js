@@ -75,8 +75,9 @@ window.places_gen = (function() {
     }
     //public.drawBoxes(boxes);
     $.search(queryObject, boxes,1000).then(function(results) {
-      console.log(results, "place_results length: ", public.place_results.length);
       // public.showPlaces(500);
+      var resultsQuery = queryObject.getLength();
+      console.log(resultsQuery.places, "places.length: ", resultsQuery.places_length);
     });
     public.showPlaces();
   };
