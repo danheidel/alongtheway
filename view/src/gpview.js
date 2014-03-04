@@ -139,7 +139,13 @@ $(function(){
 		    }
 	}
 
+	function clearTimer() {
+		$(document).trigger('stop');		
+	}
+
 	$('#btnGetRoute').click(function(){
+		// $(document).trigger('stop');
+		clearTimer();
 		routeRequestObject.start = $('#fromInput').val();
 		routeRequestObject.end = $('#toInput').val();
 		routeRequestObject.width = $('#milesFromHwy').val() * 1.60934;	//width is sent in km
@@ -149,6 +155,7 @@ $(function(){
 	});
 
 	$('#btnGetPlaces').click(function(){
+		clearTimer();
 		var placesRequestObject = {};
 		placesRequestObject.services = 'donuts';
 		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
