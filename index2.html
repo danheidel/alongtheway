@@ -9,12 +9,13 @@
     <script type="text/javascript"
       src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js">
     </script>
-<script src="js/jquery/jquery-1.11.0.js"></script>
-<script src="js/googlemaps.js"></script>
-<script src="js/pathgen.js"></script>
-<script src="js/places_gen.js"></script>
-<script src="js/query.js"></script>
-<script src="js/controller.js"></script>
+    <script src="js/underscore/underscore-1.60.js"></script>
+    <script src="js/jquery/jquery-1.11.0.js"></script>
+    <script src="js/googlemaps.js"></script>
+    <script src="js/pathgen.js"></script>
+    <script src="js/places_gen.js"></script>
+    <script src="js/query.js"></script>
+    <script src="js/controller.js"></script>
   </head>
   <body>
     <div id="map"> </div>
@@ -25,42 +26,37 @@
         <option value="portland, or">Portland, OR</option>
         <option value="chicago, il">Chicago, IL</option>
         <option value="st louis, mo">St Louis, MO</option>
-        <option value="joplin, mo">Joplin, MO</option>
         <option value="oklahoma city, ok">Oklahoma City, OK</option>
         <option value="amarillo, tx">Amarillo, TX</option>
         <option value="gallup, nm">Gallup, NM</option>
         <option value="flagstaff, az">Flagstaff, AZ</option>
-        <option value="winona, az">Winona, AZ</option>
-        <option value="kingman, az">Kingman, AZ</option>
-        <option value="barstow, ca">Barstow, CA</option>
         <option value="san bernardino, ca">San Bernardino, CA</option>
         <option value="los angeles, ca">Los Angeles, CA</option>
+        <option value="new york, ny">New York, NY</option>
+        <option value="atlanta, ga">Atlanta, GA</option>
+        <option value="tampa, fl">Tampa, FL</option>
+        <option value="fairbanks, ak">Fairbanks, AK</option>
+        <option value="mexico city">Mexico City</option>
       </select>
       <strong>End: </strong>
       <select id="routeEnd" onchange="showStuff()">
-        <option value="portland, or">Portland</option>
-        <option value="chicago, il">Chicago</option>
-        <option value="st louis, mo">St Louis</option>
-        <option value="joplin, mo">Joplin, MO</option>
-        <option value="oklahoma city, ok">Oklahoma City</option>
-        <option value="amarillo, tx">Amarillo</option>
+        <option value="seattle, wa">Seattle, WA</option>
+        <option value="portland, or">Portland, OR</option>
+        <option value="chicago, il">Chicago, IL</option>
+        <option value="st louis, mo">St Louis, MO</option>
+        <option value="oklahoma city, ok">Oklahoma City, OK</option>
+        <option value="amarillo, tx">Amarillo, TX</option>
         <option value="gallup, nm">Gallup, NM</option>
         <option value="flagstaff, az">Flagstaff, AZ</option>
-        <option value="winona, az">Winona</option>
-        <option value="kingman, az">Kingman</option>
-        <option value="barstow, ca">Barstow</option>
-        <option value="san bernardino, ca">San Bernardino</option>
-        <option value="los angeles, ca">Los Angeles</option>
-        <option value="seattle, wa">Seattle</option>
+        <option value="san bernardino, ca">San Bernardino, CA</option>
+        <option value="los angeles, ca">Los Angeles, CA</option>
+        <option value="new york, ny">New York, NY</option>
+        <option value="atlanta, ga">Atlanta, GA</option>
+        <option value="tampa, fl">Tampa, FL</option>
+        <option value="fairbanks, ak">Fairbanks, AK</option>
+        <option value="mexico city">Mexico City</option>
       </select>
     </div>
-      <div class="inputBox">
-          Box within at least <input type="text" id="distance" value=".1" size="2">miles
-          of the route from 
-      </div>
-      <div class="inputBox1">
-          <input type="submit" onclick="places_gen.showPlaces_trigger()"/>
-      </div>
     <script>
     function drawBoxes(boxes) {
       var boxpolys = new Array(boxes.length);
@@ -85,10 +81,11 @@
         fillOpacity: 0.2,
         map: window.googleMaps.map,
         center: point,
-        radius: 5000,
-        clickable: true
+        radius: 1000
       });
-      return newCircle;
+      google.maps.event.addListener(newCircle, 'click', function(){
+        alert(point);
+      });
     }
 
     function showStuff(){
@@ -100,16 +97,10 @@
     function test(i){
       console.log(i);
       for(var rep=0;rep<i.length;rep++){
-        var handle = drawCircles(i[rep]);
-        console.log(handle);
-        google.maps.event.addListener(handle, 'click', function(){
-          // window.places_gen.initialize(i[rep]);   attempted to add click handler.
-          // window.places_gen.route();
-        });
-          // window.places_gen.initialize(i[rep]);   produces over query limit for each item in array
-          // window.places_gen.route();
+        drawCircles(i[rep]);
       }
       var boxes = window.googleMaps.routeBoxer.box(i, 5);
+      console.log(boxes);
       drawBoxes(boxes);
     }
     window.googleMaps.initialize();
