@@ -19,20 +19,6 @@ window.places_gen = (function() {
   }
 
   public.initialize = function initialize() {
-    // var mapOptions = {
-    //   center: new google.maps.LatLng(40,-80.5),
-    //   mapTypeId: google.maps.MapTypeId.ROADMAP,
-    //   zoom: 8
-    // };
-
-    // map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    // service = new google.maps.places.PlacesService(map);
-    // routeBoxer = new RouteBoxer();
-    // directionsService = new google.maps.DirectionsService();
-    // directionsDisplay = new google.maps.DirectionsRenderer();
-    // directionsDisplay.setMap(map);
-    // directionsDisplay.setPanel(document.getElementById('directions-panel'));
-    // directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
   };
 
   // public.route = function route(savePoints) {
@@ -83,7 +69,11 @@ window.places_gen = (function() {
     var routeBoxer = window.googleMaps.routeBoxer;
     var boxes = routeBoxer.box(latLngArray, width);
     console.log('boxes: ', boxes);
-    public.drawBoxes(boxes);
+    //this is calling the drawBoxes function passed from the view
+    if(queryObject.drawBoxes){
+      queryObject.drawBoxes(boxes);
+    }
+    //public.drawBoxes(boxes);
     $.search(boxes,1000).then(function(results) {
       console.log(results, "place_results length: ", public.place_results.length);
       // public.showPlaces(500);
@@ -92,20 +82,20 @@ window.places_gen = (function() {
   };
 
   // Draw the array of boxes as polylines on the map
-  public.drawBoxes = function drawBoxes(boxes) {
-    public.boxpolys = new Array(boxes.length);
-    var map = window.googleMaps.map;
-    for (var i = 0; i < boxes.length; i++) {
-      public.boxpolys[i] = new google.maps.Rectangle({
-        bounds: boxes[i],
-        fillOpacity: 0,
-        strokeOpacity: 1.0,
-        strokeColor: '#000000',
-        strokeWeight: 1,
-        map: map
-      });
-    }
-  };
+  // public.drawBoxes = function drawBoxes(boxes) {
+  //   public.boxpolys = new Array(boxes.length);
+  //   var map = window.googleMaps.map;
+  //   for (var i = 0; i < boxes.length; i++) {
+  //     public.boxpolys[i] = new google.maps.Rectangle({
+  //       bounds: boxes[i],
+  //       fillOpacity: 0,
+  //       strokeOpacity: 1.0,
+  //       strokeColor: '#000000',
+  //       strokeWeight: 1,
+  //       map: map
+  //     });
+  //   }
+  // };
 
   public.showPlaces = function showPlaces(decrement) {
     var html_out =[];

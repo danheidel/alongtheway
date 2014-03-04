@@ -3,6 +3,10 @@ $(function(){
 
 	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	var places=[];
+	window.graphicsStore = {
+		boxes:[],
+		markers:[]
+	};
 
   //window.googleMaps.initialize();
 
@@ -43,6 +47,26 @@ $(function(){
 		alert(placesObject);
 	}
 
+	function drawBoxes(boxes){
+		//delete existing boxes
+		var i;
+		for(i = 0;i < window.graphicsStore.boxes.length;i ++){
+			window.graphicsStore.boxes[i].setMap(null);
+		}
+		//draw new boxes
+		window.graphicsStore.boxes = [];
+		for(i = 0;i < boxes.length; i++){
+			window.graphicsStore.boxes.push(new google.maps.Rectangle({
+				bounds: boxes[i],
+				fillOpacity: 0,
+				strokeOpacity: 0.9,
+				strokeColor: '#000',
+				strokeWeight: 1,
+				map: window.googleMaps.map
+			}));
+		}
+	}
+
 	$('#btnGetRoute').click(function(){
 		routeRequestObject.start = $('#fromInput').val();
 		routeRequestObject.end = $('#toInput').val();
@@ -57,6 +81,11 @@ $(function(){
 		placesRequestObject.services = 'thai';
 		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
 		placesRequestObject.drawPlaces = drawPlaces;
+		if($('#placesDrawBoxes').is(':checked')){
+			placesRequestObject.drawBoxes = drawBoxes;
+		}
+
+		window.controller.getPlaces(placesRequestObject);
 	});
 
 });

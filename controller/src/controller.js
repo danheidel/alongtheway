@@ -5,8 +5,7 @@
   NS.getRoute = function(routeRequestObject){
     var callback = function(result){
       NS.routeObject  = result;
-      alert('got the route');
-      //window.places_gen.getPlaces(array, (width / 2));
+      //alert('got the route');
     };
 
     window.pathGen.calcRoute(routeRequestObject, callback);
