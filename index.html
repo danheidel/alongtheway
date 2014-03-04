@@ -31,6 +31,7 @@
       src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js">
     </script>
     <script src="js/underscore/underscore-1.60.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
     <script src="js/jquery/jquery-1.11.0.js"></script>
     <script src='js/jquery/jquery.nouislider.js'></script>
     <script src='view/src/gpview.js'></script>
@@ -228,6 +229,13 @@ google.maps.event.addDomListener(window, 'load', initializePage);
 <div id='milesSlider' class='noUiSlider'></div>
 <input id='milesFromHwy'></input>
         </div>
+  <script id="places-template" type="text/x-handlebars-template">
+      <ul>            
+        <li>{{place}}</li>
+        <li>{{address}}</li>
+        <li>{{phoneNum}}</li>
+      </ul>
+    </script>
 
   </body>
 </html>

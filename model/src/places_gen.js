@@ -134,9 +134,10 @@ window.places_gen = (function() {
             };
             if (index <= 2000){
                 queryObject.getDetails(index, details);
-                // var source = $('#places-template').html();
-                // var template = Handlebars.compile(source)
-                // var html = template(details);
+                var source = $('#places-template').html();
+                var template = Handlebars.compile(source)
+                var html = template(details);
+                queryObject.getDetailsHTML(index, html);
                 // $('.places').append(html);
             }
             public.html_out.push(details);

@@ -3,6 +3,7 @@ $(function(){
 
 	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	window.places=[];
+	window.placesHTML=[];
 	window.places_references=[];
 	var last_SearchComplete=false;
 	window.gmarkers=[];
@@ -77,7 +78,12 @@ $(function(){
 
 	function getPlacesDetails(index, value) {
 		places.push(value);
-		console.log(index, value.place);
+		// console.log(index, value.place);
+	}
+
+	function getPlacesDetailsHTML(index, HTML) {
+		placesHTML.push(HTML);
+		// console.log(HTML);
 	}
 
 	function drawPlacesMarkers(results){
@@ -153,6 +159,7 @@ $(function(){
 		placesRequestObject.drawMarkers = drawPlacesMarkers;
 		placesRequestObject.getLength = getPlacesLength;
 		placesRequestObject.getDetails = getPlacesDetails;
+		placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;
 
 		window.controller.getPlaces(placesRequestObject);
 	});
