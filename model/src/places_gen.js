@@ -42,7 +42,7 @@ window.places_gen = (function() {
     public.showPlaces(queryObject);
   };
 
-  public.showPlaces = function showPlaces(queryObject, decrement, stop) {
+  public.showPlaces = function showPlaces(queryObject, decrement) {
     var html_out =[];
     var index=0;
     var timer_VAL1;
@@ -73,7 +73,6 @@ window.places_gen = (function() {
           getDetails(public.place_results[index]).then(function(result) {
             $(document).on('stop', function() {
               clearInterval(queryLimit);
-              $(document).trigger('stopASYNC');
               return;
             });
             var details = {
@@ -117,7 +116,7 @@ window.places_gen = (function() {
       var toggle = false;
       $(document).on('stopASYNC', function() {
         toggle = true;
-      })
+      });
       function findNextPlaces(place_results, searchIndex) {
           if (toggle) return;
           var dfd = $.Deferred();

@@ -139,13 +139,20 @@ $(function(){
 		    }
 	}
 
-	function clearTimer() {
+	////This will stop the details for each seach hit from being appended to
+	////output array
+	function clearDetailsTimer() {
 		$(document).trigger('stop');		
 	}
+	////This stops the radarSearch for each of the bouding boxes
+	function clearASYNC() {
+		$(document).trigger('stopASYNC');
+	}		
+
 
 	$('#btnGetRoute').click(function(){
-		// $(document).trigger('stop');
-		clearTimer();
+		// clearDetailsTimer();
+		clearASYNC();
 		routeRequestObject.start = $('#fromInput').val();
 		routeRequestObject.end = $('#toInput').val();
 		routeRequestObject.width = $('#milesFromHwy').val() * 1.60934;	//width is sent in km
@@ -155,7 +162,6 @@ $(function(){
 	});
 
 	$('#btnGetPlaces').click(function(){
-		clearTimer();
 		var placesRequestObject = {};
 		placesRequestObject.services = 'donuts';
 		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
