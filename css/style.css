@@ -26,12 +26,16 @@ body {
   float:left;
 }
 
+.inputBox {
+  height:10%;
+}
+
 #control-panel {
   position: absolute;
   left: 50%;
   top: 0em;
-  width: 30em;
-  height: 4em;
+  /*width: 30em;*/
+  /*height: 4em;*/
   margin-left: -15em;
   background: #999;
 }

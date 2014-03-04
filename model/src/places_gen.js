@@ -132,10 +132,10 @@ window.places_gen = (function() {
               phoneNum:returned.formatted_phone_number
             };
             if (index <= 2000){
-                var source = $('#places-template').html();
-                var template = Handlebars.compile(source)
-                var html = template(details);
-                $('.places').append(html);
+                // var source = $('#places-template').html();
+                // var template = Handlebars.compile(source)
+                // var html = template(details);
+                // $('.places').append(html);
             }
             public.html_out.push(details);
           },function(error, place){
@@ -161,15 +161,15 @@ window.places_gen = (function() {
     // console.log(data);
   });
 
-  function createMarkers(results){
-    if (results[0] !== null){
-      for (var i = 0, result; result = results[i]; i++) {
-          var marker = createMarker(result);
-          public.place_results.push(result.reference); // marker?
-          $(document).trigger('test', result.reference);
-      }
-    }
-  }
+  // function createMarkers(results){
+  //   if (results[0] !== null){
+  //     for (var i = 0, result; result = results[i]; i++) {
+  //         var marker = createMarker(result);
+  //         public.place_results.push(result.reference); // marker?
+  //         $(document).trigger('test', result.reference);
+  //     }
+  //   }
+  // }
 
   $.search = function (queryObject, boxes, timerVal) {
       function findNextPlaces(place_results, searchIndex) {
@@ -195,7 +195,8 @@ window.places_gen = (function() {
                           //will need to change the keyword to match above but haven't had time to check scoping
                           service.radarSearch({bounds: boxes[searchIndex], keyword: ['thai']}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
-                            createMarkers(results1);
+                            // createMarkers(results1);
+                            queryObject.drawMarkers(results1);
                           });
                         });
                       }
@@ -203,7 +204,8 @@ window.places_gen = (function() {
                   if (status != 'OVER_QUERY_LIMIT'){
                     console.log(status);
                     console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
-                    createMarkers(results);
+                    // createMarkers(results);
+                    queryObject.drawMarkers(results)
                   }
                   dfd.resolve(public.place_results, searchIndex+1);
               });
@@ -229,45 +231,47 @@ window.places_gen = (function() {
   // }
 
   function createMarker(place){
-      var placeLoc=place.geometry.location;
-      var map = window.googleMaps.map;
-      if (place.icon) {
-        var image = new google.maps.MarkerImage(
-                  place.icon, new google.maps.Size(71, 71),
-                  new google.maps.Point(0, 0),
-                  new google.maps.Point(17, 34),
-                  new google.maps.Size(12, 12));
-       } else var image = null;
+      // var placeLoc=place.geometry.location;
+      // var map = window.googleMaps.map;
+      // if (place.icon) {
+      //   var image = new google.maps.MarkerImage(
+      //             place.icon, new google.maps.Size(71, 71),
+      //             new google.maps.Point(0, 0),
+      //             new google.maps.Point(17, 34),
+      //             new google.maps.Size(12, 12));
+      //  } else var image = null;
 
-      var marker=new google.maps.Marker({
-          map:map,
-          icon: image,
-          position:place.geometry.location
-      });
-      var request =  {
-            reference: place.reference
-      };
-      google.maps.event.addListener(marker,'click',function(){
-          service.getDetails(request, function(place, status) {
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
-            if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
-            if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-            contentStr += '<br>'+place.types+'</p>';
-            public.infowindow.setContent(contentStr);
-            public.infowindow.open(map,marker);
-          } else {
-            var contentStr = "<h5>No Result, status="+status+"</h5>";
-            public.infowindow.setContent(contentStr);
-            public.infowindow.open(map,marker);
-          }
-          generateDirections(place);
-          displayDirections(place);
-        });
-      });
+      // var marker=new google.maps.Marker({
+      //     map:map,
+      //     icon: image,
+      //     position:place.geometry.location
+      // });
+      // var request =  {
+      //       reference: place.reference
+      // };
+      // google.maps.event.addListener(marker,'click',function(){
+      //     service.getDetails(request, function(place, status) {
+      //     if (status == google.maps.places.PlacesServiceStatus.OK) {
+      //       var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
+      //       if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
+      //       if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
+      //       contentStr += '<br>'+place.types+'</p>';
+      //       public.infowindow.setContent(contentStr);
+      //       public.infowindow.open(map,marker);
+      //     } else {
+      //       var contentStr = "<h5>No Result, status="+status+"</h5>";
+      //       public.infowindow.setContent(contentStr);
+      //       public.infowindow.open(map,marker);
+      //     }
+      //     generateDirections(place);
+      //     displayDirections(place);
+      //   });
+      // });
 
-      public.gmarkers.push(marker);
-      var side_bar_html = "<a href='javascript:google.maps.event.trigger(public.gmarkers["+parseInt(public.gmarkers.length-1)+"],\"click\");'>"+place.name+"</a><br>";
+      // public.gmarkers.push(marker);
+      // var side_bar_html = "<a href='javascript:google.maps.event.trigger(public.gmarkers["+parseInt(public.gmarkers.length-1)+"],\"click\");'>"+place.name+"</a><br>";
+
+
       //document.getElementById('side_bar').innerHTML += side_bar_html;
   }
 

@@ -175,6 +175,9 @@ google.maps.event.addDomListener(window, 'load', initializePage);
     </script>
   </head>
   <body>
+<input id="fromInput" class="controls" type="text" value="seattle wa">
+<input id="toInput" class="controls" type="text" value="university district wa"></br>
+<input type='number' id='milesFromHwy' name='milesFromHwy' value = ".5">
     <div id='shutter'>
       <div id="fromType-selector" class="controls">
         <label>From: </label>
@@ -187,7 +190,7 @@ google.maps.event.addDomListener(window, 'load', initializePage);
         <input type="radio" name="fromType" id="fromChangetype-geocode">
         <label for="fromChangetype-geocode">Geocodes</label>
       </div>
-      <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
+      <!-- <input id="fromInput" class="controls" type="text" placeholder="Enter start point"> -->
       <div id="toType-selector" class="controls">
         <label>To: </label>
         <input type="radio" name="toType" id="toChangetype-all" checked="checked">
@@ -199,9 +202,9 @@ google.maps.event.addDomListener(window, 'load', initializePage);
         <input type="radio" name="toType" id="toChangetype-geocode">
         <label for="toChangetype-geocode">Geocodes</label>
       </div>
-      <input id="toInput" class="controls" type="text" placeholder="Enter end point"></br>
+      <!-- <input id="toInput" class="controls" type="text" placeholder="Enter end point"></br> -->
       <label for='milesFromHwy'>Miles From Hwy</label></br>
-      <input type='number' id='milesFromHwy' name'milesFromHwy'>
+      <!-- <input type='number' id='milesFromHwy' name'milesFromHwy'> -->
 
       <button id='btnGetRoute'>Get Route</button>
       <br>
@@ -224,6 +227,6 @@ google.maps.event.addDomListener(window, 'load', initializePage);
 <div id='milesSlider' class='noUiSlider'></div>
 <input id='milesFromHwy'></input>
         </div>
--->
+
   </body>
 </html>
