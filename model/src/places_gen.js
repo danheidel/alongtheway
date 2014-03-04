@@ -19,20 +19,6 @@ window.places_gen = (function() {
   }
 
   public.initialize = function initialize() {
-    // var mapOptions = {
-    //   center: new google.maps.LatLng(40,-80.5),
-    //   mapTypeId: google.maps.MapTypeId.ROADMAP,
-    //   zoom: 8
-    // };
-
-    // map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    // service = new google.maps.places.PlacesService(map);
-    // routeBoxer = new RouteBoxer();
-    // directionsService = new google.maps.DirectionsService();
-    // directionsDisplay = new google.maps.DirectionsRenderer();
-    // directionsDisplay.setMap(map);
-    // directionsDisplay.setPanel(document.getElementById('directions-panel'));
-    // directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
   };
 
   // public.route = function route(savePoints) {
@@ -75,12 +61,20 @@ window.places_gen = (function() {
   //   public.showPlaces();
   // }
 
-  public.getPlaces = function(latLngArray, width){
+  public.getPlaces = function(latLngArray, queryObject){
+    var width = queryObject.width;
+    var query = queryObject.query;
+    var displayCallback = queryObject.drawPlaces;
+
     var routeBoxer = window.googleMaps.routeBoxer;
     var boxes = routeBoxer.box(latLngArray, width);
     console.log('boxes: ', boxes);
-    public.drawBoxes(boxes);
-    $.search(boxes,1000).then(function(results) {
+    //this is calling the drawBoxes function passed from the view
+    if(queryObject.drawBoxes){
+      queryObject.drawBoxes(boxes);
+    }
+    //public.drawBoxes(boxes);
+    $.search(queryObject, boxes,1000).then(function(results) {
       console.log(results, "place_results length: ", public.place_results.length);
       // public.showPlaces(500);
     });
@@ -88,20 +82,20 @@ window.places_gen = (function() {
   };
 
   // Draw the array of boxes as polylines on the map
-  public.drawBoxes = function drawBoxes(boxes) {
-    public.boxpolys = new Array(boxes.length);
-    var map = window.googleMaps.map;
-    for (var i = 0; i < boxes.length; i++) {
-      public.boxpolys[i] = new google.maps.Rectangle({
-        bounds: boxes[i],
-        fillOpacity: 0,
-        strokeOpacity: 1.0,
-        strokeColor: '#000000',
-        strokeWeight: 1,
-        map: map
-      });
-    }
-  };
+  // public.drawBoxes = function drawBoxes(boxes) {
+  //   public.boxpolys = new Array(boxes.length);
+  //   var map = window.googleMaps.map;
+  //   for (var i = 0; i < boxes.length; i++) {
+  //     public.boxpolys[i] = new google.maps.Rectangle({
+  //       bounds: boxes[i],
+  //       fillOpacity: 0,
+  //       strokeOpacity: 1.0,
+  //       strokeColor: '#000000',
+  //       strokeWeight: 1,
+  //       map: map
+  //     });
+  //   }
+  // };
 
   public.showPlaces = function showPlaces(decrement) {
     var html_out =[];
@@ -177,7 +171,7 @@ window.places_gen = (function() {
     }
   }
 
-  $.search = function (boxes, timerVal) {
+  $.search = function (queryObject, boxes, timerVal) {
       function findNextPlaces(place_results, searchIndex) {
           var dfd = $.Deferred();
           var service = window.googleMaps.placesService;
@@ -186,7 +180,7 @@ window.places_gen = (function() {
               service.radarSearch({
                   bounds: boxes[searchIndex],
                   // types: ["food"]
-                  keyword: ["thai"],
+                  keyword: [queryObject.query],
                   // rankBy: google.maps.places.RankBy.DISTANCE
               }, function (results, status) {
                   if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
@@ -198,6 +192,7 @@ window.places_gen = (function() {
                         console.log("failed!: boxes:",searchIndex, failed_Indexes);
                         // console.log("this box has failed: ",boxes[searchIndex]);
                         timeDelay(timerVal).then(function() {
+                          //will need to change the keyword to match above but haven't had time to check scoping
                           service.radarSearch({bounds: boxes[searchIndex], keyword: ['thai']}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
                             createMarkers(results1);
@@ -224,14 +219,14 @@ window.places_gen = (function() {
   }
 
   // Clear boxes currently on the map
-  function clearBoxes() {
-    if (public.boxpolys != null) {
-      for (var i = 0; i < public.boxpolys.length; i++) {
-        public.boxpolys[i].setMap(null);
-      }
-    }
-    public.boxpolys = null;
-  }
+  // function clearBoxes() {
+  //   if (public.boxpolys != null) {
+  //     for (var i = 0; i < public.boxpolys.length; i++) {
+  //       public.boxpolys[i].setMap(null);
+  //     }
+  //   }
+  //   public.boxpolys = null;
+  // }
 
   function createMarker(place){
       var placeLoc=place.geometry.location;

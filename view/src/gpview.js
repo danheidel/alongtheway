@@ -1,8 +1,12 @@
 $(function(){
 	'use strict';
 
-	var requestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
+	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	var places=[];
+	window.graphicsStore = {
+		placeBoxes:[],
+		placeMarkers:[]
+	};
 
   //window.googleMaps.initialize();
 
@@ -33,12 +37,65 @@ $(function(){
 			}
 		});
 	*/
+
+	function drawRoute(result){
+		window.googleMaps.directionsRenderer.setDirections(result);
+	}
+
+	function drawPlaces(placesObject){
+		//put places rendering code here
+		//should render HTML into div id=results
+		alert(placesObject);
+	}
+
+	function drawPlacesBoxes(boxes){
+		//delete existing boxes
+		var i;
+		for(i = 0;i < window.graphicsStore.placeBoxes.length;i ++){
+			window.graphicsStore.placeBoxes[i].setMap(null);
+		}
+		//draw new boxes
+		window.graphicsStore.placeBoxes = [];
+		for(i = 0;i < boxes.length; i++){
+			window.graphicsStore.placeBoxes.push(new google.maps.Rectangle({
+				bounds: boxes[i],
+				fillOpacity: 0,
+				strokeOpacity: 0.9,
+				strokeColor: '#000',
+				strokeWeight: 1,
+				map: window.googleMaps.map
+			}));
+		}
+	}
+
+	function drawPlacesMarkers(){
+		//this should contain the full functionality createMarkers & createMarker
+	}
+
+	$('#btnGetRoute').click(function(){
+		routeRequestObject.start = $('#fromInput').val();
+		routeRequestObject.end = $('#toInput').val();
+		routeRequestObject.width = $('#milesFromHwy').val() * 1.60934;	//width is sent in km
+		routeRequestObject.drawRoute = drawRoute;
+
+		window.controller.getRoute(routeRequestObject);
+	});
+
 	$('#btnGetPlaces').click(function(){
-		requestObject.fromLocation = $('#fromInput').val();
-		requestObject.toLocation = $('#toInput').val();
-		requestObject.milesFromHwy = $('#milesFromHwy').val();
-		//places=returnplaces(requestObject);
-		window.controller.getPlaces(requestObject.fromLocation, requestObject.toLocation, requestObject.milesFromHwy * 1.60934, 'test');
+		var placesRequestObject = {};
+		placesRequestObject.services = 'thai';
+		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
+		placesRequestObject.drawPlaces = drawPlaces;
+		if($('#placesDrawBoxes').is(':checked')){
+			placesRequestObject.drawBoxes = drawPlacesBoxes;
+		}
+		placesRequestObject.drawMarkers = drawPlacesMarkers;
+
+		window.controller.getPlaces(placesRequestObject);
+	});
+
+	$('#shutterToggle').click(function(){
+		$('#shutter').toggle();
 	});
 
 });
