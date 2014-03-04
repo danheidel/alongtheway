@@ -162,7 +162,7 @@ $(function(){
 		placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;
 
 		window.controller.getPlaces(placesRequestObject);
-		$('.places').hide();
+		//$('.places').hide();
 	});
 
 	$('#shutterToggle').click(function(){
