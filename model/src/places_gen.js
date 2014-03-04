@@ -66,10 +66,6 @@ window.places_gen = (function() {
     }
 
     function startQuery(timerVal) {      
-      if (stop){
-        clearInterval(queryLimit)
-        index=0;
-      }
       var queryLimit = setInterval(function() {
         var dfd = $.Deferred();
         if (index>=public.place_results.length-1) return;
