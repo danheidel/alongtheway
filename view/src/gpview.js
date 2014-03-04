@@ -3,6 +3,7 @@ $(function(){
 
 	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	window.places=[];
+	window.places_references=[];
 	var last_SearchComplete=false;
 	window.gmarkers=[];
 	window.graphicsStore = {
@@ -71,61 +72,65 @@ $(function(){
 	}
 
 	function getPlacesLength(){
-		return {places: places,  places_length: places.length}
+		return {places: places_references,  places_length: places_references.length}
+	}
+
+	function getPlacesDetails(index, value) {
+		places.push(value);
+		console.log(index, value.place);
 	}
 
 	function drawPlacesMarkers(results){
 		var service = window.googleMaps.placesService;
+			 function createMarker(place){
+			    var placeLoc=place.geometry.location;
+			    var map = window.googleMaps.map;
+			    if (place.icon) {
+			      var image = new google.maps.MarkerImage(
+			                place.icon, new google.maps.Size(71, 71),
+			                new google.maps.Point(0, 0),
+			                new google.maps.Point(17, 34),
+			                new google.maps.Size(12, 12));
+			     } else var image = null;
 
-	 function createMarker(place){
-	    var placeLoc=place.geometry.location;
-	    var map = window.googleMaps.map;
-	    if (place.icon) {
-	      var image = new google.maps.MarkerImage(
-	                place.icon, new google.maps.Size(71, 71),
-	                new google.maps.Point(0, 0),
-	                new google.maps.Point(17, 34),
-	                new google.maps.Size(12, 12));
-	     } else var image = null;
+			    var marker=new google.maps.Marker({
+			        map:map,
+			        icon: image,
+			        position:place.geometry.location
+			    });
+			    var request =  {
+			          reference: place.reference
+			    };
+			    google.maps.event.addListener(marker,'click',function(){
+			        service.getDetails(request, function(place, status) {
+			        if (status == google.maps.places.PlacesServiceStatus.OK) {
+			          var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
+			          if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
+			          if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
+			          contentStr += '<br>'+place.types+'</p>';
+			          console.log(contentStr);
+			          window.googleMaps.infoWindow.setContent(contentStr);
+			          window.googleMaps.infoWindow.open(map,marker);
+			        } else {
+			          var contentStr = "<h5>No Result, status="+status+"</h5>";
+			          window.googleMaps.infoWindow.setContent(contentStr);
+			          window.googleMaps.infoWindow.open(map,marker);
+			        }
+			        generateDirections(place);
+			        displayDirections(place);
+			      });
+			    });
 
-	    var marker=new google.maps.Marker({
-	        map:map,
-	        icon: image,
-	        position:place.geometry.location
-	    });
-	    var request =  {
-	          reference: place.reference
-	    };
-	    google.maps.event.addListener(marker,'click',function(){
-	        service.getDetails(request, function(place, status) {
-	        if (status == google.maps.places.PlacesServiceStatus.OK) {
-	          var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
-	          if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
-	          if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-	          contentStr += '<br>'+place.types+'</p>';
-	          console.log(contentStr);
-	          window.googleMaps.infoWindow.setContent(contentStr);
-	          window.googleMaps.infoWindow.open(map,marker);
-	        } else {
-	          var contentStr = "<h5>No Result, status="+status+"</h5>";
-	          window.googleMaps.infoWindow.setContent(contentStr);
-	          window.googleMaps.infoWindow.open(map,marker);
-	        }
-	        // generateDirections(place);
-	        // displayDirections(place);
-	      });
-	    });
+			    gmarkers.push(marker);
+			    var side_bar_html = "<a href='javascript:google.maps.event.trigger(gmarkers["+parseInt(gmarkers.length-1)+"],\"click\");'>"+place.name+"</a><br>";
+			  }
 
-    gmarkers.push(marker);
-    var side_bar_html = "<a href='javascript:google.maps.event.trigger(gmarkers["+parseInt(gmarkers.length-1)+"],\"click\");'>"+place.name+"</a><br>";
-  }
-
-    if (results[0] !== null){
-      for (var i = 0, result; result = results[i]; i++) {
-          var marker = createMarker(result);
-          places.push(result.reference); // marker?
-      }
-    }
+		    if (results[0] !== null){
+		      for (var i = 0, result; result = results[i]; i++) {
+		          var marker = createMarker(result);
+		          places_references.push(result.reference); // marker?
+		      }
+		    }
 	}
 
 	$('#btnGetRoute').click(function(){
@@ -139,7 +144,7 @@ $(function(){
 
 	$('#btnGetPlaces').click(function(){
 		var placesRequestObject = {};
-		placesRequestObject.services = 'thai';
+		placesRequestObject.services = 'donuts';
 		placesRequestObject.width = ($('#milesFromHwy').val() * 1.60934) / 2;	//width is sent in km & fudge factor
 		placesRequestObject.drawPlaces = drawPlaces;
 		if($('#placesDrawBoxes').is(':checked')){
@@ -147,6 +152,7 @@ $(function(){
 		}
 		placesRequestObject.drawMarkers = drawPlacesMarkers;
 		placesRequestObject.getLength = getPlacesLength;
+		placesRequestObject.getDetails = getPlacesDetails;
 
 		window.controller.getPlaces(placesRequestObject);
 	});

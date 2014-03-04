@@ -79,7 +79,7 @@ window.places_gen = (function() {
       var resultsQuery = queryObject.getLength();
       console.log(resultsQuery.places, "places.length: ", resultsQuery.places_length);
     });
-    public.showPlaces();
+    public.showPlaces(queryObject);
   };
 
   // Draw the array of boxes as polylines on the map
@@ -98,7 +98,7 @@ window.places_gen = (function() {
   //   }
   // };
 
-  public.showPlaces = function showPlaces(decrement) {
+  public.showPlaces = function showPlaces(queryObject, decrement) {
     var html_out =[];
     var index=0;
     var timer_VAL1;
@@ -133,6 +133,7 @@ window.places_gen = (function() {
               phoneNum:returned.formatted_phone_number
             };
             if (index <= 2000){
+                queryObject.getDetails(index, details);
                 // var source = $('#places-template').html();
                 // var template = Handlebars.compile(source)
                 // var html = template(details);
@@ -191,12 +192,13 @@ window.places_gen = (function() {
                         failed_Indexes.push(searchIndex);
                         console.log(failed_Indexes);
                         console.log("failed!: boxes:",searchIndex, failed_Indexes);
-                        // console.log("this box has failed: ",boxes[searchIndex]);
                         timeDelay(timerVal).then(function() {
                           //will need to change the keyword to match above but haven't had time to check scoping
                           service.radarSearch({bounds: boxes[searchIndex], keyword: ['thai']}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
-                            // createMarkers(results1);
+                            for (var i = 0, result; result = results[i]; i++) {
+                                public.place_results.push(result.reference); // marker?
+                            }                    
                             queryObject.drawMarkers(results1);
                           });
                         });
@@ -205,7 +207,9 @@ window.places_gen = (function() {
                   if (status != 'OVER_QUERY_LIMIT'){
                     console.log(status);
                     console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
-                    // createMarkers(results);
+                    for (var i = 0, result; result = results[i]; i++) {
+                        public.place_results.push(result.reference); // marker?
+                    }                    
                     queryObject.drawMarkers(results)
                   }
                   dfd.resolve(public.place_results, searchIndex+1);
