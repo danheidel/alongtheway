@@ -102,6 +102,7 @@ $(function(){
 			    var marker=new google.maps.Marker({
 			        map:map,
 			        icon: image,
+			        animation: google.maps.Animation.DROP,
 			        position:place.geometry.location
 			    });
 			    var request =  {
