@@ -73,6 +73,7 @@ window.places_gen = (function() {
           getDetails(public.place_results[index]).then(function(result) {
             $(document).on('stop', function() {
               clearInterval(queryLimit);
+              $(document).trigger('stopASYNC');
               return;
             });
             var details = {
@@ -113,7 +114,12 @@ window.places_gen = (function() {
   };
 
   $.search = function (queryObject, boxes, timerVal) {
+      var toggle = false;
+      $(document).on('stopASYNC', function() {
+        toggle = true;
+      })
       function findNextPlaces(place_results, searchIndex) {
+          if (toggle) return;
           var dfd = $.Deferred();
           var service = window.googleMaps.placesService;
           if (searchIndex < boxes.length) {
