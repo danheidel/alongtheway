@@ -8,6 +8,8 @@ $(function(){
 	var last_SearchComplete=false;
 	window.gmarkers=[];
 	window.graphicsStore = {
+    routePoly:{},
+    queryPoly: {},
 		placeBoxes:[],
 		placeMarkers:[]
 	};
@@ -43,7 +45,22 @@ $(function(){
 	*/
 
 	function drawRoute(result){
-		window.googleMaps.directionsRenderer.setDirections(result);
+    var poly = window.graphicsStore.routePoly;
+    //delete old line
+    if(poly.setMap){
+      poly.setMap(null);
+    }
+    poly = new google.maps.Polyline({
+      strokeColor: '#22F',
+      strokeOpacity: 0.5,
+      strokeWeight: 6
+    });
+    //reassign graphicstore routepoly to new polyLine
+    window.graphicsStore.routePoly = poly;
+    poly.setMap(window.googleMaps.map);
+    poly.setPath(result.routes[0].overview_path);
+    //make the new line clickable
+    google.maps.event.addListener(poly, 'click', window.controller.mapClick);
 	}
 
 	function drawPlaces(placesObject){
@@ -150,12 +167,12 @@ $(function(){
 	////This will stop the details for each seach hit from being appended to
 	////output array
 	function clearDetailsTimer() {
-		$(document).trigger('stop');		
+		$(document).trigger('stop');
 	}
 	////This stops the radarSearch for each of the bouding boxes
 	function clearASYNC() {
 		$(document).trigger('stopASYNC');
-	}		
+	}
 
 
 	$('#btnGetRoute').click(function(){
@@ -214,6 +231,8 @@ $(function(){
   var fromMarker = new google.maps.Marker({
     map: map
   });
+
+  google.maps.event.addListener(map, 'click', window.controller.mapClick);
 
   google.maps.event.addListener(fromComplete, 'fromPlace_changed', function() {
 
