@@ -111,7 +111,6 @@ $(function(){
 			    google.maps.event.addListener(marker,'click',function(){
 			        service.getDetails(request, function(place, status) {
 			        if (status == google.maps.places.PlacesServiceStatus.OK) {
-
 			          var details={
 			          	name: place.name,
 			          	address: place.formatted_address,
@@ -119,17 +118,11 @@ $(function(){
 			          	website: place.website,
 			          	types: place.types
 			          };
-
+			          //handlebars template
 			          var source = $('#popup-template').html();
 			          var template = Handlebars.compile(source);
 			          var html = template(details);
-
-			          // var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
-			          // if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
-			          // if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-			          // contentStr += '<br>'+place.types+'</p>';
-			          // console.log(contentStr);
-
+			          //template end
 			          window.googleMaps.infoWindow.setContent(html);
 			          window.googleMaps.infoWindow.open(map,marker);
 			        } else {
