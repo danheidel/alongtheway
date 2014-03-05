@@ -126,8 +126,8 @@ $(function(){
 			          window.googleMaps.infoWindow.setContent(html);
 			          window.googleMaps.infoWindow.open(map,marker);
 			        } else {
-			          var contentStr = "<h5>No Result, status="+status+"</h5>";
-			          window.googleMaps.infoWindow.setContent(contentStr);
+			          var popup = "<h5>No Result, status="+status+"</h5>";
+			          window.googleMaps.infoWindow.setContent(popup);
 			          window.googleMaps.infoWindow.open(map,marker);
 			        }
 			        window.places_gen.generateDirections(place);
@@ -157,6 +157,13 @@ $(function(){
 		$(document).trigger('stopASYNC');
 	}		
 
+	window.nukeMarkers = function() {
+		clearDetailsTimer();
+		clearASYNC();
+		for (var i=0; i<gmarkers.length; i++){
+			gmarkers[i].setMap(null);
+		}
+	}
 
 	$('#btnGetRoute').click(function(){
 		// clearDetailsTimer();
