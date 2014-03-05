@@ -169,7 +169,7 @@ window.places_gen = (function() {
     return findNextPlaces(public.place_results, 0);
   }
 
-  function generateDirections (place) {
+  public.generateDirections = function generateDirections (place) {
     //Attach directions to a particular marker by first defining a route
     //from original destination
     var clickedMarkerDEST = {
@@ -187,17 +187,17 @@ window.places_gen = (function() {
     });
   }
 
-  function displayDirections (place) {
+  public.displayDirections = function displayDirections (place) {
   //Display these directions on the DOM
     var directionsDISPLAY = {
-      origin: document.getElementById("routeStart").value,
+      origin: $('#fromInput').val(),
       destination: place.formatted_address,
       travelMode:google.maps.TravelMode.DRIVING
     }
-    directionsService.route(directionsDISPLAY, function(response, status) {
+    window.googleMaps.directionsService.route(directionsDISPLAY, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           $('#directions-panel').empty();
-          directionsDisplay.setDirections(response);
+          window.googleMaps.directionsRenderer.directionsDisplay.setDirections(response);
         }
       });
   }

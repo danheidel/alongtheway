@@ -124,7 +124,7 @@ $(function(){
 			          window.googleMaps.infoWindow.open(map,marker);
 			        }
 			        window.places_gen.generateDirections(place);
-			        // displayDirections(place);
+			        window.places_gen.displayDirections(place);
 			      });
 			    });
 
