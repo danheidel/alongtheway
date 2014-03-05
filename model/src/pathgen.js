@@ -1,4 +1,5 @@
 (function(NS){
+  'use strict';
   NS.calcRoute = function(requestObject, callback) {
     var start = requestObject.start;
     var end = requestObject.end;

@@ -1,5 +1,5 @@
 (function(NS){
-
+  'use strict';
   NS.initialize = function(lat, lng, zoom, type){
     var mapOptions = {
       center: new google.maps.LatLng(lat || 47.624, lng || 237.664),
