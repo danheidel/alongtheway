@@ -86,7 +86,7 @@ window.places_gen = (function() {
               website:result.website
             };
             if (index <= 2000){
-                queryObject.getDetails(index, details);
+                queryObject.getDetails(index, result);
                 var source = $('#places-template').html();
                 var template = Handlebars.compile(source)
                 var html = template(details);
@@ -173,13 +173,13 @@ window.places_gen = (function() {
     //Attach directions to a particular marker by first defining a route
     //from original destination
     var clickedMarkerDEST = {
-      origin: document.getElementById("routeStart").value,
+      origin: $('#fromInput').val(),
       destination: place.formatted_address,
       travelMode: google.maps.DirectionsTravelMode.DRIVING
     }
-    directionsService.route(clickedMarkerDEST, function(result, status) {
+    window.googleMaps.directionsService.route(clickedMarkerDEST, function(result, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        directionsRenderer.setDirections(result);
+        window.googleMaps.directionsRenderer.setDirections(result);
       }
       else {
         alert("Directions query failed: " + status);

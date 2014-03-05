@@ -123,8 +123,8 @@ $(function(){
 			          window.googleMaps.infoWindow.setContent(contentStr);
 			          window.googleMaps.infoWindow.open(map,marker);
 			        }
-			        generateDirections(place);
-			        displayDirections(place);
+			        window.places_gen.generateDirections(place);
+			        // displayDirections(place);
 			      });
 			    });
 
