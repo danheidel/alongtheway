@@ -16,7 +16,9 @@
     };
     directionsService.route(request, function(result, status) {
       if(status == google.maps.DirectionsStatus.OK){
-      if(requestObject.drawRoute){ requestObject.drawRoute(result); }
+      if(requestObject.drawRoute){
+        requestObject.drawRoute(result);
+      }
         //directionsRenderer.setDirections(result);
         showSteps(callback, result, pointSpacing);
       }else{
