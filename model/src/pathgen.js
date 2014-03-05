@@ -1,4 +1,5 @@
 (function(NS){
+  'use strict';
   NS.calcRoute = function(requestObject, callback) {
     var start = requestObject.start;
     var end = requestObject.end;
@@ -15,7 +16,9 @@
     };
     directionsService.route(request, function(result, status) {
       if(status == google.maps.DirectionsStatus.OK){
-      if(requestObject.drawRoute){ requestObject.drawRoute(result); }
+      if(requestObject.drawRoute){
+        requestObject.drawRoute(result);
+      }
         //directionsRenderer.setDirections(result);
         showSteps(callback, result, pointSpacing);
       }else{
