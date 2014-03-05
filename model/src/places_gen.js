@@ -197,7 +197,7 @@ window.places_gen = (function() {
     window.googleMaps.directionsService.route(directionsDISPLAY, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           $('#directions-panel').empty();
-          window.googleMaps.directionsRenderer.directionsDisplay.setDirections(response);
+          window.googleMaps.directionsRenderer.setDirections(response);
         }
       });
   }

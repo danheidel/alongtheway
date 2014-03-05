@@ -86,15 +86,22 @@
         -->
   <script id="places-template" type="text/x-handlebars-template">
       <ul>
-        <li>{{place}}</li>
-        <li>{{address}}</li>
-        <li>{{phoneNum}}</li>
-        <li>{{price_level}}</li>
-        <li>{{rating}}</li>
-        <li>{{url}}</li>
-        <li>{{website}}</li>
+        <li>{{#if place}} {{place}} {{/if}}</li>
+        <li>{{#if address}} {{address}} {{/if}}</li>
+        <li>{{#if phoneNum}} {{phoneNum}} {{/if}}</li>
+        <li>{{#if price_level}} {{price_level}} {{/if}}</li>
+        <li>{{#if rating}} {{rating}} {{/if}}</li>
+        <li>{{#if url}} {{url}} {{/if}}</li>
+        <li>{{#if website}} {{website}} {{/if}}</li>
       </ul>
     </script>
+
+  <script id="popup-template" type="text/x-handlebars-template">
+  <h5>{{#if name}} {{name}} {{/if}}</h5>
+  <p>{{#if address}} {{address}} {{/if}}<br>{{#if phone_num}} {{phone_num}} {{/if}}</br><a target="_blank" href="{{#if website}} {{website}} {{/if}}">{{#if website}} {{website}} {{/if}}</a><br><{{#if types}} {{types}} {{/if}}</p>
+  </script>
+
+
   <div class="places"></div>
 
   </body>
