@@ -299,8 +299,6 @@ $(function(){
     map: map
   });
 
-  google.maps.event.addListener(map, 'click', window.controller.mapClick);
-
   $('#fromChangetype').change(function(event){
     var tempArray = [];
     if(event.target.value !== ''){
@@ -434,6 +432,7 @@ function toInitialize() {
 //Combined to and from and Page initialazation
 function initializePage(){
   window.googleMaps.initialize();
+  google.maps.event.addListener(window.googleMaps.map, 'click', window.controller.mapClick);
   fromInitialize();
   toInitialize();
 }
