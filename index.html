@@ -72,9 +72,21 @@
       <button id='btnGetRoute'>Get Route</button>
 
       <div id='placeShutter'>
-        <div class='control-box' id='placesStuff'>
-          <label for='placesDrawBoxes'>Draw Boxes</label>
-          <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
+        <div class='control-box' id='routeFilter1'>
+          <label for='routeFilterMode'>What part of the route are you interested in?</label>
+          <br>
+          <select class='controls' id='routeFilterMode'>
+            <option value='wholeRoute' selected>Search the whole route!</option>
+            <option value='twoPoints'>Search between two points!</option>
+            <option value='pointDelta'>Search ahead of me!</option>
+          </select>
+        </div>
+        <div class='control-box' id='routeFilter2'>
+        </div>
+        <div class='control-box' id='placefilter'>
+          <input id='placePreFilter' type='text' class='control' placeholder='Select the services to search for'>
+          <br>
+          <br>
           <button id='btnGetPlaces'>Get Places</button>
           <br style="clear:both;">
         </div>
@@ -82,19 +94,22 @@
 
       <div id='utilsShutter'>
         <div class='control-box' id='utilsStuff'>
+          <label for='placesDrawBoxes'>Draw Boxes</label>
+          <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
+          <br>
+          <br>
           <button id='fakeGeo'> Fake geoloc</button>
           <br style="clear:both;">
         </div>
       </div>
-
     </div>
+    <div style="clear:both;"></div>
 
     <div class='shutter-toggle' id='mainShutterToggle' style='background-color:red;'>
       <br>
     </div>
     <div id="map"></div>
-    <div id='results'
-      <!--  <div>
+    <br style='clear:both;'>
 <!--
 <div id='rangeSlider' class='noUiSlider'></div>
 <input id='rangeUpper'></input><input id='rangeLower'></input>
