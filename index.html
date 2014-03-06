@@ -33,49 +33,63 @@
 <input type='number' id='milesFromHwy' name='milesFromHwy' value = ".5">
 
  -->
-    <div id="directions-panel"></div>
-    <div id='shutter'>
-      <div id="fromType-selector" class="controls">
-        <label>From: </label>
-        <input type="radio" name="fromType" id="fromChangetype-all" checked="checked">
-        <label for="fromChangetype-all">All</label>
 
-        <input type="radio" name="fromType" id="fromChangetype-establishment">
-        <label for="fromChangetype-establishment">Establishments</label>
-
-        <input type="radio" name="fromType" id="fromChangetype-geocode">
-        <label for="fromChangetype-geocode">Geocodes</label>
+    <div id='mainShutter'>
+      <div id='statusDisplay' class='control-box'>
+        <p>Enter in your route!</p>
       </div>
-      <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
-      <div id="toType-selector" class="controls">
-        <label>To: </label>
-        <input type="radio" name="toType" id="toChangetype-all" checked="checked">
-        <label for="toChangetype-all">All</label>
 
-        <input type="radio" name="toType" id="toChangetype-establishment">
-        <label for="toChangetype-establishment">Establishments</label>
-
-        <input type="radio" name="toType" id="toChangetype-geocode">
-        <label for="toChangetype-geocode">Geocodes</label>
-      </div>
-      <input id="toInput" class="controls" type="text" placeholder="Enter end point"></br>
-      <label for='milesFromHwy'>Miles From Hwy</label></br>
-      <input type='number' id='milesFromHwy' name'milesFromHwy'>
-
-      <button id='btnGetRoute'>Get Route</button>
-      <br>
-      <div id='placesStuff'>
-        <label for='placesDrawBoxes'>Draw Boxes</label>
-        <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
-        <button id='btnGetPlaces'>Get Places</button>
+      <div id="fromType-selector" class="control-box" style="float:left; clear:left;">
+        <label for='fromInput'>From: </label>
+        <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
         <br>
+        <label for:'fromChangetype'>Set autofill type: </label>
+        <select class="controls" name="select" id="fromChangetype">
+          <option value="" selected>All</option>
+          <option value="establishment">Establishments</option>
+          <option value="geocode">Geocodes</option>
+        </select>
       </div>
 
-      <div id='fakeStuff'>
-        <button id='fakeGeo'> Fake geoloc</button>
+      <div id="toType-selector" class="control-box" style="float:left;">
+        <label for:'toInput'>To: </label>
+        <input id="toInput" class="controls" type="text" placeholder="Enter end point">
+        <br>
+        <label for:'toChangetype'>Set autofill type: </label>
+        <select class="controls" name="select" id="toChangetype">
+          <option value="" selected>All</option>
+          <option value="establishment">Establishments</option>
+          <option value="geocode">Geocodes</option>
+        </select>
       </div>
+
+      <div class="control-box" style="float:left;">
+        <label for='milesFromHwy'>Miles From Hwy</label></br>
+        <input type='number' id='milesFromHwy' value ='1' name'milesFromHwy'>
+      </div>
+
+      <br style="clear:both;">
+      <button id='btnGetRoute'>Get Route</button>
+
+      <div id='placeShutter'>
+        <div class='control-box' id='placesStuff'>
+          <label for='placesDrawBoxes'>Draw Boxes</label>
+          <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
+          <button id='btnGetPlaces'>Get Places</button>
+          <br style="clear:both;">
+        </div>
+      </div>
+
+      <div id='utilsShutter'>
+        <div class='control-box' id='utilsStuff'>
+          <button id='fakeGeo'> Fake geoloc</button>
+          <br style="clear:both;">
+        </div>
+      </div>
+
     </div>
-    <div class='shutterToggle' id='shutterToggle' style='background-color:red;'>
+
+    <div class='shutter-toggle' id='mainShutterToggle' style='background-color:red;'>
       <br>
     </div>
     <div id="map"></div>

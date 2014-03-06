@@ -267,8 +267,8 @@ $(function(){
     }
   };
 
-	$('#shutterToggle').click(function(){
-		$('#shutter').toggle();
+	$('#mainShutterToggle').click(function(){
+		$('#mainShutter').toggle();
 	});
 
 
@@ -297,6 +297,20 @@ $(function(){
   });
 
   google.maps.event.addListener(map, 'click', window.controller.mapClick);
+
+  $('#fromChangetype').change(function(event){
+    var tempArray = [];
+    if(event.target.value !== ''){
+      tempArray.push(event.target.value);
+    }
+    fromComplete.setTypes(tempArray);
+  });
+  $('#fromChangetype').focusin(function(event){event.target.selectedIndex = -1;});
+  $('#fromChangetype').focusout(function(event){
+    if(event.target.selectedIndex == -1){
+      event.target.selectedIndex = 0;
+    }
+  });
 
   google.maps.event.addListener(fromComplete, 'fromPlace_changed', function() {
 
@@ -347,16 +361,16 @@ $(function(){
 
   // Sets a listener on a radio button to change the filter type on Places
   // Autocomplete.
-  function fromSetupClickListener(id, types) {
-    var fromRadioButton = document.getElementById(id);
-    google.maps.event.addDomListener(fromRadioButton, 'click', function() {
-      fromComplete.setTypes(types);
-    });
-  }
+  // function fromSetupClickListener(id, types) {
+  //   var fromRadioButton = document.getElementById(id);
+  //   google.maps.event.addDomListener(fromRadioButton, 'click', function() {
+  //     fromComplete.setTypes(types);
+  //   });
+  // }
 
-  fromSetupClickListener('fromChangetype-all', []);
-  fromSetupClickListener('fromChangetype-establishment', ['establishment']);
-  fromSetupClickListener('fromChangetype-geocode', ['geocode']);
+  // fromSetupClickListener('fromChangetype-all', []);
+  // fromSetupClickListener('fromChangetype-establishment', ['establishment']);
+  // fromSetupClickListener('fromChangetype-geocode', ['geocode']);
 }
 
 // to AutoComplete####################################################
@@ -368,6 +382,20 @@ function toInitialize() {
   var toTypes = document.getElementById('type-selector');
 
   var toComplete = new google.maps.places.Autocomplete(toInput);
+
+  $('#toChangetype').change(function(event){
+    var tempArray = [];
+    if(event.target.value !== ''){
+      tempArray.push(event.target.value);
+    }
+    toComplete.setTypes(tempArray);
+  });
+  $('#toChangetype').focus(function(event){event.target.selectedIndex = -1;});
+  $('#toChangetype').focusout(function(event){
+    if(event.target.selectedIndex == -1){
+      event.target.selectedIndex = 0;
+    }
+  });
 
   google.maps.event.addListener(toComplete, 'place_changed', function() {
 
@@ -387,16 +415,16 @@ function toInitialize() {
 
   });
 
-  function toSetupClickListener(id, types) {
-    var toRadioButton = document.getElementById(id);
-    google.maps.event.addDomListener(toRadioButton, 'click', function() {
-      toComplete.setTypes(types);
-    });
-  }
+  // function toSetupClickListener(id, types) {
+  //   var toRadioButton = document.getElementById(id);
+  //   google.maps.event.addDomListener(toRadioButton, 'click', function() {
+  //     toComplete.setTypes(types);
+  //   });
+  // }
 
-  toSetupClickListener('toChangetype-all', []);
-  toSetupClickListener('toChangetype-establishment', ['establishment']);
-  toSetupClickListener('toChangetype-geocode', ['geocode']);
+  // toSetupClickListener('toChangetype-all', []);
+  // toSetupClickListener('toChangetype-establishment', ['establishment']);
+  // toSetupClickListener('toChangetype-geocode', ['geocode']);
 
 }
 
