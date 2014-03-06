@@ -1,42 +1,51 @@
 (function(NS){
 
-  var initialLocation;
-  var home = new google.maps.LatLng(47.656801, -122.361748);
-  var browserSupportFlag =  new Boolean();
 
-  function initialize() {
-    var myOptions = {
-      zoom: 6,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+  NS.initialize = function initialize() {
+  // var mapOptions = {
+  //   zoom: 6
+  // };
+  // map = new google.maps.Map(document.getElementById('map-canvas'),
+  //     mapOptions);
 
-    // Get Geolocation
-    if(navigator.geolocation) {
-      browserSupportFlag = true;
-      navigator.geolocation.getCurrentPosition(function(position) {
-        initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-        map.setCenter(initialLocation);
-      }, function() {
-        handleNoGeolocation(browserSupportFlag);
+  // Try HTML5 geolocation
+  if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = new google.maps.LatLng(position.coords.latitude,
+                                       position.coords.longitude);
+
+      var infowindow = new google.maps.InfoWindow({
+        map: window.googleMaps.map,
+        position: pos,
+        content: 'Location found using HTML5.'
       });
-    }
-    // Browser doesn't support Geolocation
-    else {
-      browserSupportFlag = false;
-      handleNoGeolocation(browserSupportFlag);
-    }
 
-    function handleNoGeolocation(errorFlag) {
-      if (errorFlag == true) {
-        alert("Geolocation service failed.");
-        initialLocation = home;
-      } else {
-        alert("Your browser doesn't support geolocation.");
-        initialLocation = home;
-      }
-      map.setCenter(initialLocation);
-    }
+      window.googleMaps.map.setCenter(pos);
+    }, function() {
+      NS.handleNoGeolocation(true);
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    NS.handleNoGeolocation(false);
   }
+}
+
+NS.handleNoGeolocation = function handleNoGeolocation(errorFlag) {
+  if (errorFlag) {
+    var content = 'Error: The Geolocation service failed.';
+  } else {
+    var content = 'Error: Your browser doesn\'t support geolocation.';
+  }
+
+  var options = {
+    map: window.googleMaps.map,
+    position: new google.maps.LatLng(60, 105),
+    content: content
+  };
+
+  var infowindow = new google.maps.InfoWindow(options);
+  window.googleMaps.map.setCenter(options.position);
+}
+
 
 })(window.geolocation = window.geolocation || {});
