@@ -65,10 +65,11 @@ window.places_gen = (function() {
     }
 
     function startQuery(timerVal) {      
-      if (timerVal>=2000){
-        timerVal-=500;
-        console.log(timerVal);
-      } 
+      //unfortunately this has to be removed - the query limit is too much
+      // if (timerVal>=2000){
+      //   timerVal-=500;
+      //   console.log(timerVal);
+      // } 
       var queryLimit = setInterval(function() {
         var dfd = $.Deferred();
         if (index>=public.place_results.length-1) return;
