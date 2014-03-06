@@ -35,43 +35,41 @@
  -->
 
     <div id='mainShutter'>
-      <div id='statusDisplay' class='control-box'>
-        <p>Enter in your route!</p>
+      <div id='routeShutter'>
+        <div id="fromType-selector" class="control-box" style="float:left; clear:left;">
+          <label for='fromInput'>From: </label>
+          <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
+          <br>
+          <label for:'fromChangetype'>Set autofill type: </label>
+          <select class="controls" name="select" id="fromChangetype">
+            <option value="" selected>All</option>
+            <option value="establishment">Establishments</option>
+            <option value="geocode">Geocodes</option>
+          </select>
+        </div>
+
+        <div id="toType-selector" class="control-box" style="float:left;">
+          <label for:'toInput'>To: </label>
+          <input id="toInput" class="controls" type="text" placeholder="Enter end point">
+          <br>
+          <label for:'toChangetype'>Set autofill type: </label>
+          <select class="controls" name="select" id="toChangetype">
+            <option value="" selected>All</option>
+            <option value="establishment">Establishments</option>
+            <option value="geocode">Geocodes</option>
+          </select>
+        </div>
+
+        <div class="control-box" style="float:left;">
+          <label for='milesFromHwy'>Miles From Hwy</label></br>
+          <input type='number' id='milesFromHwy' value ='1' name'milesFromHwy'>
+        </div>
+
+        <br style="clear:both;">
+        <button id='btnGetRoute'>Get Route</button>
       </div>
 
-      <div id="fromType-selector" class="control-box" style="float:left; clear:left;">
-        <label for='fromInput'>From: </label>
-        <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
-        <br>
-        <label for:'fromChangetype'>Set autofill type: </label>
-        <select class="controls" name="select" id="fromChangetype">
-          <option value="" selected>All</option>
-          <option value="establishment">Establishments</option>
-          <option value="geocode">Geocodes</option>
-        </select>
-      </div>
-
-      <div id="toType-selector" class="control-box" style="float:left;">
-        <label for:'toInput'>To: </label>
-        <input id="toInput" class="controls" type="text" placeholder="Enter end point">
-        <br>
-        <label for:'toChangetype'>Set autofill type: </label>
-        <select class="controls" name="select" id="toChangetype">
-          <option value="" selected>All</option>
-          <option value="establishment">Establishments</option>
-          <option value="geocode">Geocodes</option>
-        </select>
-      </div>
-
-      <div class="control-box" style="float:left;">
-        <label for='milesFromHwy'>Miles From Hwy</label></br>
-        <input type='number' id='milesFromHwy' value ='1' name'milesFromHwy'>
-      </div>
-
-      <br style="clear:both;">
-      <button id='btnGetRoute'>Get Route</button>
-
-      <div id='placeShutter'>
+      <div id='placeShutter' style='display:none;'>
         <div class='control-box' id='routeFilter'>
           <label for='routeFilterMode'>What part of the route are you interested in?</label>
           <br>
@@ -86,10 +84,13 @@
         </div>
         <div class='control-box' id='routeFilterSub2' style='display:none;'>
           <p>This will find services on the route between two points!</p>
+          <p>Search area will be highlighted in green.</p>
         </div>
         <div class='control-box' id='routeFilterSub3' style='display:none;'>
           <p>This will return services ahead of you and will auto-update as you travel!</p>
+          <p>The search area will be highlighted in green.</p>
         </div>
+        <br style="clear:both;">
         <div class='control-box' id='placefilter'>
           <input id='placePreFilter' type='text' class='control' placeholder='Select the services to search for'>
           <br>
@@ -97,6 +98,7 @@
           <button id='btnGetPlaces'>Get Places</button>
           <br style="clear:both;">
         </div>
+        <div style="clear:both;"></div>
       </div>
 
       <div id='utilsShutter'>

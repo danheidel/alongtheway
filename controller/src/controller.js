@@ -1,5 +1,6 @@
 (function(NS){
   'use strict';
+  /*global _*/
   NS.mode = {
     hasRoute: false,
     hasPlaces: false,
@@ -9,6 +10,7 @@
     gettingFakeGeo: false
   };
   NS.userLocation = {};
+  NS.pathFilterMode = 'wholeRoute'; //default value
   NS.routeObject = {};
 
   NS.getRoute = function(routeRequestObject){
@@ -18,6 +20,28 @@
     };
 
     window.pathGen.calcRoute(routeRequestObject, callback);
+  };
+
+  NS.onPathFilterChange = function(mode, drawCallback){
+    NS.pathFilterMode = mode;
+    if(NS.mode.hasRoute){
+      if(mode === 'wholeRoute'){
+        NS.routeObject.queryPoints = NS.routeObject.savePoints;
+      }else if(mode === 'twoPoints'){
+        //stuff happens
+        var halfway = NS.routeObject.savePoints.length * 0.9;
+        NS.routeObject.queryPoints = [];
+        _.each(NS.routeObject.savePoints, function(element, index){
+          if(index > halfway){
+            NS.routeObject.queryPoints.push(element);
+          }
+        });
+      }else if(mode === 'pointDelta'){
+        //other stuff happens
+      }
+      //call the draw callback when done
+      drawCallback(NS.routeObject);
+    }
   };
 
   NS.getPlaces = function(placesRequestObject){
