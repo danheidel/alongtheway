@@ -1,5 +1,6 @@
 (function(NS){
-
+  'use strict';
+  /*global google*/
 
   NS.initialize = function initialize() {
   // var mapOptions = {
@@ -28,13 +29,14 @@
     // Browser doesn't support Geolocation
     NS.handleNoGeolocation(false);
   }
-}
+};
 
 NS.handleNoGeolocation = function handleNoGeolocation(errorFlag) {
+  var content;
   if (errorFlag) {
-    var content = 'Error: The Geolocation service failed.';
+    content = 'Error: The Geolocation service failed.';
   } else {
-    var content = 'Error: Your browser doesn\'t support geolocation.';
+    content = 'Error: Your browser doesn\'t support geolocation.';
   }
 
   var options = {
@@ -45,7 +47,7 @@ NS.handleNoGeolocation = function handleNoGeolocation(errorFlag) {
 
   var infowindow = new google.maps.InfoWindow(options);
   window.googleMaps.map.setCenter(options.position);
-}
+};
 
 
 })(window.geolocation = window.geolocation || {});
