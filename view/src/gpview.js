@@ -166,6 +166,11 @@ $(function(){
 			    google.maps.event.addListener(marker,'click',function(){
 			        service.getDetails(request, function(place, status) {
 			        if (status == google.maps.places.PlacesServiceStatus.OK) {
+						var clickedMarkerDEST = {
+							origin: $('#fromInput').val(),
+							destination: place.formatted_address,
+							travelMode: google.maps.DirectionsTravelMode.DRIVING
+						};
 			          var details={
 			          	name: place.name,
 			          	address: place.formatted_address,
@@ -185,11 +190,10 @@ $(function(){
 			          window.googleMaps.infoWindow.setContent(popup);
 			          window.googleMaps.infoWindow.open(map,marker);
 			        }
-			        window.places_gen.generateDirections(place);
-			        window.places_gen.displayDirections(place);
+			        window.places_gen.generateDirections(clickedMarkerDEST);
+			        window.places_gen.displayDirections(clickedMarkerDEST);
 			      });
 			    });
-
 			    gmarkers.push(marker);
 			    var side_bar_html = "<a href='javascript:google.maps.event.trigger(gmarkers["+parseInt(gmarkers.length-1)+"],\"click\");'>"+place.name+"</a><br>";
 			  }
@@ -245,7 +249,6 @@ $(function(){
 		placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;
 
 		window.controller.getPlaces(placesRequestObject);
-		//$('.places').hide();
 	});
 
   $('#fakeGeo').click(function(){
