@@ -31,26 +31,6 @@ $(function(){
 		return X;
 
 	}
-		/* Initialize range slider
-		$('#rangeSlider').noUiSlider({
-			 range: [startPoint,endPoint]
-			,start: [startPoint,endPoint]
-			,serialization:{
-				to: [$('#rangeUpper'),$('#rangeLower')]
-
-			}
-		});
-	//Initialize milage slider
-	$('#milesSlider').noUiSlider({
-			 range: [milesLower,milesUpper]
-			,start: [mileSet]
-			,handles:1
-			,serialization:{
-				to: [$('#milesFromHwy')]
-
-			}
-		});
-	*/
 
 	function drawRoute(result){
     var routePoly = window.graphicsStore.routePoly;
