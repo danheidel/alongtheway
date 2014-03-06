@@ -1,4 +1,4 @@
-(function(NS){
+window = (function(NS){
   'use strict';
   /*global _*/
   NS.mode = {
@@ -15,6 +15,12 @@
   NS.pathFilterDrawCallback = {};
   NS.pathFilterPoints = [];
   NS.routeObject = {};
+
+  NS.placesObject = {
+    places: [],
+    placesHTML: [],
+    placesReferences: [],
+  }
 
   NS.getRoute = function(routeRequestObject){
     var callback = function(result){

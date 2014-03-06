@@ -5,9 +5,6 @@ $(function(){
   /*global $*/
 
   var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
-  window.places=[];
-  window.placesHTML=[];
-  window.places_references=[];
   var last_SearchComplete=false;
   window.gpView = {}; //temp stub to be refactored later
   window.gmarkers=[];
@@ -22,14 +19,15 @@ $(function(){
     routeMarkers: [],  //markers to mark start/end of the route
   };
 
-  //window.googleMaps.initialize();
-
   function returnplaces(travel){
     alert(travel.fromLocation);
     var X=[];
     X.push({placeName:'the place',logitude:'112',latitude:'345',milesFromHwy:'10'});
     return X;
+  }
 
+  window.getObject = function() {
+  	console.log(window.controller.placesObject);
   }
 
   function drawRoute(result){
@@ -114,16 +112,16 @@ $(function(){
   }
 
   function getPlacesLength(){
-    return {places: places_references,  places_length: places_references.length}
+    return {places: window.controller.placesObject.placesReferences,  
+    	places_length: window.controller.placesObject.placesReferences.length}
   }
 
   function getPlacesDetails(index, value) {
-    places.push(value);
-    // console.log(index, value.place);
+    window.controller.placesObject.places.push(value);
   }
 
   function getPlacesDetailsHTML(index, HTML) {
-    placesHTML.push(HTML);
+    window.controller.placesObject.placesHTML.push(HTML);
     $('.places').append(HTML);
   }
 
@@ -188,7 +186,7 @@ $(function(){
         if (results[0] !== null){
           for (var i = 0, result; result = results[i]; i++) {
               var marker = createMarker(result);
-              places_references.push(result.reference); // marker?
+              window.controller.placesObject.placesReferences.push(result.reference); // marker?
           }
         }
   }
