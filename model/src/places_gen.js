@@ -12,7 +12,6 @@ window.places_gen = (function() {
   function timeDelay(value){
     var dfd = $.Deferred();
     setTimeout(function(value) {
-      // console.log("delay");
       dfd.resolve();
     }, value);
     return dfd.promise();
