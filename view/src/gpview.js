@@ -247,6 +247,7 @@ $(function(){
 		placesRequestObject.getLength = getPlacesLength;
 		placesRequestObject.getDetails = getPlacesDetails;
 		placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;
+		placesRequestObject.query = $('#placePreFilter').val();
 
 		window.controller.getPlaces(placesRequestObject);
 	});
