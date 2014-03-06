@@ -12,7 +12,6 @@ window.places_gen = (function() {
   function timeDelay(value){
     var dfd = $.Deferred();
     setTimeout(function(value) {
-      // console.log("delay");
       dfd.resolve();
     }, value);
     return dfd.promise();
@@ -66,6 +65,11 @@ window.places_gen = (function() {
     }
 
     function startQuery(timerVal) {      
+      //unfortunately this has to be removed - the query limit is too much
+      // if (timerVal>=2000){
+      //   timerVal-=500;
+      //   console.log(timerVal);
+      // } 
       var queryLimit = setInterval(function() {
         var dfd = $.Deferred();
         if (index>=public.place_results.length-1) return;
@@ -141,7 +145,7 @@ window.places_gen = (function() {
                           service.radarSearch({bounds: boxes[searchIndex], keyword: ['thai']}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
                             for (var i = 0, result; result = results[i]; i++) {
-                                public.place_results.push(result.reference); // marker?
+                                public.place_results.push(result.reference); 
                             }                    
                             queryObject.drawMarkers(results1);
                           });
@@ -152,7 +156,7 @@ window.places_gen = (function() {
                     console.log(status);
                     console.log( "bounds["+searchIndex+"] returns "+results.length+" results" );
                     for (var i = 0, result; result = results[i]; i++) {
-                        public.place_results.push(result.reference); // marker?
+                        public.place_results.push(result.reference); 
                     }                    
                     queryObject.drawMarkers(results)
                   }
@@ -169,14 +173,9 @@ window.places_gen = (function() {
     return findNextPlaces(public.place_results, 0);
   }
 
-  public.generateDirections = function generateDirections (place) {
+  public.generateDirections = function generateDirections (clickedMarkerDEST) {
     //Attach directions to a particular marker by first defining a route
     //from original destination
-    var clickedMarkerDEST = {
-      origin: $('#fromInput').val(),
-      destination: place.formatted_address,
-      travelMode: google.maps.DirectionsTravelMode.DRIVING
-    }
     window.googleMaps.directionsService.route(clickedMarkerDEST, function(result, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         window.googleMaps.directionsRenderer.setDirections(result);
@@ -187,14 +186,9 @@ window.places_gen = (function() {
     });
   }
 
-  public.displayDirections = function displayDirections (place) {
+  public.displayDirections = function displayDirections (clickedMarkerDEST) {
   //Display these directions on the DOM
-    var directionsDISPLAY = {
-      origin: $('#fromInput').val(),
-      destination: place.formatted_address,
-      travelMode:google.maps.TravelMode.DRIVING
-    }
-    window.googleMaps.directionsService.route(directionsDISPLAY, function(response, status) {
+    window.googleMaps.directionsService.route(clickedMarkerDEST, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
           $('#directions-panel').empty();
           window.googleMaps.directionsRenderer.setDirections(response);
