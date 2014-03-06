@@ -73,6 +73,8 @@ $(function(){
     routePoly.setPath(result.routes[0].overview_path);
     aheadPoly.setPath(result.aheadPoints);
 
+    //
+
     //make the new line clickable
     google.maps.event.addListener(routePoly, 'click', window.controller.mapClick);
     google.maps.event.addListener(aheadPoly, 'click', window.controller.mapClick);
