@@ -166,11 +166,11 @@ $(function(){
 			    google.maps.event.addListener(marker,'click',function(){
 			        service.getDetails(request, function(place, status) {
 			        if (status == google.maps.places.PlacesServiceStatus.OK) {
-								var clickedMarkerDEST = {
-									origin: $('#fromInput').val(),
-									destination: place.formatted_address,
-									travelMode: google.maps.DirectionsTravelMode.DRIVING
-								};
+				  var clickedMarkerDEST = {
+					origin: $('#fromInput').val(),
+					destination: place.formatted_address,
+					travelMode: google.maps.DirectionsTravelMode.DRIVING
+					};
 			          var details={
 			          	name: place.name,
 			          	address: place.formatted_address,
