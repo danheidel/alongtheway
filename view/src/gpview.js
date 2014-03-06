@@ -31,26 +31,6 @@ $(function(){
 		return X;
 
 	}
-		/* Initialize range slider
-		$('#rangeSlider').noUiSlider({
-			 range: [startPoint,endPoint]
-			,start: [startPoint,endPoint]
-			,serialization:{
-				to: [$('#rangeUpper'),$('#rangeLower')]
-
-			}
-		});
-	//Initialize milage slider
-	$('#milesSlider').noUiSlider({
-			 range: [milesLower,milesUpper]
-			,start: [mileSet]
-			,handles:1
-			,serialization:{
-				to: [$('#milesFromHwy')]
-
-			}
-		});
-	*/
 
 	function drawRoute(result){
     var routePoly = window.graphicsStore.routePoly;
@@ -247,6 +227,7 @@ $(function(){
 		placesRequestObject.getLength = getPlacesLength;
 		placesRequestObject.getDetails = getPlacesDetails;
 		placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;
+		placesRequestObject.query = $('#placePreFilter').val();
 
 		window.controller.getPlaces(placesRequestObject);
 	});
@@ -298,8 +279,6 @@ $(function(){
   var fromMarker = new google.maps.Marker({
     map: map
   });
-
-  google.maps.event.addListener(map, 'click', window.controller.mapClick);
 
   $('#fromChangetype').change(function(event){
     var tempArray = [];
@@ -434,6 +413,7 @@ function toInitialize() {
 //Combined to and from and Page initialazation
 function initializePage(){
   window.googleMaps.initialize();
+  google.maps.event.addListener(window.googleMaps.map, 'click', window.controller.mapClick);
   fromInitialize();
   toInitialize();
 }

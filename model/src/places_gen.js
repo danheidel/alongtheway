@@ -142,7 +142,7 @@ window.places_gen = (function() {
                         console.log("failed!: boxes:",searchIndex, failed_Indexes);
                         timeDelay(timerVal).then(function() {
                           //will need to change the keyword to match above but haven't had time to check scoping
-                          service.radarSearch({bounds: boxes[searchIndex], keyword: ['thai']}, function(results1, status){
+                          service.radarSearch({bounds: boxes[searchIndex], keyword: [queryObject.query]}, function(results1, status){
                             console.log("finished: ", searchIndex, results1, "results.length= ", results1.length);
                             for (var i = 0, result; result = results[i]; i++) {
                                 public.place_results.push(result.reference); 

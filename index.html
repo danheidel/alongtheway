@@ -72,7 +72,7 @@
       <button id='btnGetRoute'>Get Route</button>
 
       <div id='placeShutter'>
-        <div class='control-box' id='routeFilter1'>
+        <div class='control-box' id='routeFilter'>
           <label for='routeFilterMode'>What part of the route are you interested in?</label>
           <br>
           <select class='controls' id='routeFilterMode'>
@@ -81,7 +81,14 @@
             <option value='pointDelta'>Search ahead of me!</option>
           </select>
         </div>
-        <div class='control-box' id='routeFilter2'>
+        <div class='control-box' id='routeFilterSub1' style='display:none;'>
+          <p>This will find services across the entire route!</p>
+        </div>
+        <div class='control-box' id='routeFilterSub2' style='display:none;'>
+          <p>This will find services on the route between two points!</p>
+        </div>
+        <div class='control-box' id='routeFilterSub3' style='display:none;'>
+          <p>This will return services ahead of you and will auto-update as you travel!</p>
         </div>
         <div class='control-box' id='placefilter'>
           <input id='placePreFilter' type='text' class='control' placeholder='Select the services to search for'>
