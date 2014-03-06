@@ -1,17 +1,25 @@
 $(function(){
 	'use strict';
+  /*global alert*/
+  /*global google*/
+  /*global $*/
 
 	var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
 	window.places=[];
 	window.placesHTML=[];
 	window.places_references=[];
 	var last_SearchComplete=false;
+  window.gpView = {}; //temp stub to be refactored later
 	window.gmarkers=[];
 	window.graphicsStore = {
-    routePoly:{},
-    queryPoly: {},
+    routePoly: {},  //polyline for returned google directions
+    aheadPoly: {},  //polyline for the route not yet covered by user
+    queryPoly: {},  //polyline for the subquery of the route results are returned for
 		placeBoxes:[],
-		placeMarkers:[]
+		placeMarkers:[],
+    myMarker: {},  //marker to show current user location
+    queryMarkers: [],  //markers to show start/end of query location
+    routeMarkers: [],  //markers to mark start/end of the route
 	};
 
   //window.googleMaps.initialize();
@@ -45,22 +53,52 @@ $(function(){
 	*/
 
 	function drawRoute(result){
-    var poly = window.graphicsStore.routePoly;
-    //delete old line
-    if(poly.setMap){
-      poly.setMap(null);
+    var routePoly = window.graphicsStore.routePoly;
+    var aheadPoly = window.graphicsStore.aheadPoly;
+    var queryPoly = window.graphicsStore.queryPoly;
+    //delete old lines
+    if(routePoly.setMap){
+      routePoly.setMap(null);
     }
-    poly = new google.maps.Polyline({
+    if(aheadPoly.setMap){
+      aheadPoly.setMap(null);
+    }
+    if(queryPoly.setMap){
+      queryPoly.setMap(null);
+    }
+
+    routePoly = new google.maps.Polyline({
       strokeColor: '#22F',
       strokeOpacity: 0.5,
       strokeWeight: 6
     });
-    //reassign graphicstore routepoly to new polyLine
-    window.graphicsStore.routePoly = poly;
-    poly.setMap(window.googleMaps.map);
-    poly.setPath(result.routes[0].overview_path);
+    aheadPoly = new google.maps.Polyline({
+      strokeColor: '#F22',
+      strokeOpacity: 0.5,
+      strokeWeight: 6
+    });
+    queryPoly = new google.maps.Polyline({
+      strokeColor: '#2F2',
+      strokeOpacity: 0.7,
+      strokeWeight: 10
+    });
+    //reassign graphicsStore polylines to new polyLines
+    window.graphicsStore.routePoly = routePoly;
+    window.graphicsStore.aheadPoly = aheadPoly;
+    window.graphicsStore.queryPoly = queryPoly;
+
+    routePoly.setMap(window.googleMaps.map);
+    aheadPoly.setMap(window.googleMaps.map);
+    queryPoly.setMap(window.googleMaps.map);
+
+    queryPoly.setPath(result.queryPoints); //first to place it at bottom of draw stack
+    routePoly.setPath(result.routes[0].overview_path);
+    aheadPoly.setPath(result.aheadPoints);
+
     //make the new line clickable
-    google.maps.event.addListener(poly, 'click', window.controller.mapClick);
+    google.maps.event.addListener(routePoly, 'click', window.controller.mapClick);
+    google.maps.event.addListener(aheadPoly, 'click', window.controller.mapClick);
+    google.maps.event.addListener(queryPoly, 'click', window.controller.mapClick);
 	}
 
 	function drawPlaces(placesObject){
@@ -202,6 +240,25 @@ $(function(){
 		window.controller.getPlaces(placesRequestObject);
 		//$('.places').hide();
 	});
+
+  $('#fakeGeo').click(function(){
+    //sets mode flag so next click sets the (fake) user location
+    window.controller.mode.gettingFakeGeo = true;
+  });
+
+  window.gpView.showUserLocation = function(latLng){
+    //remove previous marker, if any
+    if(window.graphicsStore.myMarker.setMap){
+      window.graphicsStore.myMarker.setMap(null);
+    }
+    if(window.controller.mode.hasLocation){
+      window.graphicsStore.myMarker = new google.maps.Marker({
+        position: latLng,
+        map: window.googleMaps.map,
+        title:'You are Here!'
+      });
+    }
+  };
 
 	$('#shutterToggle').click(function(){
 		$('#shutter').toggle();

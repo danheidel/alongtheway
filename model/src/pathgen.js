@@ -1,9 +1,11 @@
 (function(NS){
   'use strict';
+  /*global google*/
+
   NS.calcRoute = function(requestObject, callback) {
     var start = requestObject.start;
     var end = requestObject.end;
-    var pointSpacing = requestObject.width || 10000;
+    requestObject.width = requestObject.width || 10000;
     var mode = requestObject.mode || google.maps.TravelMode.DRIVING;
     var map = window.googleMaps.map;
     var directionsRenderer = window.googleMaps.directionsRenderer;
@@ -14,27 +16,28 @@
       destination: end,
       travelMode: mode
     };
+    //set mode to indicate that the current route data is not going to be valid shortly
+    window.controller.mode.hasRoute = false;
+
     directionsService.route(request, function(result, status) {
       if(status == google.maps.DirectionsStatus.OK){
-      if(requestObject.drawRoute){
-        requestObject.drawRoute(result);
-      }
         //directionsRenderer.setDirections(result);
-        showSteps(callback, result, pointSpacing);
+        showSteps(callback, result, requestObject);
       }else{
         callback('something went wrong with the google maps search');
       }
     });
   };
 
-  function showSteps(callback, result, pointSpacing){
+  function showSteps(callback, result, requestObject){
     //flush old data
+    var pointSpacing = requestObject.width;
     var routeInfo = result.routes[0].legs[0];
     var rep, rep2, stepPath, stepDist, stepTime;
     var compDist = google.maps.geometry.spherical.computeDistanceBetween;
     var LatLng = google.maps.LatLng;
     var tempPointArray, tempTotalDelta, tempFracDelta, tempAdditiveTime, tempAdditiveDist;
-    result.savePoints = [];
+    result.savePoints = [];  //save location of thinned points
 
     //add new data
     for(rep=0;rep<routeInfo.steps.length;rep++){
@@ -91,7 +94,15 @@
       result.savePoints[rep].pointDist += result.savePoints[rep - 1].pointDist;
       result.savePoints[rep].pointTime += result.savePoints[rep - 1].pointTime;
     }
-    result.queryPoints = result.savePoints.slice(0);
+    result.aheadPoints = result.savePoints.slice(0); //route points ahead of the user's current location
+    result.queryPoints = result.savePoints.slice(0); //route points as selected by query
+
+    //if a drawRoute function has been defined, draw the route on the map
+    if(requestObject.drawRoute){
+      requestObject.drawRoute(result);
+    }
+    //set mode to indicate that the current route data is valid and usable
+    window.controller.mode.hasRoute = true;
 
     console.log(result);
     var foo = result.savePoints[result.savePoints.length - 1];

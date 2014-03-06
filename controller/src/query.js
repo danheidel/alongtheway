@@ -1,5 +1,8 @@
 (function(NS){
   'use strict';
+  /*global google*/
+  /*global _*/
+
   NS.distDelta = function(meters){
 
   };
