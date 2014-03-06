@@ -2,12 +2,7 @@
   'use strict';
   /*global google*/
 
-  NS.initialize = function initialize() {
-  // var mapOptions = {
-  //   zoom: 6
-  // };
-  // map = new google.maps.Map(document.getElementById('map-canvas'),
-  //     mapOptions);
+  NS.getGeoLocation = function initialize() {
 
   // Try HTML5 geolocation
   if(navigator.geolocation) {
@@ -15,13 +10,14 @@
       var pos = new google.maps.LatLng(position.coords.latitude,
                                        position.coords.longitude);
 
-      var infowindow = new google.maps.InfoWindow({
-        map: window.googleMaps.map,
-        position: pos,
-        content: 'Location found using HTML5.'
-      });
+      // var infowindow = new google.maps.InfoWindow({
+      //   map: window.googleMaps.map,
+      //   position: pos,
+      //   content: 'Location found using HTML5.'
+      // });
 
-      window.googleMaps.map.setCenter(pos);
+      // window.googleMaps.map.setCenter(pos);
+      if (pos !== null || 'undefined') window.controller.geolocation = pos;
     }, function() {
       NS.handleNoGeolocation(true);
     });
@@ -44,10 +40,9 @@ NS.handleNoGeolocation = function handleNoGeolocation(errorFlag) {
     position: new google.maps.LatLng(60, 105),
     content: content
   };
-
+  console.log("here");
   var infowindow = new google.maps.InfoWindow(options);
   window.googleMaps.map.setCenter(options.position);
 };
-
 
 })(window.geolocation = window.geolocation || {});

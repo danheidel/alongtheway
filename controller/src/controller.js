@@ -1,4 +1,4 @@
-window = (function(NS){
+(function(NS){
   'use strict';
   /*global _*/
   NS.mode = {
@@ -17,6 +17,14 @@ window = (function(NS){
     places: [],
     placesHTML: [],
     placesReferences: [],
+  }
+
+  NS.geolocation=[];
+
+  NS.startGeoLocation = function() {
+    setInterval(function(){
+      window.geolocation.getGeoLocation();
+    },5000);
   }
 
   NS.getRoute = function(routeRequestObject){
