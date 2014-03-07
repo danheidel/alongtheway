@@ -20,13 +20,6 @@ $(function(){
     routeMarkers: [],  //markers to mark start/end of the route
   };
 
-  function returnplaces(travel){
-    alert(travel.fromLocation);
-    var X=[];
-    X.push({placeName:'the place',logitude:'112',latitude:'345',milesFromHwy:'10'});
-    return X;
-  }
-
   window.getObject = function() {
     console.log(window.controller.placesObject);
   };
@@ -160,7 +153,7 @@ $(function(){
 
           var marker=new google.maps.Marker({
               map:map,
-              icon: 'view/img/Black_Remove.png',
+              //icon: 'view/img/Black_Remove.png',
               animation: google.maps.Animation.DROP,
               position:place.geometry.location
           });
@@ -194,8 +187,8 @@ $(function(){
                 window.googleMaps.infoWindow.setContent(popup);
                 window.googleMaps.infoWindow.open(map,marker);
               }
-              window.places_gen.generateDirections(clickedMarkerDEST);
-              window.places_gen.displayDirections(clickedMarkerDEST);
+              // window.places_gen.generateDirections(clickedMarkerDEST);
+              // window.places_gen.displayDirections(clickedMarkerDEST);
             });
           });
           gmarkers.push(marker);
@@ -240,6 +233,18 @@ $(function(){
     window.controller.getRoute(routeRequestObject);
   });
 
+  $('#fromHereFill').click(function(){
+    if(window.controller.mode.hasLocation){
+      $('#fromInput').val(window.controller.userLocation.d + ', ' + window.controller.userLocation.e);
+    }
+  });
+
+  $('#toHereFill').click(function(){
+    if(window.controller.mode.hasLocation){
+      $('#toInput').val(window.controller.userLocation.d + ', ' + window.controller.userLocation.e);
+    }
+  });
+
   $('#btnGetPlaces').click(function(){
     var placesRequestObject = {};
     placesRequestObject.services = 'donuts';
@@ -259,24 +264,6 @@ $(function(){
 
   $('#returnToRoute').click(switchUIToRouteSearch);
 
-  $('#fakeGeo').click(function(){
-    //sets mode flag so next click sets the (fake) user location
-    window.controller.mode.gettingFakeGeo = true;
-  });
-
-  window.gpView.showUserLocation = function(latLng){
-    //remove previous marker, if any
-    if(window.graphicsStore.myMarker.setMap){
-      window.graphicsStore.myMarker.setPosition(latLng);
-    } else {
-      window.graphicsStore.myMarker = new google.maps.Marker({
-        position: latLng,
-        map: window.googleMaps.map,
-        title:'You are Here!'
-      });
-    }
-  };
-
   //handling the changes in the route filtering
   $('#routeFilterMode').change(function(event){
     var mode = event.target.value;
@@ -286,6 +273,37 @@ $(function(){
     }
     routeFilterDisplay(mode);
   });
+
+  $('#openUtils').click(function(){
+    $('#utilsShutter').show();
+    $('#utilToggle').hide();
+  });
+
+  $('#closeUtils').click(function(){
+    $('#utilsShutter').hide();
+    $('#utilToggle').show();
+    window.controller.mode.geoLocActive = true;
+  });
+
+  $('#fakeGeo').click(function(){
+    //sets mode flag so next click sets the (fake) user location
+    window.controller.mode.gettingFakeGeo = true;
+  });
+
+  window.gpView.showUserLocation = function(latLng){
+    //remove previous marker, if any
+    window.controller.mode.geoLocActive = false;
+    if(window.graphicsStore.myMarker.setMap){
+      window.graphicsStore.myMarker.setPosition(latLng);
+    } else {
+      window.graphicsStore.myMarker = new google.maps.Marker({
+        position: latLng,
+        icon: '/view/img/codefellows.png',
+        map: window.googleMaps.map,
+        title:'You are Here!'
+      });
+    }
+  };
 
   function routeFilterDisplay(mode){
     var panel0 = $('#routeFilterSub1');
@@ -316,8 +334,13 @@ $(function(){
   //call routeFilterDisplay for start condition
   routeFilterDisplay('wholeRoute');
 
+  window.gpView.getPointDeltaInfo = function(){
+    return {type: $('#pointDeltaType').val(), value: $('#pointDeltaValue').val()};
+  };
+
   $('#mainShutterToggle').click(function(){
     $('#mainShutter').toggle();
+    $('#mainShutterToggle').toggleClass('shutter-toggle-up shutter-toggle-down');
   });
 
 

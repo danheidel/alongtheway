@@ -40,7 +40,7 @@
         <div id="fromType-selector" class="control-box" style="float:left; clear:left;">
           <label for='fromInput'>From: </label>
           <input id="fromInput" class="controls" type="text" placeholder="Enter start point">
-          <button id='fromHereFill'><img src = 'view/img/herearrow.gif'></button>
+          <button id='fromHereFill' class='needsLoc' style='margin-left: 0.3em'><img src = 'view/img/herearrow.gif'></button>
           <br>
           <label for:'fromChangetype'>Set autofill type: </label>
           <select class="controls" name="select" id="fromChangetype">
@@ -53,7 +53,7 @@
         <div id="toType-selector" class="control-box" style="float:left;">
           <label for:'toInput'>To: </label>
           <input id="toInput" class="controls" type="text" placeholder="Enter end point">
-          <button id='toHereFill'>x</button>
+          <button id='toHereFill' class='needsLoc' style='margin-left: 0.3em'><img src = 'view/img/herearrow.gif'></button>
           <br>
           <label for:'toChangetype'>Set autofill type: </label>
           <select class="controls" name="select" id="toChangetype">
@@ -65,7 +65,7 @@
 
         <div class="control-box" style="float:left;">
           <label for='milesFromHwy'>Miles From Hwy</label></br>
-          <input type='number' id='milesFromHwy' value ='1' name'milesFromHwy'>
+          <input type='number' id='milesFromHwy' value ='1' min=1 max=50 name'milesFromHwy'>
         </div>
 
         <br style="clear:both;">
@@ -74,9 +74,8 @@
 
       <div id='placeShutter' style='display:none;'>
         <div class='control-box'>
-          <button id='returnToRoute'>^ Map out a different route! ^</button>
+          <button id='returnToRoute'>&lt</button>
         </div>
-        <div style="clear:both;"></div>
         <div class='control-box' id='routeFilter'>
           <label for='routeFilterMode'>What part of the route are you interested in?</label>
           <br>
@@ -97,8 +96,8 @@
         <div class='control-box' id='routeFilterSub3' style='display:none;'>
           <p>This will return services ahead of you and will auto-update as you travel!</p>
           <label>Search: </label>
-          <input type='number' value=5>
-          <select>
+          <input id='pointDeltaValue' type='number' value=20 min=1>
+          <select id='pointDeltaType'>
             <option value='dist' selected>miles</option>
             <option value='time'>minutes</option>
           </select>
@@ -109,15 +108,23 @@
         <div class='control-box' id='placefilter'>
           <input id='placePreFilter' type='text' class='control' placeholder='Select the services to search for'>
           <br>
-          <br>
           <button id='btnGetPlaces'>Get Places</button>
           <br style="clear:both;">
         </div>
         <div style="clear:both;"></div>
       </div>
 
-      <div id='utilsShutter' style='display: none;'>
+      <div id='utilToggle' class='util-stuff'>
+        <div class='control-box'>
+          <button id='openUtils'>X</button>
+        </div>
+      </div>
+
+      <div id='utilsShutter' class='util-stuff' style='display: none;'>
         <div class='control-box' id='utilsStuff'>
+          <button id='closeUtils'>X</button>
+          <br style="clear:both;">
+          <br>
           <label for='placesDrawBoxes'>Draw Boxes</label>
           <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
           <br>
@@ -129,7 +136,7 @@
     </div>
     <div style="clear:both;"></div>
 
-    <div class='shutter-toggle' id='mainShutterToggle' style='background-color:red;'>
+    <div class='shutter-toggle-up' id='mainShutterToggle' style='background-color:#d8d8d8;'>
       <br>
     </div>
     <div id="map"></div>

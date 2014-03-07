@@ -41,6 +41,10 @@
       }
       return false;
     });
+    //if query runs off end of array, set to endpoint
+    if(!endPoint){
+      endPoint = latLngArray[latLngArray.length - 1];
+    }
     _.each(latLngArray, function(elem){
       if(!elem){
         console.log('!');

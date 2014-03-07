@@ -74,7 +74,14 @@
     if(NS.mode.hasLocation){
       if(NS.mode.gettingSubRouteMode === 'delta'){
         //we are in search-ahead mode
-        NS.routeObject.queryPoints = NS.pathFilterCallback(latLng, NS.routeObject.savePoints, 2500, null);
+        var pointDeltaInfo = window.gpView.getPointDeltaInfo();
+        var meters, seconds;
+        if(pointDeltaInfo.type === 'dist'){
+          meters = pointDeltaInfo.value * 1609.34;
+        }else{
+          seconds = pointDeltaInfo.value * 60;
+        }
+        NS.routeObject.queryPoints = NS.pathFilterCallback(latLng, NS.routeObject.savePoints, meters, seconds);
         NS.pathFilterDrawCallback(NS.routeObject);
       }
     }
@@ -89,6 +96,7 @@
       NS.mode.hasLocation = true;
       window.gpView.showUserLocation(NS.userLocation);
       NS.onLocationChange(NS.userLocation);
+      NS.mode.gettingFakeGeo = false;
     }
     if(NS.mode.gettingSubRouteMode === 'end'){
       //this click is to define the subset of the route for place searches
