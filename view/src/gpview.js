@@ -24,11 +24,32 @@ $(function(){
     console.log(window.controller.placesObject);
   };
 
-  function drawRoute(result){
-    var routePoly, aheadPoly, queryPoly;
+  function drawAndCenterRoute(result){
+    drawRoute(result);
+
     var SW = new google.maps.LatLng();
     var NE = new google.maps.LatLng();
     var mapBound;
+    //recenter the window around the latest ROI on the path
+    NE.d = _.max(result.savePoints, function(elem){ return elem.d; }).d;
+    NE.e = _.max(result.savePoints, function(elem){ return elem.e; }).e;
+    SW.d = _.min(result.savePoints, function(elem){ return elem.d; }).d;
+    SW.e = _.min(result.savePoints, function(elem){ return elem.e; }).e;
+    mapBound = new google.maps.LatLngBounds(SW, NE);
+    // new google.maps.Rectangle({
+    //     bounds: mapBound,
+    //     fillOpacity: 0,
+    //     strokeOpacity: 0.9,
+    //     strokeColor: '#000',
+    //     strokeWeight: 1,
+    //     map: window.googleMaps.map
+    //   });
+    window.googleMaps.map.fitBounds(mapBound);
+    //window.googleMaps.map.setZoom(12);
+  }
+
+  function drawRoute(result){
+    var routePoly, aheadPoly, queryPoly;
 
     //if not yet drawn set up new polylines
     if(!window.graphicsStore.routePoly.setMap){
@@ -67,22 +88,6 @@ $(function(){
     queryPoly.setPath(result.queryPoints); //first to place it at bottom of draw stack
     routePoly.setPath(result.routes[0].overview_path);
     aheadPoly.setPath(result.aheadPoints);
-
-    //recenter the window around the latest ROI on the path
-    // NE.d = _.max(result.savePoints, function(elem){ return elem.d; }).d;
-    // NE.e = _.max(result.savePoints, function(elem){ return elem.e; }).e;
-    // SW.d = _.min(result.savePoints, function(elem){ return elem.e; }).d;
-    // SW.e = _.min(result.savePoints, function(elem){ return elem.d; }).e;
-    // mapBound = new google.maps.LatLngBounds(SW, NE);
-    // new google.maps.Rectangle({
-    //     bounds: mapBound,
-    //     fillOpacity: 0,
-    //     strokeOpacity: 0.9,
-    //     strokeColor: '#000',
-    //     strokeWeight: 1,
-    //     map: window.googleMaps.map
-    //   });
-    // window.googleMaps.map.fitBounds(mapBound);
   }
 
   function drawPlaces(placesObject){
@@ -227,7 +232,7 @@ $(function(){
     routeRequestObject.start = $('#fromInput').val();
     routeRequestObject.end = $('#toInput').val();
     routeRequestObject.width = $('#milesFromHwy').val() * 1.60934;  //width is sent in km
-    routeRequestObject.drawRoute = drawRoute;
+    routeRequestObject.drawRoute = drawAndCenterRoute;
     routeRequestObject.UIChanger = switchUIToPlaceSearch;
 
     window.controller.getRoute(routeRequestObject);
