@@ -160,7 +160,7 @@ $(function(){
 
           var marker=new google.maps.Marker({
               map:map,
-              icon: image,
+              icon: "https://cdn0.iconfinder.com/data/icons/30_Free_Black_ToolBar_Icons/40/Black_Remove.png",
               animation: google.maps.Animation.DROP,
               position:place.geometry.location
           });
