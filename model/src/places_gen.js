@@ -54,24 +54,24 @@ window.places_gen = (function() {
     //_public.showPlaces(queryObject);
   };
 
-  _public.getPlaces2 = function(latLngArray, queryObject, callback){
-    var width = queryObject.width;
-    var query = queryObject.query;
-    var displayCallback = queryObject.drawPlaces;
-    queryObject.nukeMarkers();
+  // _public.getPlaces2 = function(latLngArray, queryObject, callback){
+  //   var width = queryObject.width;
+  //   var query = queryObject.query;
+  //   var displayCallback = queryObject.drawPlaces;
+  //   queryObject.nukeMarkers();
 
-    //reset async mode
-    asyncToggle = true;
-    var routeBoxer = window.googleMaps.routeBoxer;
-    var boxes = routeBoxer.box(latLngArray, width);
-    console.log('boxes: ', boxes);
-    //this is calling the drawBoxes function passed from the view
-    if(queryObject.drawBoxes){
-      queryObject.drawBoxes(boxes);
-    }
-    //_public.drawBoxes(boxes);
-    doSearch(queryObject, boxes, 500, 0, callback);
-  };
+  //   //reset async mode
+  //   asyncToggle = true;
+  //   var routeBoxer = window.googleMaps.routeBoxer;
+  //   var boxes = routeBoxer.box(latLngArray, width);
+  //   console.log('boxes: ', boxes);
+  //   //this is calling the drawBoxes function passed from the view
+  //   if(queryObject.drawBoxes){
+  //     queryObject.drawBoxes(boxes);
+  //   }
+  //   //_public.drawBoxes(boxes);
+  //   doSearch(queryObject, boxes, 500, 0, callback);
+  // };
 
   _public.showPlaces = function showPlaces(queryObject, decrement) {
     var html_out =[];
@@ -148,35 +148,35 @@ window.places_gen = (function() {
 
   };
 
-  function doSearch(queryObject, boxes, delayVal, index, callback){
-    var service = window.googleMaps.placesService;
-    if(index < boxes.length){
-      var radarOptions = {
-        bounds: boxes[index],
-        keyword: [queryObject.query]
-      };
-      service.radarSearch(radarOptions, boxQuery.bind(null, queryObject, boxes, delayVal, index, callback));
-      //call next box search with appropriate delay
-      if(asyncToggle){
-        setTimeout(doSearch, delayVal, queryObject, boxes, delayVal, index + 1, callback);
-      }
-    }
-  }
+  // function doSearch(queryObject, boxes, delayVal, index, callback){
+  //   var service = window.googleMaps.placesService;
+  //   if(index < boxes.length){
+  //     var radarOptions = {
+  //       bounds: boxes[index],
+  //       keyword: [queryObject.query]
+  //     };
+  //     service.radarSearch(radarOptions, boxQuery.bind(null, queryObject, boxes, delayVal, index, callback));
+  //     //call next box search with appropriate delay
+  //     if(asyncToggle){
+  //       setTimeout(doSearch, delayVal, queryObject, boxes, delayVal, index + 1, callback);
+  //     }
+  //   }
+  // }
 
-  function boxQuery(queryObject, boxes, delayVal, index, callback, results, status){
-    console.log('search box ' + (index + 1) + ' out of ' + boxes.length);
-    if (status != google.maps.places.PlacesServiceStatus.OK && status === 'OVER_QUERY_LIMIT') {
-      setTimeout(doSearch, boxes, delayVal * 3, index, callback);
-      console.log('exceeded query limit, will requery box: ' + index);
-    }
-    if (status != 'OVER_QUERY_LIMIT'){
-      console.log('returns '+results.length+' results ');
-      for (var i = 0, result; result = results[i]; i++) {
-        _public.place_results.push(result.reference);
-      }
-      queryObject.drawMarkers(results);
-    }
-  }
+  // function boxQuery(queryObject, boxes, delayVal, index, callback, results, status){
+  //   console.log('search box ' + (index + 1) + ' out of ' + boxes.length);
+  //   if (status != google.maps.places.PlacesServiceStatus.OK && status === 'OVER_QUERY_LIMIT') {
+  //     setTimeout(doSearch, boxes, delayVal * 3, index, callback);
+  //     console.log('exceeded query limit, will requery box: ' + index);
+  //   }
+  //   if (status != 'OVER_QUERY_LIMIT'){
+  //     console.log('returns '+results.length+' results ');
+  //     for (var i = 0, result; result = results[i]; i++) {
+  //       _public.place_results.push(result.reference);
+  //     }
+  //     queryObject.drawMarkers(results);
+  //   }
+  // }
 
   $.search = function (queryObject, boxes, timerVal) {
     var toggle = false;
