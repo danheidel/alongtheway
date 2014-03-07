@@ -101,6 +101,12 @@
     if(requestObject.drawRoute){
       requestObject.drawRoute(result);
     }
+    //fire UI change function to switch to places search mode
+    if(requestObject.UIChanger){
+      requestObject.UIChanger();
+    }
+    //fire controller callback to store route data there
+    callback(result);
     //set mode to indicate that the current route data is valid and usable
     window.controller.mode.hasRoute = true;
 
@@ -109,7 +115,6 @@
     console.log('route dist: ' + routeInfo.distance.value + '  route time: ' + routeInfo.duration.value);
     console.log('points dist: ' + foo.pointDist + '  points time: ' + foo.pointTime);
     console.log('dist %diff: ' + ((routeInfo.distance.value - foo.pointDist)/routeInfo.distance.value * 100).toFixed(2) + '  time %diff: ' + ((routeInfo.duration.value - foo.pointTime)/routeInfo.duration.value * 100).toFixed(2));
-    callback(result);
   }
 
 })(window.pathGen = window.pathGen || {});

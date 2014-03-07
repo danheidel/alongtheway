@@ -1,13 +1,14 @@
 (function(NS){
   'use strict';
   /*global _*/
+  /*global google*/
+
   NS.mode = {
     hasRoute: false,
     hasPlaces: false,
     hasLocation: false,
-    gettingSubRouteStart: false,
-    gettingSubRouteEnd: false,
-    gettingFakeGeo: false
+    geoLocActive: true,
+    gettingSubRouteMode: 'none',
   };
   NS.userLocation = {};
   NS.pathFilterMode = 'wholeRoute'; //default value
@@ -20,28 +21,19 @@
     places: [],
     placesHTML: [],
     placesReferences: [],
-  }
-
-  NS.geoLocActive=[];
-  NS.geolocation=[];
-  NS.geolocationMarker=[];
+  };
 
   NS.startGeoLocation = function() {
-    var marker;
     setInterval(function(){
-      window.geolocation.getGeoLocation();
-      if (marker){
-        marker.setMap(null);
+      if(NS.mode.geoLocActive === true){
+        window.geolocation.getGeoLocation();
       }
-      if (NS.geolocation!=[] && NS.geoLocActive==true){
-          marker = new google.maps.Marker({
-          position: NS.geolocation,
-          map: window.googleMaps.map,
-          title: 'Hello World!'
-        });
+      if(NS.mode.hasLocation){
+        NS.onLocationChange(NS.userLocation);
+        window.gpView.showUserLocation(NS.userLocation);
       }
-    },500);
-  }
+    },2000);
+  };
 
 
   NS.getRoute = function(routeRequestObject){
@@ -57,29 +49,35 @@
     NS.pathFilterMode = mode;
     if(NS.mode.hasRoute){
       if(mode === 'wholeRoute'){
+        NS.mode.gettingSubRouteMode = 'none';
         NS.routeObject.queryPoints = NS.routeObject.savePoints;
         drawCallback(NS.routeObject);
       }else if(mode === 'twoPoints'){
-        //stuff happens
-        NS.mode.gettingSubRouteStart = true;
+        //begin definition of start/end point of query
+        NS.mode.gettingSubRouteMode = 'start';
         NS.pathFilterCallback = window.query.pointToPoint;
         NS.pathFilterDrawCallback = drawCallback;
-        // var halfway = NS.routeObject.savePoints.length * 0.9;
-        // NS.routeObject.queryPoints = [];
-        // _.each(NS.routeObject.savePoints, function(element, index){
-        //   if(index > halfway){
-        //     NS.routeObject.queryPoints.push(element);
-        //   }
-        // });
       }else if(mode === 'pointDelta'){
-        //other stuff happens
+        //start point to delta mode
+        NS.mode.gettingSubRouteMode = 'delta';
+        NS.pathFilterCallback = window.query.pointPlusDelta;
+        NS.pathFilterDrawCallback = drawCallback;
       }
-      //call the draw callback when done
     }
   };
 
   NS.getPlaces = function(placesRequestObject){
     window.places_gen.getPlaces(NS.routeObject.queryPoints, placesRequestObject);
+  };
+
+  NS.onLocationChange = function(latLng){
+    if(NS.mode.hasLocation){
+      if(NS.mode.gettingSubRouteMode === 'delta'){
+        //we are in search-ahead mode
+        NS.routeObject.queryPoints = NS.pathFilterCallback(latLng, NS.routeObject.savePoints, 2500, null);
+        NS.pathFilterDrawCallback(NS.routeObject);
+      }
+    }
   };
 
   NS.mapClick = function(event){
@@ -88,23 +86,24 @@
     if(NS.mode.gettingFakeGeo){
       //this click is to define the current user location
       NS.userLocation = event.latLng;
-      NS.mode.gettingFakeGeo = false;
       NS.mode.hasLocation = true;
       window.gpView.showUserLocation(NS.userLocation);
+      NS.onLocationChange(NS.userLocation);
     }
-    if(NS.mode.gettingSubRouteEnd){
+    if(NS.mode.gettingSubRouteMode === 'end'){
       //this click is to define the subset of the route for place searches
       NS.pathFilterPoints.push(event.latLng);
-      NS.mode.gettingSubRouteEnd = false;
+      NS.mode.gettingSubRouteMode = 'none';
       NS.routeObject.queryPoints = window.query.pointToPoint(NS.pathFilterPoints[0], NS.pathFilterPoints[1], NS.routeObject.savePoints);
       NS.pathFilterDrawCallback(NS.routeObject);
     }
-    if(NS.mode.gettingSubRouteStart){
+    if(NS.mode.gettingSubRouteMode === 'start'){
       //this click is to define the subset of the route for place searches
       NS.pathFilterPoints = [];
       NS.pathFilterPoints.push(event.latLng);
-      NS.mode.gettingSubRouteStart = false;
-      NS.mode.gettingSubRouteEnd = true;
+      NS.mode.gettingSubRouteMode = 'end';
+      NS.routeObject.queryPoints = window.query.pointToPoint(NS.pathFilterPoints[0], NS.routeObject.savePoints[NS.routeObject.savePoints.length - 1], NS.routeObject.savePoints);
+      NS.pathFilterDrawCallback(NS.routeObject);
     }
   };
 

@@ -71,6 +71,10 @@
       </div>
 
       <div id='placeShutter' style='display:none;'>
+        <div class='control-box'>
+          <button id='returnToRoute'>^ Map out a different route! ^</button>
+        </div>
+        <div style="clear:both;"></div>
         <div class='control-box' id='routeFilter'>
           <label for='routeFilterMode'>What part of the route are you interested in?</label>
           <br>
@@ -85,10 +89,18 @@
         </div>
         <div class='control-box' id='routeFilterSub2' style='display:none;'>
           <p>This will find services on the route between two points!</p>
+          <p>Just click the map to set the start and end points!</p>
           <p>Search area will be highlighted in green.</p>
         </div>
         <div class='control-box' id='routeFilterSub3' style='display:none;'>
           <p>This will return services ahead of you and will auto-update as you travel!</p>
+          <label>Search: </label>
+          <input type='number' value=5>
+          <select>
+            <option value='dist' selected>miles</option>
+            <option value='time'>minutes</option>
+          </select>
+          <label> ahead.</label>
           <p>The search area will be highlighted in green.</p>
         </div>
         <br style="clear:both;">
@@ -102,7 +114,7 @@
         <div style="clear:both;"></div>
       </div>
 
-      <div id='utilsShutter'>
+      <div id='utilsShutter' style='display: none;'>
         <div class='control-box' id='utilsStuff'>
           <label for='placesDrawBoxes'>Draw Boxes</label>
           <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
@@ -120,13 +132,7 @@
     </div>
     <div id="map"></div>
     <br style='clear:both;'>
-<!--
-<div id='rangeSlider' class='noUiSlider'></div>
-<input id='rangeUpper'></input><input id='rangeLower'></input>
-<div id='milesSlider' class='noUiSlider'></div>
-<input id='milesFromHwy'></input>
-        </div>
-        -->
+
   <script id="places-template" type="text/x-handlebars-template">
       <ul>
         <li>{{#if place}} {{place}} {{/if}}</li>
