@@ -14,6 +14,7 @@ window.places_gen = (function() {
   _public.infowindow = new google.maps.InfoWindow();
   var failed_Indexes =[];
   var failed_pl_Queries =[];
+  var asyncToggle = true;
 
   function timeDelay(value){
     var dfd = $.Deferred();
@@ -22,6 +23,11 @@ window.places_gen = (function() {
     }, value);
     return dfd.promise();
   }
+
+  $(document).on('stopASYNC', function() {
+    //stop all further async callbacks
+    asyncToggle = false;
+  });
 
   _public.initialize = function initialize() {
   };
@@ -45,6 +51,25 @@ window.places_gen = (function() {
       console.log(resultsQuery.places, 'places.length: ', resultsQuery.places_length);
     });
     _public.showPlaces(queryObject);
+  };
+
+  _public.getPlaces2 = function(latLngArray, queryObject, callback){
+    var width = queryObject.width;
+    var query = queryObject.query;
+    var displayCallback = queryObject.drawPlaces;
+    queryObject.nukeMarkers();
+
+    //reset async mode
+    asyncToggle = true;
+    var routeBoxer = window.googleMaps.routeBoxer;
+    var boxes = routeBoxer.box(latLngArray, width);
+    console.log('boxes: ', boxes);
+    //this is calling the drawBoxes function passed from the view
+    if(queryObject.drawBoxes){
+      queryObject.drawBoxes(boxes);
+    }
+    //_public.drawBoxes(boxes);
+    doSearch(queryObject, boxes, 500, 0, callback);
   };
 
   _public.showPlaces = function showPlaces(queryObject, decrement) {
@@ -122,6 +147,36 @@ window.places_gen = (function() {
 
   };
 
+  function doSearch(queryObject, boxes, delayVal, index, callback){
+    var service = window.googleMaps.placesService;
+    if(index < boxes.length){
+      var radarOptions = {
+        bounds: boxes[index],
+        keyword: [queryObject.query]
+      };
+      service.radarSearch(radarOptions, boxQuery.bind(null, queryObject, boxes, delayVal, index, callback));
+      //call next box search with appropriate delay
+      if(asyncToggle){
+        setTimeout(doSearch, delayVal, queryObject, boxes, delayVal, index + 1, callback);
+      }
+    }
+  }
+
+  function boxQuery(queryObject, boxes, delayVal, index, callback, results, status){
+    console.log('search box ' + (index + 1) + ' out of ' + boxes.length);
+    if (status != google.maps.places.PlacesServiceStatus.OK && status === 'OVER_QUERY_LIMIT') {
+      setTimeout(doSearch, boxes, delayVal * 3, index, callback);
+      console.log('exceeded query limit, will requery box: ' + index);
+    }
+    if (status != 'OVER_QUERY_LIMIT'){
+      console.log('returns '+results.length+' results ');
+      for (var i = 0, result; result = results[i]; i++) {
+        _public.place_results.push(result.reference);
+      }
+      queryObject.drawMarkers(results);
+    }
+  }
+
   $.search = function (queryObject, boxes, timerVal) {
     var toggle = false;
     $(document).on('stopASYNC', function() {
@@ -132,15 +187,16 @@ window.places_gen = (function() {
       if (toggle) return;
       var dfd = $.Deferred();
       var service = window.googleMaps.placesService;
+      var radarOptions;
+
       if (searchIndex < boxes.length) {
-        // service.nearbySearch({
-        service.radarSearch({
+        radarOptions = {
           bounds: boxes[searchIndex],
-          // types: ['food']
-          keyword: [queryObject.query],
-          // rankBy: google.maps.places.RankBy.DISTANCE
-        }, function (results, status) {
-          if (status != google.maps.places.PlacesServiceStatus.OK  && status === 'OVER_QUERY_LIMIT') {
+          keyword: [queryObject.query]
+        };
+
+        service.radarSearch(radarOptions, function (results, status) {
+          if (status != google.maps.places.PlacesServiceStatus.OK && status === 'OVER_QUERY_LIMIT') {
             timerVal+=3000;
             console.log('searchIndex: ', searchIndex);
             if (_.contains(failed_Indexes, searchIndex) === false){
@@ -148,7 +204,6 @@ window.places_gen = (function() {
               console.log(failed_Indexes);
               console.log('failed!: boxes:',searchIndex, failed_Indexes);
               timeDelay(timerVal).then(function() {
-                //will need to change the keyword to match above but haven't had time to check scoping
                 service.radarSearch({bounds: boxes[searchIndex], keyword: [queryObject.query]}, function(results1, status){
                   console.log('finished: ', searchIndex, results1, 'results.length= ', results1.length);
                   for (var i = 0, result; result = results[i]; i++) {

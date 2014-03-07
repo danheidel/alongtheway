@@ -254,6 +254,7 @@ $(function(){
       placesRequestObject.drawBoxes = drawPlacesBoxes;
     }
     placesRequestObject.drawMarkers = drawPlacesMarkers;
+    placesRequestObject.nukeMarkers = window.nukeMarkers;
     placesRequestObject.getLength = getPlacesLength;
     placesRequestObject.getDetails = getPlacesDetails;
     placesRequestObject.getDetailsHTML = getPlacesDetailsHTML;

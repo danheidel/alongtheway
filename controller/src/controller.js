@@ -38,7 +38,7 @@
 
   NS.getRoute = function(routeRequestObject){
     var callback = function(result){
-      NS.routeObject  = result;
+      NS.routeObject = result;
       //alert('got the route');
     };
 
@@ -67,7 +67,15 @@
   };
 
   NS.getPlaces = function(placesRequestObject){
-    window.places_gen.getPlaces(NS.routeObject.queryPoints, placesRequestObject);
+    function callback(result){
+      // NS.placesObject.count += result.length;
+      // for(var rep = 0;rep < result.length;rep ++){
+      //   NS.placesObject.push(result[rep]);
+      // }
+    }
+    //clear place markers
+    //NS.placesObject = [];
+    window.places_gen.getPlaces2(NS.routeObject.queryPoints, placesRequestObject, callback);
   };
 
   NS.onLocationChange = function(latLng){
