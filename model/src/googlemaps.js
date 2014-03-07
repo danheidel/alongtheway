@@ -21,7 +21,7 @@
     NS.placesService = new google.maps.places.PlacesService(NS.map);
     NS.routeBoxer = new RouteBoxer();
     NS.infoWindow = new google.maps.InfoWindow();
-
+    window.controller.startGeoLocation();
     //google.maps.event.addDomListener(window, 'load', initialize);
   };
 

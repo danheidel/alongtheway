@@ -22,6 +22,28 @@
     placesReferences: [],
   };
 
+  NS.geoLocActive=[];
+  NS.geolocation=[];
+  NS.geolocationMarker=[];
+
+  NS.startGeoLocation = function() {
+    var marker;
+    setInterval(function(){
+      window.geolocation.getGeoLocation();
+      if (marker){
+        marker.setMap(null);
+      }
+      if (NS.geolocation!=[] && NS.geoLocActive==true){
+          marker = new google.maps.Marker({
+          position: NS.geolocation,
+          map: window.googleMaps.map,
+          title: 'Hello World!'
+        });
+      }
+    },500);
+  }
+
+
   NS.getRoute = function(routeRequestObject){
     var callback = function(result){
       NS.routeObject  = result;
