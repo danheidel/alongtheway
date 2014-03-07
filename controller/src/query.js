@@ -30,7 +30,7 @@
 
   NS.pointPlusDelta = function(latLng, latLngArray, deltaDist, deltaTime){
     var startPoint, endPoint;
-    var returnArray;
+    var returnArray = [];
     startPoint = NS.pointToPath(latLng, latLngArray);
     endPoint = _.find(latLngArray, function(elem){
       if(deltaDist){
@@ -41,7 +41,10 @@
       }
       return false;
     });
-    returnArray = _.each(latLngArray, function(elem){
+    _.each(latLngArray, function(elem){
+      if(!elem){
+        console.log('!');
+      }
       if(elem.pointDist > startPoint.pointDist && elem.pointDist < endPoint.pointDist){
         returnArray.push(elem);
       }

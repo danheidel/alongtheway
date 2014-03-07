@@ -1,13 +1,14 @@
 (function(NS){
   'use strict';
   /*global _*/
+  /*global google*/
+
   NS.mode = {
     hasRoute: false,
     hasPlaces: false,
     hasLocation: false,
     geoLocActive: true,
     gettingSubRouteMode: 'none',
-    gettingFakeGeo: false
   };
   NS.userLocation = {};
   NS.pathFilterMode = 'wholeRoute'; //default value
@@ -22,26 +23,17 @@
     placesReferences: [],
   };
 
-  NS.geoLocActive=[];
-  NS.geolocation=[];
-  NS.geolocationMarker=[];
-
   NS.startGeoLocation = function() {
-    var marker;
     setInterval(function(){
-      window.geolocation.getGeoLocation();
-      if (marker){
-        marker.setMap(null);
+      if(NS.mode.geoLocActive === true){
+        window.geolocation.getGeoLocation();
       }
-      if (NS.geolocation!=[] && NS.geoLocActive==true){
-          marker = new google.maps.Marker({
-          position: NS.geolocation,
-          map: window.googleMaps.map,
-          title: 'Hello World!'
-        });
+      if(NS.mode.hasLocation){
+        NS.onLocationChange(NS.userLocation);
+        window.gpView.showUserLocation(NS.userLocation);
       }
-    },500);
-  }
+    },2000);
+  };
 
 
   NS.getRoute = function(routeRequestObject){
@@ -69,7 +61,7 @@
         //start point to delta mode
         NS.mode.gettingSubRouteMode = 'delta';
         NS.pathFilterCallback = window.query.pointPlusDelta;
-        NS.mode.pathFilterDrawCallback = drawCallback;
+        NS.pathFilterDrawCallback = drawCallback;
       }
     }
   };
@@ -82,7 +74,7 @@
     if(NS.mode.hasLocation){
       if(NS.mode.gettingSubRouteMode === 'delta'){
         //we are in search-ahead mode
-        NS.pathFilterCallback(latLng, NS.routeObject.savePoints, 2500, null);
+        NS.routeObject.queryPoints = NS.pathFilterCallback(latLng, NS.routeObject.savePoints, 2500, null);
         NS.pathFilterDrawCallback(NS.routeObject);
       }
     }
@@ -94,7 +86,6 @@
     if(NS.mode.gettingFakeGeo){
       //this click is to define the current user location
       NS.userLocation = event.latLng;
-      NS.mode.gettingFakeGeo = false;
       NS.mode.hasLocation = true;
       window.gpView.showUserLocation(NS.userLocation);
       NS.onLocationChange(NS.userLocation);
@@ -106,7 +97,7 @@
       NS.routeObject.queryPoints = window.query.pointToPoint(NS.pathFilterPoints[0], NS.pathFilterPoints[1], NS.routeObject.savePoints);
       NS.pathFilterDrawCallback(NS.routeObject);
     }
-    if(NS.mode.gettingSubRouteMode = 'start'){
+    if(NS.mode.gettingSubRouteMode === 'start'){
       //this click is to define the subset of the route for place searches
       NS.pathFilterPoints = [];
       NS.pathFilterPoints.push(event.latLng);

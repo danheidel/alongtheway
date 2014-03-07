@@ -94,7 +94,13 @@
         </div>
         <div class='control-box' id='routeFilterSub3' style='display:none;'>
           <p>This will return services ahead of you and will auto-update as you travel!</p>
-
+          <label>Search: </label>
+          <input type='number' value=5>
+          <select>
+            <option value='dist' selected>miles</option>
+            <option value='time'>minutes</option>
+          </select>
+          <label> ahead.</label>
           <p>The search area will be highlighted in green.</p>
         </div>
         <br style="clear:both;">
@@ -108,7 +114,7 @@
         <div style="clear:both;"></div>
       </div>
 
-      <div id='utilsShutter'>
+      <div id='utilsShutter' style='display: none;'>
         <div class='control-box' id='utilsStuff'>
           <label for='placesDrawBoxes'>Draw Boxes</label>
           <input type='checkbox' name='toPlaces' id='placesDrawBoxes'>
@@ -126,13 +132,7 @@
     </div>
     <div id="map"></div>
     <br style='clear:both;'>
-<!--
-<div id='rangeSlider' class='noUiSlider'></div>
-<input id='rangeUpper'></input><input id='rangeLower'></input>
-<div id='milesSlider' class='noUiSlider'></div>
-<input id='milesFromHwy'></input>
-        </div>
-        -->
+
   <script id="places-template" type="text/x-handlebars-template">
       <ul>
         <li>{{#if place}} {{place}} {{/if}}</li>
