@@ -75,7 +75,7 @@
     }
     //clear place markers
     //NS.placesObject = [];
-    window.places_gen.getPlaces2(NS.routeObject.queryPoints, placesRequestObject, callback);
+    window.places_gen.getPlaces(NS.routeObject.queryPoints, placesRequestObject, callback);
   };
 
   NS.onLocationChange = function(latLng){

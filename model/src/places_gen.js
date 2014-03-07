@@ -37,6 +37,7 @@ window.places_gen = (function() {
     var query = queryObject.query;
     var displayCallback = queryObject.drawPlaces;
 
+    window.nukeMarkers();
     var routeBoxer = window.googleMaps.routeBoxer;
     var boxes = routeBoxer.box(latLngArray, width);
     console.log('boxes: ', boxes);
@@ -50,7 +51,7 @@ window.places_gen = (function() {
       var resultsQuery = queryObject.getLength();
       console.log(resultsQuery.places, 'places.length: ', resultsQuery.places_length);
     });
-    _public.showPlaces(queryObject);
+    //_public.showPlaces(queryObject);
   };
 
   _public.getPlaces2 = function(latLngArray, queryObject, callback){
