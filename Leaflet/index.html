@@ -64,8 +64,13 @@ function onMapClick(e) {
 map.on('click', onMapClick);
 
 //Create Leaflet Icon
-var pinIcon = L.icon('view/images/pin.ico');
-
+var myPin = L.icon({
+    iconUrl: 'images/pin.ico'
+    ,iconSize: [72, 72]
+    ,iconAnchor: [22, 94]
+    ,popupAnchor: [-3, -76]
+    
+});
 
 //Pull google route data and create leaflet polyline
 var dataIn = window.opener;
@@ -87,7 +92,7 @@ var PlaceArray=dataIn.gmarkers;
 var markers = new L.MarkerClusterGroup();
 count=0;
 while(count < PlaceArray.length){
-    var XX = L.marker([PlaceArray[count].position.d, PlaceArray[count].position.e], {title: '' /*PlaceArray[count].name*/}, {riseOnHover:true}, {alt:''/*PlaceArray[count].name*/}, {icon:pinIcon});//.addTo(map);
+    var XX = L.marker([PlaceArray[count].position.d, PlaceArray[count].position.e], {title: 'Click for More Info', icon:myPin,alt:'Click for More Info'});//.addTo(map);
     //Create Cluster
   //  markers.addLayer(new L.Marker([PlaceArray[count].geometry.location.d, PlaceArray[count].geometry.location.e]));
     markers.addLayer(XX);
