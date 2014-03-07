@@ -261,8 +261,6 @@ $(function(){
     placesRequestObject.query = $('#placePreFilter').val();
 
     window.controller.getPlaces(placesRequestObject);
-
-    window.open('/Leaflet/index.html');
   });
 
   $('#returnToRoute').click(switchUIToRouteSearch);
@@ -294,7 +292,7 @@ $(function(){
   });
 
   $('#callLeaflet').click(function(){
-
+    window.open('/Leaflet/index.html');
   });
 
   window.gpView.showUserLocation = function(latLng){
