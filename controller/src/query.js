@@ -3,14 +3,6 @@
   /*global google*/
   /*global _*/
 
-  NS.distDelta = function(meters){
-
-  };
-
-  NS.timeDelta = function(seconds){
-
-  };
-
   NS.pointToPath = function(latLng, latLngArray){
     return _.min(latLngArray, function(point){
       return google.maps.geometry.spherical.computeDistanceBetween(latLng, point);
@@ -36,8 +28,25 @@
     return returnArray;
   };
 
-  NS.pointPlusDelta = function(latLng, deltaData, latLngArray){
-
+  NS.pointPlusDelta = function(latLng, latLngArray, deltaDist, deltaTime){
+    var startPoint, endPoint;
+    var returnArray;
+    startPoint = NS.pointToPath(latLng, latLngArray);
+    endPoint = _.find(latLngArray, function(elem){
+      if(deltaDist){
+        return (elem.pointDist - startPoint.pointDist) > deltaDist;
+      }
+      if(deltaTime){
+        return (elem.pointTime - startPoint.pointTime) > deltaTime;
+      }
+      return false;
+    });
+    returnArray = _.each(latLngArray, function(elem){
+      if(elem.pointDist > startPoint.pointDist && elem.pointDist < endPoint.pointDist){
+        returnArray.push(elem);
+      }
+    });
+    return returnArray;
   };
 
   NS.pointCenteredDelta = function(latLng, deltaData, latLngArray){

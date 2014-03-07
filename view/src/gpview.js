@@ -3,6 +3,7 @@ $(function(){
   /*global alert*/
   /*global google*/
   /*global $*/
+  /*global _*/
 
   var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
   var last_SearchComplete=false;
@@ -27,13 +28,16 @@ $(function(){
   }
 
   window.getObject = function() {
-  	console.log(window.controller.placesObject);
-  }
+    console.log(window.controller.placesObject);
+  };
 
   function drawRoute(result){
     var routePoly = window.graphicsStore.routePoly;
     var aheadPoly = window.graphicsStore.aheadPoly;
     var queryPoly = window.graphicsStore.queryPoly;
+    var SW = new google.maps.LatLng();
+    var NE = new google.maps.LatLng();
+    var mapBound;
     //delete old lines
     if(routePoly.setMap){
       routePoly.setMap(null);
@@ -58,7 +62,7 @@ $(function(){
     queryPoly = new google.maps.Polyline({
       strokeColor: '#2F2',
       strokeOpacity: 0.7,
-      strokeWeight: 10
+      strokeWeight: 12
     });
     //reassign graphicsStore polylines to new polyLines
     window.graphicsStore.routePoly = routePoly;
@@ -73,7 +77,21 @@ $(function(){
     routePoly.setPath(result.routes[0].overview_path);
     aheadPoly.setPath(result.aheadPoints);
 
-    //
+    //recenter the window around the latest ROI on the path
+    // NE.d = _.max(result.savePoints, function(elem){ return elem.d; }).d;
+    // NE.e = _.max(result.savePoints, function(elem){ return elem.e; }).e;
+    // SW.d = _.min(result.savePoints, function(elem){ return elem.e; }).d;
+    // SW.e = _.min(result.savePoints, function(elem){ return elem.d; }).e;
+    // mapBound = new google.maps.LatLngBounds(SW, NE);
+    // new google.maps.Rectangle({
+    //     bounds: mapBound,
+    //     fillOpacity: 0,
+    //     strokeOpacity: 0.9,
+    //     strokeColor: '#000',
+    //     strokeWeight: 1,
+    //     map: window.googleMaps.map
+    //   });
+    // window.googleMaps.map.fitBounds(mapBound);
 
     //make the new line clickable
     google.maps.event.addListener(routePoly, 'click', window.controller.mapClick);
@@ -112,8 +130,8 @@ $(function(){
   }
 
   function getPlacesLength(){
-    return {places: window.controller.placesObject.placesReferences,  
-    	places_length: window.controller.placesObject.placesReferences.length}
+    return {places: window.controller.placesObject.placesReferences,
+      places_length: window.controller.placesObject.placesReferences.length};
   }
 
   function getPlacesDetails(index, value) {
@@ -235,6 +253,11 @@ $(function(){
     placesRequestObject.query = $('#placePreFilter').val();
 
     window.controller.getPlaces(placesRequestObject);
+  });
+
+  $('#returnToRoute').click(function(){
+    $('#placeShutter').hide();
+    $('#routeShutter').show();
   });
 
   $('#fakeGeo').click(function(){
