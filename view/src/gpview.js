@@ -1,3 +1,7 @@
+(function(){
+  'use strict';
+  window.gpView = {};
+})();
 $(function(){
   'use strict';
   /*global alert*/
@@ -7,7 +11,7 @@ $(function(){
 
   var routeRequestObject = {fromLocation:'Toronto',toLocation:'Sacramento',milesFromHwy:1};
   var last_SearchComplete=false;
-  window.gpView = {}; //temp stub to be refactored later
+  //window.gpView = {}; //temp stub to be refactored later
   window.gmarkers=[];
   window.graphicsStore = {
     routePoly: {},  //polyline for returned google directions

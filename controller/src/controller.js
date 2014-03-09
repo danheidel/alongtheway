@@ -3,7 +3,7 @@
   /*global _*/
   /*global google*/
 
-  var geoLocation = window.geoLocation;
+  var geoLocation = window.geolocation;
   var gpView = window.gpView;
   var pathGen = window.pathGen;
   var query = window.query;
@@ -38,7 +38,7 @@
   NS.startGeoLocation = function() {
     setInterval(function(){
       if(NS.mode.geoLocActive === true){
-        geolocation.getGeoLocation();
+        geoLocation.getGeoLocation();
       }
       if(NS.mode.hasLocation){
         NS.onLocationChange(NS.userLocation);
